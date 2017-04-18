@@ -59,7 +59,9 @@ define([
 
             return resolve(fetchJson(url, { method: 'get' }));
         }).then(handleResponse.bind(null, url))
-          .catch(handleError.bind(null, url));
+          .catch(function (e) {
+            handleError(url, e);
+          });
     }
 
     function handleResponse(url, data) {
