@@ -16,10 +16,10 @@ import scala.concurrent.Await
 @DoNotDiscover class FaciaControllerTest extends FlatSpec
   with Matchers
   with ExecutionContexts
-  with ConfiguredTestSuite
   with BeforeAndAfterAll
-  with FakeRequests
   with BeforeAndAfterEach
+  with ConfiguredTestSuite
+  with FakeRequests
   with WithMaterializer
   with WithTestContext
   with WithTestWsClient {

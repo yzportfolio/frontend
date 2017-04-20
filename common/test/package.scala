@@ -8,7 +8,7 @@ import common.{ExecutionContexts, Lazy}
 import contentapi.{CapiHttpClient, ContentApiClient, HttpClient}
 import model.{ApplicationContext, ApplicationIdentity}
 import org.openqa.selenium.htmlunit.HtmlUnitDriver
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.{BeforeAndAfterAll, ParallelTestExecution}
 import org.scalatestplus.play._
 import play.api._
 import play.api.libs.crypto.{CSRFTokenSigner, CryptoConfig}
@@ -20,7 +20,7 @@ import recorder.ContentApiHttpRecorder
 
 import scala.util.{Failure, Success, Try}
 
-trait ConfiguredTestSuite extends ConfiguredServer with ConfiguredBrowser with ExecutionContexts {
+trait ConfiguredTestSuite extends ConfiguredServer with ConfiguredBrowser with ExecutionContexts with ParallelTestExecution {
   this: ConfiguredTestSuite with org.scalatest.Suite =>
 
   lazy val webClient = new WebClient(BrowserVersion.CHROME)

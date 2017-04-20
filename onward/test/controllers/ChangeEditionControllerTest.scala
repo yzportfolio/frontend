@@ -5,7 +5,11 @@ import play.api.test.Helpers.{cookies => playCookies, _}
 import org.scalatest.{BeforeAndAfterEach, DoNotDiscover, Matchers, FlatSpec}
 import test.{ConfiguredTestSuite, TestRequest}
 
-@DoNotDiscover class ChangeEditionControllerTest extends FlatSpec with Matchers with ConfiguredTestSuite with BeforeAndAfterEach {
+@DoNotDiscover class ChangeEditionControllerTest
+  extends FlatSpec
+  with Matchers
+  with BeforeAndAfterEach
+  with ConfiguredTestSuite {
 
   val callbackName = "aFunction"
   val oneYearInSeconds = 31536000

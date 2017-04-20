@@ -4,11 +4,14 @@ import contentapi.SectionsLookUp
 import controllers.IndexController
 import play.api.test._
 import play.api.test.Helpers._
-import org.scalatest.{DoNotDiscover, BeforeAndAfterAll, Matchers, FlatSpec}
+import org.scalatest._
+import scala.concurrent.Await
+import scala.concurrent.duration._
 
 @DoNotDiscover class IndexControllerTest
   extends FlatSpec
   with Matchers
+  with BeforeAndAfterEach
   with BeforeAndAfterAll
   with ConfiguredTestSuite
   with WithMaterializer
@@ -19,8 +22,9 @@ import org.scalatest.{DoNotDiscover, BeforeAndAfterAll, Matchers, FlatSpec}
   val section = "books"
   lazy val sectionsLookUp = new SectionsLookUp(testContentApiClient)
 
-  override def beforeAll(): Unit = {
-    sectionsLookUp.refresh()
+  override def beforeEach(): Unit = {
+    val refresh = sectionsLookUp.refresh()
+    Await.result(refresh, 2.seconds)
   }
 
   lazy val indexController = new IndexController(testContentApiClient, sectionsLookUp)
