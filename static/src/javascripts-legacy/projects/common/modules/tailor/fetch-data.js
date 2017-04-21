@@ -14,6 +14,17 @@ define([
     config
 ) {
 
+    // TODO move this to tailor.js
+
+    // IDEA: have a generic function that reads all the cookies and sets all the query params for all the modules
+    // this is READ-ONLY; all the write specific bits are handled by the various modules
+
+
+    var genericQueryparamters = {
+        edition: config.page.edition,
+        param1 : logic
+    };
+
     var URLS = {
         suggestions: 'https://tailor.guardianapis.com/suggestions?browserId='
     };
@@ -27,11 +38,21 @@ define([
 
         baseURL += browserId;
 
+        // add specific query params to generic query params if exists
         if (queryParams) {
             Object.keys(queryParams).forEach(function (key) {
-                baseURL += '&' + key + '=' + queryParams[key];
+                if (queryParams[key]) {
+                    genericQueryparamters.key = queryParams[key];
+                }
             });
         }
+
+        // build url from generic query param + specific query param
+        Object.keys(genericQueryparamters).forEach(function (key) {
+            if (genericQueryparamters[key]) {
+                baseURL += '&' + key + '=' + genericQueryparamters[key];
+            }
+        });
 
         return baseURL;
     }
@@ -40,7 +61,7 @@ define([
      * type (required) is a string which should match a key in the URLS object
      * bypassStorage a boolean, if true don't retrieve data from local storage
      * queryParams an object literal, each key/value will be query string parameter
-     * eg. {foo:'bar', hello:'world'} translates to ?foo=bar&hello=world
+     * eg. {foo:'bar', hello:'world'} translates to &foo=bar&hello=world
      *
      **/
     function fetchData(type, bypassStorage, queryParams) {
@@ -82,4 +103,6 @@ define([
     }
 
     return fetchData;
+
 });
+

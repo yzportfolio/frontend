@@ -92,7 +92,7 @@ define([
             }).toString();
         }
 
-        // Getting simple json from tailor's reponse to be passed to the html template
+        // Getting simple json from tailor's response to be passed to the html template
         function getJsonFromSurvey(survey) {
             return {
                 question : survey.question,
@@ -133,9 +133,7 @@ define([
 
         // the main function to render the survey
         function renderQuickSurvey() {
-            var queryParams = {
-                edition: config.page.edition,
-            };
+            var queryParams = {};
 
             // If we want to force tailor to show a particular survey we can set an attribute in local storage to have
             // key = 'surveyToShow', and value = the survey id. Tailor will then override other logic for display, and
