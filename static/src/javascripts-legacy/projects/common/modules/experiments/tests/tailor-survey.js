@@ -50,7 +50,7 @@ define([
                 config.page.contentType === 'Article'
         };
 
-        // Every time we show a survey to a user, we cannot show it again to that suer for a specified number of days.
+        // Every time we show a survey to a user, we cannot show it again to that user for a specified number of days.
         // We store 'surveyId=dayShowAgain' in the cookie, and pass any surveys that cannot currently be shown in the
         // call to tailor.
         function storeSurveyShowedInCookie(data) {
@@ -71,25 +71,6 @@ define([
                 // first time we show any survey
                 cookies.addCookie('GU_TAILOR_SURVEY', newCookieValue, 365);
             }
-        }
-
-        // We go through the list of surveys that have already been shown to the user, and return a list of survey ids
-        // that aren't currently allowed to be shown.
-        function getSurveyIdsNotToShow() {
-            var currentCookieValues = cookies.getCookie('GU_TAILOR_SURVEY');
-
-            var values = currentCookieValues ? currentCookieValues.split(',') : [];
-
-            var isAfterToday = function (cookieValue) {
-                var date = cookieValue.split('=')[1];
-                return new Date(date).valueOf() > new Date().valueOf();
-            };
-
-            var surveysWeCannotShow = values.filter(isAfterToday);
-
-            return surveysWeCannotShow.map(function (idAndDate) {
-                return idAndDate.split('=')[0];
-            }).toString();
         }
 
         // Getting simple json from tailor's response to be passed to the html template
@@ -134,24 +115,6 @@ define([
         // the main function to render the survey
         function renderQuickSurvey() {
             var queryParams = {};
-
-            // If we want to force tailor to show a particular survey we can set an attribute in local storage to have
-            // key = 'surveyToShow', and value = the survey id. Tailor will then override other logic for display, and
-            // look for a survey with this ID to return. This is useful as we can easily see how a particular survey
-            // would be rendered, without actually putting it live. If this parameter is empty or not specified, tailor
-            // behaves as usual.
-            var surveyToShow = storage.local.get('surveyToShow');
-
-            if (surveyToShow) {
-                queryParams.surveyToShow = surveyToShow;
-            }
-
-            // get the list of surveys that can't be shown as they have been shown recently
-            var surveysNotToShow = getSurveyIdsNotToShow();
-
-            if (surveysNotToShow) {
-                queryParams.surveysNotToShow = surveysNotToShow;
-            }
 
             return tailor.getSuggestedSurvey(queryParams).then(function(suggestion) {
                 if (suggestion) {
