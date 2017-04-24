@@ -21,8 +21,7 @@ define([
 
 
     var genericQueryparamters = {
-        edition: config.page.edition,
-        param1 : logic
+        edition: config.page.edition
     };
 
     var URLS = {
