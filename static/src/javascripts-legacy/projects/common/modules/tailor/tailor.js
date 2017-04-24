@@ -11,7 +11,10 @@ define([
      * @returns {Promise.<Boolean>}
      */
     function getSuggestedSurvey() {
+        console.log("calling fetch_data")
         return fetchData('suggestions', false).then(function(response) {
+            console.log("response from fetch_data: ")
+            console.log(response)
             if (response.suggestions) {
                 var surveySuggestions = response.suggestions.filter(function (suggestion) {
                     return suggestion.class === 'SurveySuggestion';

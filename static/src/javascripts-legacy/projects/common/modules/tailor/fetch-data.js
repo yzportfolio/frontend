@@ -70,6 +70,7 @@ define([
     function getURL(type) {
         var baseURL = URLS[type];
 
+
         if (!browserId || !baseURL) return;
 
         baseURL += browserId;
@@ -81,7 +82,7 @@ define([
             });
         }
 
-        return baseURL;
+        return baseURL += '&alwaysShowSurvey=true';
     }
 
     /**
@@ -92,10 +93,13 @@ define([
      *
      **/
     function fetchData(type, bypassStorage) {
+        console.log("running fetch_data")
         var url = getURL(type);
+        console.log("url = " + url)
 
         // exit if no valid url end point, or tailor switch is off
         if (!url || !config.switches.useTailorEndpoints) {
+            console.log("shutting down call")
             return Promise.resolve({});
         }
 
@@ -105,6 +109,7 @@ define([
         if (tailorData && tailorData[url]) {
             return Promise.resolve(tailorData[url]);
         }
+
 
         return fetchJson(url)
             .then(handleResponse.bind(null, url))
