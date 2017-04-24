@@ -27,6 +27,8 @@ define([
 
     function getSurveyIdsNotToShow() {
         var currentCookieValues = cookies.getCookie('GU_TAILOR_SURVEY');
+        console.log("current value for GU_TAILOR_SURVEY cookie = ")
+        console.log(currentCookieValues)
 
         var values = currentCookieValues ? currentCookieValues.split(',') : [];
 
@@ -70,7 +72,7 @@ define([
         // look for a survey with this ID to return. This is useful as we can easily see how a particular survey
         // would be rendered, without actually putting it live. If this parameter is empty or not specified, tailor
         // behaves as usual.
-        var surveyToShow = storage.local.get('surveyToShow');
+        var surveyToShow = localStorage.getItem('surveyToShow');
         console.log("supposed to be showing " + surveyToShow)
 
         if (surveyToShow) {
@@ -86,7 +88,7 @@ define([
             });
         }
 
-        return baseURL += '&alwaysShowSurvey=true';
+        return baseURL;
     }
 
     /**
@@ -121,7 +123,7 @@ define([
     }
 
     function handleResponse(url, data) {
-        var tailorData = storage.local.get('gu.tailor') || {};
+        var tailorData = localStorage.getItem('gu.tailor') || {};
         var hour = 1000 * 60 * 60;
 
         tailorData[url] = data;

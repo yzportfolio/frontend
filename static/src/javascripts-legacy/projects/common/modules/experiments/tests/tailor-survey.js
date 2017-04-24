@@ -189,7 +189,7 @@ define([
                 id: 'variant',
                 test: function () {
                     console.log("variant")
-                    cookies.addCookie("bwid", "NmiNj7tL5yTNKeVqxdiex1NQ")
+                    cookies.addCookie("GU_TAILOR_SURVEY", "7=2017-07-21")
                     renderQuickSurvey().then(function (surveyId) {
                         if (surveyId) {
                             mediator.emit('survey-added');
