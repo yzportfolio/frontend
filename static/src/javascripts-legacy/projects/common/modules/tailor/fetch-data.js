@@ -67,7 +67,7 @@ define([
 
     var browserId = cookies.getCookie('bwid');
 
-    function getURL(type, queryParams) {
+    function getURL(type) {
         var baseURL = URLS[type];
 
         if (!browserId || !baseURL) return;
@@ -75,9 +75,9 @@ define([
         baseURL += browserId;
 
         // add specific query params to generic query params if exists
-        if (queryParams) {
-            Object.keys(queryParams).forEach(function (key) {
-                baseURL += '&' + key + '=' + queryParams[key];
+        if (genericQueryparamters) {
+            Object.keys(genericQueryparamters).forEach(function (key) {
+                baseURL += '&' + key + '=' + genericQueryparamters[key];
             });
         }
 
@@ -91,8 +91,8 @@ define([
      * eg. {foo:'bar', hello:'world'} translates to &foo=bar&hello=world
      *
      **/
-    function fetchData(type, bypassStorage, queryParams) {
-        var url = getURL(type, queryParams);
+    function fetchData(type, bypassStorage) {
+        var url = getURL(type);
 
         // exit if no valid url end point, or tailor switch is off
         if (!url || !config.switches.useTailorEndpoints) {

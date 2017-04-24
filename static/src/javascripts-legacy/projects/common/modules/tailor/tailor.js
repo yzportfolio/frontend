@@ -10,8 +10,8 @@ define([
      *
      * @returns {Promise.<Boolean>}
      */
-    function getSuggestedSurvey(queryParams) {
-        return fetchData('suggestions', false, queryParams).then(function(response) {
+    function getSuggestedSurvey() {
+        return fetchData('suggestions', false).then(function(response) {
             if (response.suggestions) {
                 var surveySuggestions = response.suggestions.filter(function (suggestion) {
                     return suggestion.class === 'SurveySuggestion';

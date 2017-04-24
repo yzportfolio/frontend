@@ -114,9 +114,8 @@ define([
 
         // the main function to render the survey
         function renderQuickSurvey() {
-            var queryParams = {};
 
-            return tailor.getSuggestedSurvey(queryParams).then(function(suggestion) {
+            return tailor.getSuggestedSurvey().then(function(suggestion) {
                 if (suggestion) {
                     storeSurveyShowedInCookie(suggestion.data);
 
