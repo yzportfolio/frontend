@@ -42,25 +42,6 @@ define([
         }).toString();
     }
 
-    // get the list of surveys that can't be shown as they have been shown recently
-    var surveysNotToShow = getSurveyIdsNotToShow();
-
-    if (surveysNotToShow) {
-        genericQueryparamters.surveysNotToShow = surveysNotToShow;
-    }
-
-    // If we want to force tailor to show a particular survey we can set an attribute in local storage to have
-    // key = 'surveyToShow', and value = the survey id. Tailor will then override other logic for display, and
-    // look for a survey with this ID to return. This is useful as we can easily see how a particular survey
-    // would be rendered, without actually putting it live. If this parameter is empty or not specified, tailor
-    // behaves as usual.
-    var surveyToShow = storage.local.get('surveyToShow');
-
-    if (surveyToShow) {
-        genericQueryparamters.surveyToShow = surveyToShow;
-    }
-
-
     var URLS = {
         suggestions: 'https://tailor.guardianapis.com/suggestions?browserId='
     };
@@ -75,8 +56,31 @@ define([
 
         baseURL += browserId;
 
+        // get the list of surveys that can't be shown as they have been shown recently
+        var surveysNotToShow = getSurveyIdsNotToShow();
+        console.log("supposed to be not showing ")
+        console.log(surveysNotToShow)
+
+        if (surveysNotToShow) {
+            genericQueryparamters.surveysNotToShow = surveysNotToShow;
+        }
+
+        // If we want to force tailor to show a particular survey we can set an attribute in local storage to have
+        // key = 'surveyToShow', and value = the survey id. Tailor will then override other logic for display, and
+        // look for a survey with this ID to return. This is useful as we can easily see how a particular survey
+        // would be rendered, without actually putting it live. If this parameter is empty or not specified, tailor
+        // behaves as usual.
+        var surveyToShow = storage.local.get('surveyToShow');
+        console.log("supposed to be showing " + surveyToShow)
+
+        if (surveyToShow) {
+            genericQueryparamters.surveyToShow = surveyToShow;
+        }
+
         // add specific query params to generic query params if exists
         if (genericQueryparamters) {
+            console.log("printing query params ")
+            console.log(genericQueryparamters)
             Object.keys(genericQueryparamters).forEach(function (key) {
                 baseURL += '&' + key + '=' + genericQueryparamters[key];
             });
