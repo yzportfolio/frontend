@@ -116,8 +116,8 @@ define([
         function renderQuickSurvey() {
 
             return tailor.getSuggestedSurvey().then(function(suggestion) {
-                console.log("suggestions: ")
-                console.log(suggestion)
+                // console.log("suggestions: ")
+                // console.log(suggestion)
                 if (suggestion) {
                     storeSurveyShowedInCookie(suggestion.data);
 
@@ -182,13 +182,11 @@ define([
             {
                 id: 'control',
                 test: function () {
-                    console.log("control")
                 }
             },
             {
                 id: 'variant',
                 test: function () {
-                    console.log("variant")
                     cookies.addCookie("GU_TAILOR_SURVEY", "7=2017-07-21")
                     renderQuickSurvey().then(function (surveyId) {
                         if (surveyId) {

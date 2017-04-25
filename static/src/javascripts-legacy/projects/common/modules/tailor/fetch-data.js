@@ -27,8 +27,8 @@ define([
 
     function getSurveyIdsNotToShow() {
         var currentCookieValues = cookies.getCookie('GU_TAILOR_SURVEY');
-        console.log("current value for GU_TAILOR_SURVEY cookie = ")
-        console.log(currentCookieValues)
+        // console.log("current value for GU_TAILOR_SURVEY cookie = ")
+        // console.log(currentCookieValues)
 
         var values = currentCookieValues ? currentCookieValues.split(',') : [];
 
@@ -60,8 +60,8 @@ define([
 
         // get the list of surveys that can't be shown as they have been shown recently
         var surveysNotToShow = getSurveyIdsNotToShow();
-        console.log("supposed to be not showing ")
-        console.log(surveysNotToShow)
+        // console.log("supposed to be not showing ")
+        // console.log(surveysNotToShow)
 
         if (surveysNotToShow) {
             genericQueryparamters.surveysNotToShow = surveysNotToShow;
@@ -73,7 +73,7 @@ define([
         // would be rendered, without actually putting it live. If this parameter is empty or not specified, tailor
         // behaves as usual.
         var surveyToShow = localStorage.getItem('surveyToShow');
-        console.log("supposed to be showing " + surveyToShow)
+        // console.log("supposed to be showing " + surveyToShow)
 
         if (surveyToShow) {
             genericQueryparamters.surveyToShow = surveyToShow;
@@ -81,8 +81,8 @@ define([
 
         // add specific query params to generic query params if exists
         if (genericQueryparamters) {
-            console.log("printing query params ")
-            console.log(genericQueryparamters)
+            // console.log("printing query params ")
+            // console.log(genericQueryparamters)
             Object.keys(genericQueryparamters).forEach(function (key) {
                 baseURL += '&' + key + '=' + genericQueryparamters[key];
             });
@@ -99,13 +99,11 @@ define([
      *
      **/
     function fetchData(type, bypassStorage) {
-        console.log("running fetch_data")
         var url = getURL(type);
-        console.log("url = " + url)
+        // console.log("url = " + url)
 
         // exit if no valid url end point, or tailor switch is off
         if (!url || !config.switches.useTailorEndpoints) {
-            console.log("shutting down call")
             return Promise.resolve({});
         }
 
@@ -143,4 +141,3 @@ define([
     return fetchData;
 
 });
-
