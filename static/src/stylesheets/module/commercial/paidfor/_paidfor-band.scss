@@ -50,4 +50,18 @@
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
+
+    .inline-glabs-logo {
+      margin-top: 4px;
+      display: block;
+
+      svg {
+          width: 90px;
+          height: auto;
+
+          path {
+            fill: #333;
+          }
+      }
+    }
 }

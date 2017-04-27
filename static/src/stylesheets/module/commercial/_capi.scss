@@ -93,13 +93,13 @@
 
     .tone-news--item.fc-item,
     .tone-media--item {
-        background-color: $paid-article-subheader;
+        background-color: $paid-article-card-bg;
         border-top: 0;
     }
 
     .fc-container--story-package .tone-news--item.fc-item {
         // This is to override an !important background colour in story-package items
-        background-color: $paid-article-subheader !important;
+        background-color: $paid-article-card-bg !important;
     }
 
     .tone-media--item {
@@ -141,7 +141,7 @@
         border-left-color: $paid-article-subheader-bg;
     }
 
-    .fc-item__container {
+    .fc-item .fc-item__container {
         &:before {
             display: block;
             background: $paid-article-brand;
@@ -150,6 +150,9 @@
 
     .fc-item__title {
         color: $news-support-7;
+        @include f-textSans;
+        letter-spacing: -0.25px;
+        font-weight: 600;
     }
 
     .tone-news--item .fc-item__kicker {

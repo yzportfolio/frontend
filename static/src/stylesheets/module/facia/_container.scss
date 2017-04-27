@@ -135,6 +135,13 @@ $header-image-size-desktop: 100px;
     line-height: get-line-height(header, 2);
     color: $guardian-brand-dark;
 
+    .paid-content & {
+        @include f-textSans;
+        letter-spacing: -0.5px;
+        color: $neutral-1;
+        font-weight: 900;
+    }
+
     @include mq(tablet, leftCol) {
         float: left;
         width: gs-span(4);

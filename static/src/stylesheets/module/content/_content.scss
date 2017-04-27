@@ -696,10 +696,22 @@
     }
     .content__headline,
     .content__standfirst {
-        @include f-headlineSans;
+        @include f-textSans;
+        letter-spacing: -0.25px;
+    }
+    .content__headline {
+      letter-spacing: -1px;
     }
     .from-content-api {
         @include f-textSans;
+    }
+
+    .from-content-api a[data-link-name="in body link"] {
+      color: darken($paid-article-brand, 15%);
+
+      &:hover {
+        border-bottom: 1px solid darken($paid-article-brand, 15%);
+      }
     }
     .element.element-pullquote {
         .pullquote-paragraph {
@@ -730,11 +742,11 @@
     }
 
     .content__main {
-        padding-top: $gs-baseline;
+        padding-top: 0;
     }
 
     .content__header {
-        background-color: $paid-article-header;
+        background-color: $neutral-8;
     }
 
     .tonal__standfirst {
@@ -744,6 +756,14 @@
 
         .content__standfirst {
             color: $neutral-1;
+        }
+
+        a, .u-fauxlink {
+            color: darken($paid-article-brand, 15%);
+
+          &:hover {
+              border-bottom: 1px solid $paid-article-brand;
+          }
         }
     }
 
@@ -774,7 +794,7 @@
 
     .rich-link__header,
     .rich-link__read-more-text {
-        @include f-headlineSans;
+        @include f-textSans;
         font-size: get-font-size(header, 2);
     }
 
@@ -790,16 +810,27 @@
     }
 
     .content__section-label {
-        @include f-headlineSans;
-        font-weight: 400;
+        @include f-textSans;
+        font-weight: 900;
+        letter-spacing: -0.25px;
 
         .content__section-label__link {
             color: $neutral-1;
         }
     }
 
+    .byline a{
+      @include f-textSans;
+      font-weight: 900;
+      color: darken($paid-article-brand, 15%);
+    }
+
     .meta__extras {
         border-color: $paid-article-header;
+    }
+
+    .submeta__link {
+      color: darken($paid-article-brand, 15%);
     }
 
     .social--expanded-top {
