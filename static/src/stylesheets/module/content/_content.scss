@@ -706,7 +706,7 @@
         @include f-textSans;
     }
 
-    .from-content-api a[data-link-name="in body link"] {
+    .from-content-api a[data-link-name='in body link'] {
         color: darken($paid-article-brand, 15%);
 
         &:hover {
@@ -761,9 +761,9 @@
         a, .u-fauxlink {
             color: darken($paid-article-brand, 15%);
 
-          &:hover {
-              border-bottom: 1px solid $paid-article-brand;
-          }
+            &:hover {
+                border-bottom: 1px solid $paid-article-brand;
+            }
         }
     }
 
@@ -819,7 +819,7 @@
         }
     }
 
-    .byline a{
+    .byline a {
         @include f-textSans;
         font-weight: 900;
         color: darken($paid-article-brand, 15%);

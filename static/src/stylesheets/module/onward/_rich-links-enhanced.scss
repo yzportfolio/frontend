@@ -217,7 +217,7 @@
                 .rich-link__read-more-text {
                     @include f-textSans;
                     color: $neutral-1;
-                    letter-spacing: -0.5px;
+                    letter-spacing: -.5px;
                 }
                 .rich-link__arrow-icon {
                     fill: $paid-article-brand;

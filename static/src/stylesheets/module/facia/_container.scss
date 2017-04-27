@@ -137,7 +137,7 @@ $header-image-size-desktop: 100px;
 
     .paid-content & {
         @include f-textSans;
-        letter-spacing: -0.5px;
+        letter-spacing: -.5px;
         color: $neutral-1;
         font-weight: 900;
     }
