@@ -149,9 +149,9 @@
     }
 
     .fc-item__title {
-        color: $news-support-7;
         @include f-textSans;
-        letter-spacing: -0.25px;
+        color: $news-support-7;
+        letter-spacing: -.25px;
         font-weight: 600;
     }
 

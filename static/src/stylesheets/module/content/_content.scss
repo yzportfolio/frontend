@@ -697,21 +697,21 @@
     .content__headline,
     .content__standfirst {
         @include f-textSans;
-        letter-spacing: -0.25px;
+        letter-spacing: -.25px;
     }
     .content__headline {
-      letter-spacing: -1px;
+        letter-spacing: -1px;
     }
     .from-content-api {
         @include f-textSans;
     }
 
     .from-content-api a[data-link-name="in body link"] {
-      color: darken($paid-article-brand, 15%);
+        color: darken($paid-article-brand, 15%);
 
-      &:hover {
-        border-bottom: 1px solid darken($paid-article-brand, 15%);
-      }
+        &:hover {
+            border-bottom: 1px solid darken($paid-article-brand, 15%);
+        }
     }
     .element.element-pullquote {
         .pullquote-paragraph {
@@ -812,7 +812,7 @@
     .content__section-label {
         @include f-textSans;
         font-weight: 900;
-        letter-spacing: -0.25px;
+        letter-spacing: -.25px;
 
         .content__section-label__link {
             color: $neutral-1;
@@ -820,9 +820,9 @@
     }
 
     .byline a{
-      @include f-textSans;
-      font-weight: 900;
-      color: darken($paid-article-brand, 15%);
+        @include f-textSans;
+        font-weight: 900;
+        color: darken($paid-article-brand, 15%);
     }
 
     .meta__extras {
@@ -830,7 +830,7 @@
     }
 
     .submeta__link {
-      color: darken($paid-article-brand, 15%);
+        color: darken($paid-article-brand, 15%);
     }
 
     .social--expanded-top {
