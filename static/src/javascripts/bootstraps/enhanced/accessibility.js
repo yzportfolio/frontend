@@ -2,7 +2,9 @@
 import React from 'react/addons';
 import accessibility from 'common/modules/accessibility/main';
 
-const init = callback => {
+const DOM_ID = 'js-accessibility-preferences';
+
+const init = (callback: Function) => {
     const BinaryToggle = React.createClass({
         render() {
             return (
@@ -26,17 +28,13 @@ const init = callback => {
                                     margin: '3px 0.5ex',
                                 }}
                             />
+                            {this.props.label}
                         </label>
                     </div>
                 </div>
             );
         },
     });
-
-    const module = {
-        DOM_ID: 'js-accessibility-preferences',
-        init,
-    };
 
     const Accessibility = React.createClass({
         getInitialState() {
@@ -84,11 +82,7 @@ const init = callback => {
         },
     });
 
-    React.render(
-        <Accessibility />,
-        document.getElementById(module.DOM_ID),
-        callback
-    );
+    React.render(<Accessibility />, document.getElementById(DOM_ID), callback);
 };
 
-export default module;
+export { DOM_ID, init };
