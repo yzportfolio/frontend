@@ -15,6 +15,7 @@
                 }],
                 "babel-plugin-add-module-exports",
                 "babel-plugin-transform-class-properties",
+                "transform-react-jsx",
             ],
         },
         "development": {
@@ -29,6 +30,7 @@
                 }],
                 "babel-plugin-add-module-exports",
                 "babel-plugin-transform-class-properties",
+                "transform-react-jsx",
             ],
         },
         "test": {
@@ -38,6 +40,9 @@
                         "node": "current"
                     }
                 }]
+            ],
+            "plugins": [
+                "transform-react-jsx",
             ],
         },
         "internal": {
@@ -63,6 +68,7 @@
             "plugins": [
                 "babel-plugin-add-module-exports",
                 "babel-plugin-transform-class-properties",
+                "transform-react-jsx",
             ],
         },
     },
