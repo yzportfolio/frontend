@@ -31,6 +31,9 @@ module.exports = {
         ],
         'no-extend-native': 'error',
         'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+        'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+        'react/jsx-indent': 'off',
+        'react/jsx-indent-props': 'off',
     },
     // don't look for eslintrcs above here
     root: true,
