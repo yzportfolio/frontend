@@ -4,7 +4,7 @@ import accessibility from 'common/modules/accessibility/main';
 
 const DOM_ID = 'js-accessibility-preferences';
 
-const init = (callback: Function) => {
+const init = (callback: Function): void => {
     const BinaryToggle = React.createClass({
         render() {
             return (
