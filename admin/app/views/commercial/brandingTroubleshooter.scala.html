@@ -1,0 +1,48 @@
+@()(implicit request: RequestHeader, context: model.ApplicationContext)
+
+@admin_main("Branding troubleshooter", isAuthed = true) {
+    <link rel="stylesheet" type="text/css" href="@controllers.admin.routes.UncachedAssets.at("css/commercial.css")" />
+
+    <h1>Branding troubleshooter</h1>
+
+    <div id="diagram"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.6/flowchart.js"></script>
+    <script>
+      var diagram = flowchart.parse(
+          'start=>start: Start\n' +
+          'success=>end: Success!\n' +
+          'knownBug=>end: Known bug. Contact editorial tools team.\n' +
+          'bug=>end: Bug!  Contact commercial dev team.\n' +
+          'expTag=>operation: Tag page in unexpired microsite appears as a commercial expiry page on live site.\n' +
+          'noLogo=>operation: Sponsored container has no logo.\n' +
+          'brand=>operation: Apply branded label to container.\n' +
+          'makeSame=>operation: Change content to all have same sponsor.\n' +
+          'branded=>condition: Does container have branded label in fronts config?:>https://fronts.gutools.co.uk/commercial/config\n' +
+          'allSame=>condition: Do all cards in container have same sponsor?\n' +
+          '\n' +
+          'start->expTag->knownBug\n' +
+          'start->noLogo->branded\n' +
+          'branded(yes)->allSame\n' +
+          'branded(no)->brand->success\n' +
+          'allSame(yes)->bug\n' +
+          'allSame(no)->makeSame->success'
+      );
+
+      diagram.drawSVG('diagram', {
+          'symbols': {
+              'start': {
+                  'font-color': 'red',
+                  'fill': 'green'
+              }
+          },
+          'flowstate': {
+              'knownBug': {
+                  'font-color': 'red',
+                  'fill': 'green'
+              }
+          }
+      });
+    </script>
+}

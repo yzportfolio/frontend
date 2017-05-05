@@ -180,4 +180,8 @@ class CommercialController(implicit context: ApplicationContext) extends Control
       sonobiItems,
       unidentifiedLineItems.toSeq.map(invalidItemsMap)))
   }
+
+  def renderBrandingTroubleshooter() = Action { implicit request =>
+    Ok(views.html.commercial.brandingTroubleshooter())
+  }
 }
