@@ -158,7 +158,6 @@
       "commercial": "projects/commercial",
       "^lodash(.*)$": "lodash-amd/compat$1",
       "picturefill": "projects/common/utils/picturefill",
-      "Promise": "when/es6-shim/Promise",
       "raven": "raven-js",
       "EventEmitter": "wolfy87-eventemitter",
       "videojs": "video.js",
