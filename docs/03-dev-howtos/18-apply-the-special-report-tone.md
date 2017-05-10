@@ -17,8 +17,9 @@ https://github.com/guardian/facia-scala-client/blame/48f90b6173c6409507a58e80468
 
 5. Merge the PR and release the library to Maven using sbt.
 
-6. Update facia-scala-client library on Frontend and MAPI. Merge and deploy the PRs.
+6. Update facia-scala-client library on Frontend, MAPI and the commercial shared library. Merge and deploy the PRs.
 On Frontend - https://github.com/guardian/frontend/pull/15842/commits/3c6a598a0340fc9f4bd4e774d1466a5806f67c67
 On MAPI - https://github.com/guardian/mobile-apps-api/pull/900/commits/99012625a0b9e4bbab61d224768ca31bf36fcf46
+On Commercial Shared Library - https://github.com/guardian/commercial-shared/pull/31/commits/01fa00fde6be3ff09901fc013c84fcb37ba6573f
 
 7. Profit! This will make Frontend and MAPI give this tone tag the special report treatment
