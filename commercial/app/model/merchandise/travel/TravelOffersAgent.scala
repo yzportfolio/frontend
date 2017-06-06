@@ -29,16 +29,18 @@ class TravelOffersAgent(contentApiClient: ContentApiClient) extends MerchandiseA
       keywords <- lookup.keyword("\"" + country + "\"", section = Some("travel"))
     } yield keywords.map(_.id).distinct
 
-    def keywordsForOffer(offer: TravelOffer): Future[Seq[String]] = Future.sequence(offer.countries.map(fetchKeywords)).map(_.flatten)
+    def keywordsForCountry(country: String): Future[Seq[String]] = Future.sequence(fetchKeywords(country))
 
     def addKeywords(offers: Seq[TravelOffer]): Future[Seq[TravelOffer]] = {
 
       val populated = Future.sequence {
-        offers.map { offer =>
-          keywordsForOffer(offer).map { keywords =>
-            offer.copy(keywordIdSuffixes = keywords map Keyword.getIdSuffix)
-          }
-        }
+          
+          val countries = offers.flatMap(_.countries).distinct
+          val keywordsByCountry = countries.foldLeft(Map[String, Seq[String]()) { (m, country) => m + (country -> keywordsForCountry(country)) }
+          
+          offers.map { offer =>
+            offer.copy(keywordIdSuffixes = offer.countries.flatMap(c => keywordsByCountry.get(c).getOrElse(Nil)) map Keyword.getIdSuffix)
+          } 
       }
 
       populated.onSuccess { case offers =>
