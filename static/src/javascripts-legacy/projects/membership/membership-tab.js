@@ -4,14 +4,16 @@ define([
     'lib/fetch',
     'lib/config',
     'membership/formatters',
-    'membership/stripe'
+    'membership/stripe',
+    'commercial/modules/user-features'
 ], function (
     bean,
     $,
     fetch,
     config,
     formatters,
-    stripe
+    stripe,
+    userFeatures
 ) {
 
     var CARD_DETAILS = '.js-mem-card-details',
@@ -53,6 +55,7 @@ define([
         }).then(function (resp) {
             return resp.json();
         }).then(function (json) {
+            updateAttributes(json);
             if (json && json.subscription) {
                 hideLoader();
                 populateUserDetails(json);
@@ -69,6 +72,23 @@ define([
 
     function hideLoader() {
         $(LOADER).addClass(IS_HIDDEN_CLASSNAME);
+    }
+
+    function updateAttributes(json) {
+        var attributes = !!userFeatures.isPayingMember();
+        var features = !!(json && json.subscription);
+        var endpoint = config.page.userAttributesApiUrl + '/me/update'
+        if (attributes !== features){
+            fetch(endpoint, {
+                mode: 'cors',
+                credentials: 'include',
+                method: 'post',
+                headers: {
+                    'Csrf-Token': 'nocheck'
+                }
+            })
+        }
+
     }
 
 
