@@ -60,17 +60,17 @@ const load = (target?: string): Promise<void> => {
 
     if ($container.length) {
         return insert($container[0], () => {
-                    if (slot === 'merchandising') {
-                        $(selectors[slot].widget).replaceWith($outbrain[0]);
-                    }
-                    $container.append(widgetHtml);
-                    $outbrain.css('display', 'block');
-                }).then(() => {
-                    tracking({
-                        widgetId: widgetCodes.code || widgetCodes.image,
-                    });
-                    loadScript(outbrainUrl);
-                });
+            if (slot === 'merchandising') {
+                $(selectors[slot].widget).replaceWith($outbrain[0]);
+            }
+            $container.append(widgetHtml);
+            $outbrain.css('display', 'block');
+        }).then(() => {
+            tracking({
+                widgetId: widgetCodes.code || widgetCodes.image,
+            });
+            loadScript(outbrainUrl);
+        });
         // return fastdom
         //     .write(() => {
         //         if (slot === 'merchandising') {

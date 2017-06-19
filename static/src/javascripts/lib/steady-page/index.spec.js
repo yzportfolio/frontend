@@ -74,8 +74,7 @@ describe('steadyPage', () => {
         insert(
             container,
             insertElement('js-inserted-container', container)
-        )
-        .then(() => {
+        ).then(() => {
             // scrollTo should be called with the scroll position and the inserted element
             expect(window.scrollTo).toHaveBeenCalledWith(
                 0,
@@ -83,8 +82,7 @@ describe('steadyPage', () => {
             );
             // the container should be inserted
             expect(
-                document.getElementsByClassName('js-inserted-container')
-                    .length
+                document.getElementsByClassName('js-inserted-container').length
             ).toBeTruthy();
 
             done();
