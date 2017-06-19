@@ -7,6 +7,7 @@ import detect from 'lib/detect';
 import { loadScript } from 'lib/load-script';
 import { getCode } from './outbrain-codes';
 import { tracking } from './outbrain-tracking';
+import { insert } from 'lib/steady-page/index';
 
 const outbrainUrl = '//widgets.outbrain.com/outbrain.js';
 const outbrainTpl = ({ widgetCode }: { widgetCode: string }): string => `
@@ -58,20 +59,32 @@ const load = (target?: string): Promise<void> => {
     const widgetHtml = build(widgetCodes, breakpoint);
 
     if ($container.length) {
-        return fastdom
-            .write(() => {
-                if (slot === 'merchandising') {
-                    $(selectors[slot].widget).replaceWith($outbrain[0]);
-                }
-                $container.append(widgetHtml);
-                $outbrain.css('display', 'block');
-            })
-            .then(() => {
-                tracking({
-                    widgetId: widgetCodes.code || widgetCodes.image,
+        return insert($container[0], () => {
+                    if (slot === 'merchandising') {
+                        $(selectors[slot].widget).replaceWith($outbrain[0]);
+                    }
+                    $container.append(widgetHtml);
+                    $outbrain.css('display', 'block');
+                }).then(() => {
+                    tracking({
+                        widgetId: widgetCodes.code || widgetCodes.image,
+                    });
+                    loadScript(outbrainUrl);
                 });
-                loadScript(outbrainUrl);
-            });
+        // return fastdom
+        //     .write(() => {
+        //         if (slot === 'merchandising') {
+        //             $(selectors[slot].widget).replaceWith($outbrain[0]);
+        //         }
+        //         $container.append(widgetHtml);
+        //         $outbrain.css('display', 'block');
+        //     })
+        //     .then(() => {
+        //         tracking({
+        //             widgetId: widgetCodes.code || widgetCodes.image,
+        //         });
+        //         loadScript(outbrainUrl);
+        //     });
     }
     return Promise.resolve();
 };

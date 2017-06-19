@@ -1,11 +1,13 @@
 define([
     'lib/fetch-json',
     'lib/fastdom-promise',
+    'lib/steady-page',
     'bonzo',
     'lodash/objects/merge'
 ], function (
     fetchJSON,
     fastdom,
+    steadyPage,
     bonzo,
     merge
 ) {
@@ -40,7 +42,7 @@ define([
                     mode: 'cors',
                 })
                 .then(function (resp) {
-                    return fastdom.write(function() {
+                    return steadyPage.insert($container[0], function() {
                         $container
                             .html(options.beforeInsert(resp.html))
                             .addClass('lazyloaded');
