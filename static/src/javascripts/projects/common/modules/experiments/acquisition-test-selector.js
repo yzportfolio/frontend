@@ -33,11 +33,14 @@ import acquisitionsThisLandEnvironmentEarning
     from 'common/modules/experiments/tests/acquisitions-this-land-environment-earning';
 import acquisitionsThisLandEnvironmentLearning
     from 'common/modules/experiments/tests/acquisitions-this-land-environment-learning';
+import payInEpic
+    from 'common/modules/experiments/tests/acquisitions-epic-pay-in-epic';
 
 /**
  * acquisition tests in priority order (highest to lowest)
  */
 const tests = [
+    payInEpic, // FIXME
     alwaysAsk,
     acquisitionsThisLandSeries,
     acquisitionsThisLandEnvironmentEarning,
