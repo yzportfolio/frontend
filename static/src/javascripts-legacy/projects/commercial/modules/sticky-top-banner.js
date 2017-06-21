@@ -1,4 +1,4 @@
-import events from 'lib/events';
+import {addEventListener} from 'lib/events';
 import config from 'lib/config';
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
@@ -63,7 +63,7 @@ function initState() {
 function setupListeners() {
     register('resize', onResize);
     if (!config.page.hasSuperStickyBanner) {
-        events.addEventListener(win, 'scroll', onScroll, {
+        addEventListener(win, 'scroll', onScroll, {
             passive: true
         });
     }

@@ -1,4 +1,4 @@
-import events from 'lib/events';
+import {addEventListener} from 'lib/events';
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
 import {register} from 'commercial/modules/messenger';
@@ -39,7 +39,7 @@ function onMessage(respond, start, iframe) {
 
 function addScrollListener(iframe, respond) {
     if (iframeCounter === 0) {
-        events.addEventListener(w, 'scroll', onScroll, {
+        addEventListener(w, 'scroll', onScroll, {
             passive: true
         });
         if (useIO) {
