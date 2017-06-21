@@ -1,4 +1,4 @@
-define({
+export default {
     invalid_request_error: {},
     api_error: {
         rate_limit: ''
@@ -19,4 +19,4 @@ define({
         client_validation: 'Sorry, we\'ve found some problems with your details. Please check and retype.'
     },
     generic_error: 'Sorry, we weren\'t able to process your payment this time around. Please try again.'
-});
+};
