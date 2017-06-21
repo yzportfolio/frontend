@@ -171,7 +171,7 @@ const bootEnhanced = (): void => {
             require => {
                 bootstrapContext(
                     'media : trail',
-                    require('bootstraps/enhanced/trail')
+                    require('bootstraps/enhanced/trail').default
                 );
             },
             'trail'
@@ -221,7 +221,7 @@ const bootEnhanced = (): void => {
                 );
                 bootstrapContext(
                     'image-content : trail',
-                    require('bootstraps/enhanced/trail')
+                    require('bootstraps/enhanced/trail').default
                 );
             },
             'image-content'
