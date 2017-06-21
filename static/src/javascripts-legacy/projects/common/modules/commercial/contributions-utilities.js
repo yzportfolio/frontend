@@ -13,7 +13,7 @@ import mediator from 'lib/mediator';
 import geolocation from 'lib/geolocation';
 import {constructQuery} from 'lib/url';
 import noop from 'lib/noop';
-import timeUtils from 'lib/time-utils';
+import {daysSince} from 'lib/time-utils';
 import assign from 'lodash/objects/assign';
 import template from 'lodash/utilities/template';
 import toArray from 'lodash/collections/toArray';
@@ -37,7 +37,7 @@ var maxViews = {
     minDaysBetweenViews: 0
 };
 
-var daysSinceLastContribution = timeUtils.daysSince(lastContributionDate);
+var daysSinceLastContribution = daysSince(lastContributionDate);
 
 function controlTemplate(variant, copy) {
     return template(acquisitionsEpicControlTemplate, {
