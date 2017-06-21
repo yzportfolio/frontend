@@ -41,7 +41,7 @@ import hiddenShareToggle from 'common/modules/social/hidden-share-toggle';
 import membershipEngagementBanner from 'common/modules/commercial/membership-engagement-banner';
 import email from 'common/modules/email/email';
 import emailArticle from 'common/modules/email/email-article';
-import identity from 'bootstraps/enhanced/identity-common';
+import {init as identity} from 'bootstraps/enhanced/identity-common';
 import forEach from 'lodash/collections/forEach';
 import ophan from 'ophan/ng';
 var modules = {
