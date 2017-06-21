@@ -4,7 +4,7 @@ import $ from 'lib/$';
 import config from 'lib/config';
 import mediator from 'lib/mediator';
 import { catchErrorsWithContext } from 'lib/robust';
-import accessibility from 'common/modules/accessibility/helpers';
+import { shouldHideFlashingElements } from 'common/modules/accessibility/helpers';
 import twitter from 'common/modules/article/twitter';
 import OpenCta from 'common/modules/open/cta';
 import lastModified from 'common/modules/ui/last-modified';
@@ -39,7 +39,7 @@ function initTwitter() {
 
 export default function() {
     catchErrorsWithContext([
-        ['trail-a11y', accessibility.shouldHideFlashingElements],
+        ['trail-a11y', shouldHideFlashingElements],
         ['trail-article', initOpenCta],
         ['trail-fence', initFence],
         ['trail-twitter', initTwitter],

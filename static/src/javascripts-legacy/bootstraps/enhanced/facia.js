@@ -3,7 +3,7 @@ import config from 'lib/config';
 import detect from 'lib/detect';
 import mediator from 'lib/mediator';
 import { catchErrorsWithContext } from 'lib/robust';
-import accessibility from 'common/modules/accessibility/helpers';
+import { shouldHideFlashingElements } from 'common/modules/accessibility/helpers';
 import stocks from 'common/modules/business/stocks';
 import geoMostPopularFront from 'facia/modules/onwards/geo-most-popular-front';
 import ContainerToggle from 'facia/modules/ui/container-toggle';
@@ -77,7 +77,7 @@ var modules = {
 },
     ready = function() {
         catchErrorsWithContext([
-            ['f-accessibility', accessibility.shouldHideFlashingElements],
+            ['f-accessibility', shouldHideFlashingElements],
             ['f-snaps', modules.showSnaps],
             ['f-show-more', modules.showContainerShowMore],
             ['f-container-toggle', modules.showContainerToggle],
@@ -91,6 +91,4 @@ var modules = {
         ]);
     };
 
-export default {
-    init: ready,
-};
+export { ready as init };
