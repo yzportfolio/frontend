@@ -1,7 +1,7 @@
 import config from 'lib/config';
 import template from 'lodash/utilities/template';
 import mediator from 'lib/mediator';
-import adblockMsg from 'common/modules/commercial/adblock-messages';
+import {showAdblockMsg} from 'common/modules/commercial/adblock-messages';
 import adblockConfig from 'common/modules/commercial/adblock-banner-config';
 import AdblockBanner from 'common/modules/adblock-banner';
 import Message from 'common/modules/ui/message';
@@ -70,7 +70,7 @@ function showAdblockBanner() {
 }
 
 function init() {
-    adblockMsg.showAdblockMsg().then(function(adBlockInUse) {
+    showAdblockMsg().then(function(adBlockInUse) {
         // Show messages only if adblock is used by non paying member
         if (adBlockInUse) {
             showAdblockMessage();
