@@ -1,5 +1,5 @@
 import fastdom from 'fastdom';
-import formatters from 'lib/formatters';
+import { integerCommas } from 'lib/formatters';
 import mediator from 'lib/mediator';
 import reportError from 'lib/report-error';
 import config from 'lib/config';
@@ -36,7 +36,7 @@ function load(loader, opts) {
 
     function updateCommentCount(element, value) {
         fastdom.write(function() {
-            element.textContent = formatters.integerCommas(value);
+            element.textContent = integerCommas(value);
         });
     }
 

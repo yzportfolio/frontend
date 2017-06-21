@@ -2,7 +2,7 @@ import bonzo from 'bonzo';
 import fastdom from 'fastdom';
 import qwery from 'qwery';
 import fetchJSON from 'lib/fetch-json';
-import formatters from 'lib/formatters';
+import { integerCommas } from 'lib/formatters';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
 import { inlineSvg } from 'common/views/svgs';
@@ -57,7 +57,7 @@ function renderCounts(counts, indexedElements) {
             html = template(templates[format] || defaultTemplate, {
                 url: url,
                 icon: inlineSvg('commentCount16icon', ['inline-tone-fill']),
-                count: formatters.integerCommas(c.count),
+                count: integerCommas(c.count),
             });
 
             meta = qwery('.js-item__meta', node);
