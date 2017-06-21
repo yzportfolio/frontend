@@ -1,26 +1,12 @@
-define([
-    'lib/$',
-    'bean',
-    'bonzo',
-    'lib/config',
-    'lib/mediator',
-    'common/modules/discussion/api',
-    'common/modules/identity/api',
-    'common/modules/component',
-    'common/modules/discussion/user-avatars',
-    'common/modules/identity/validation-email'
-], function(
-    $,
-    bean,
-    bonzo,
-    config,
-    mediator,
-    DiscussionApi,
-    IdentityApi,
-    Component,
-    UserAvatars,
-    ValidationEmail
-) {
+import $ from 'lib/$';
+import bean from 'bean';
+import bonzo from 'bonzo';
+import mediator from 'lib/mediator';
+import DiscussionApi from 'common/modules/discussion/api';
+import IdentityApi from 'common/modules/identity/api';
+import Component from 'common/modules/component';
+import UserAvatars from 'common/modules/discussion/user-avatars';
+import ValidationEmail from 'common/modules/identity/validation-email';
 
 /**
  * @constructor
@@ -76,7 +62,7 @@ CommentBox.prototype.errorMessages = {
     AUTH_COOKIE_INVALID: 'Sorry, your comment was not published as you are no longer signed in. Please sign in and try again.',
     'READ-ONLY-MODE': 'Sorry your comment can not currently be published as commenting is undergoing maintenance but will be back shortly. Please try again in a moment.',
     /* Custom error codes */
-    API_CORS_BLOCKED: /*CORS blocked by HTTP/1.0 proxy*/'Could not post due to your internet settings, which might be controlled by your provider. Please contact your administrator or disable any proxy servers or VPNs and try again.',
+    API_CORS_BLOCKED: /*CORS blocked by HTTP/1.0 proxy*/ 'Could not post due to your internet settings, which might be controlled by your provider. Please contact your administrator or disable any proxy servers or VPNs and try again.',
     API_ERROR: 'Sorry, there was a problem posting your comment.  Please try another browser or network connection.  Reference code ',
     EMAIL_VERIFIED: '<span class="d-comment-box__error-meta">Sent. Please check your email to verify ' +
         ' your email address' + '. Once verified post your comment.</span>',
@@ -189,8 +175,8 @@ CommentBox.prototype.ready = function() {
     // TODO (jamesgorrie): Could definitely use the this.on and make the default context this
 
     if (this.options.newCommenter) {
-         bean.on(document.body, 'submit', [this.elem], this.showOnboarding.bind(this));
-         bean.on(document.body, 'click', this.getClass('onboarding-cancel'), this.hideOnboarding.bind(this));
+        bean.on(document.body, 'submit', [this.elem], this.showOnboarding.bind(this));
+        bean.on(document.body, 'click', this.getClass('onboarding-cancel'), this.hideOnboarding.bind(this));
     } else {
         bean.on(document.body, 'submit', [this.elem], this.submitPostComment.bind(this));
     }
@@ -238,7 +224,7 @@ CommentBox.prototype.submitPostComment = function(e) {
     this.postComment();
 };
 
-CommentBox.prototype.invalidEmailError = function () {
+CommentBox.prototype.invalidEmailError = function() {
     this.removeState('onboarding-visible');
     this.error('EMAIL_NOT_VALIDATED');
     ValidationEmail.init();
@@ -252,7 +238,7 @@ CommentBox.prototype.postComment = function() {
 
     self.clearErrors();
 
-    var postCommentToDAPI = function () {
+    var postCommentToDAPI = function() {
         self.removeState('onboarding-visible');
         comment.body = self.urlify(comment.body);
         self.setFormState(true);
@@ -261,14 +247,14 @@ CommentBox.prototype.postComment = function() {
             .then(self.postCommentSuccess.bind(self, comment), self.fail.bind(self));
     };
 
-    var updateUsernameSuccess = function (resp) {
+    var updateUsernameSuccess = function(resp) {
         mediator.emit('user:username:updated', resp.user.publicFields.username);
         self.options.hasUsername = true;
         self.getElem('onboarding-username').classList.add('is-hidden');
         postCommentToDAPI();
     };
 
-    var updateUsernameFailure = function (errorResponse) {
+    var updateUsernameFailure = function(errorResponse) {
         var usernameField = self.getElem('onboarding-username-input');
         self.setState('onboarding-visible');
         usernameField.classList.add('d-comment-box__onboarding-username-error-border');
@@ -277,7 +263,7 @@ CommentBox.prototype.postComment = function() {
         errorMessage.classList.remove('is-hidden');
     };
 
-    var validEmailCommentSubmission = function () {
+    var validEmailCommentSubmission = function() {
         if (comment.body === '') {
             self.error('EMPTY_COMMENT_BODY');
         }
@@ -304,7 +290,7 @@ CommentBox.prototype.postComment = function() {
         // Cookie could be stale so lets refresh and check from the api
         var createdDate = new Date(self.getUserData().accountCreatedDate);
         if (createdDate > self.options.priorToVerificationDate) {
-            IdentityApi.getUserFromApiWithRefreshedCookie().then(function (response) {
+            IdentityApi.getUserFromApiWithRefreshedCookie().then(function(response) {
                 if (response.user.statusFields.userEmailValidated === true) {
                     validEmailCommentSubmission();
                 } else {
@@ -331,8 +317,8 @@ CommentBox.prototype.error = function(type, message) {
     this.setState('invalid');
     var error = bonzo.create(
         '<div class="d-discussion__error ' + this.getClass('error', true) + '">' +
-            '<i class="i i-alert"></i>' +
-            '<span class="d-discussion__error-text">' + message + '</span>' +
+        '<i class="i i-alert"></i>' +
+        '<span class="d-discussion__error-text">' + message + '</span>' +
         '</div>'
     )[0];
     this.getElem('messages').appendChild(error);
@@ -365,8 +351,11 @@ CommentBox.prototype.fail = function(xhr) {
     var response;
     // if our API is down, it returns HTML
     // this is not so good for JSON.parse
-    try { response = JSON.parse(xhr.responseText); }
-        catch (e) { response = {}; }
+    try {
+        response = JSON.parse(xhr.responseText);
+    } catch (e) {
+        response = {};
+    }
 
     this.setFormState();
 
@@ -377,7 +366,7 @@ CommentBox.prototype.fail = function(xhr) {
     } else if (this.errorMessages[response.errorCode]) {
         this.error(response.errorCode);
     } else {
-        this.error('API_ERROR', this.errorMessages.API_ERROR + xhr.status);// templating would be ideal here
+        this.error('API_ERROR', this.errorMessages.API_ERROR + xhr.status); // templating would be ideal here
     }
 };
 
@@ -537,7 +526,7 @@ CommentBox.prototype.formatComment = function(formatStyle) {
             newText + commentBody.value.substring(commentBody.selectionEnd);
     };
 
-    switch(formatStyle) {
+    switch (formatStyle) {
         case 'bold':
             formatSelection('<b>', '</b>');
             break;
@@ -565,6 +554,4 @@ CommentBox.prototype.refreshUsernameHtml = function() {
     discussionHeaderUsername && (discussionHeaderUsername.innerHTML = displayName);
 };
 
-return CommentBox;
-
-}); // define
+export default CommentBox; // define
