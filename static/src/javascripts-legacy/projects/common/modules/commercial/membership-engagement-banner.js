@@ -1,5 +1,5 @@
 import config from 'lib/config';
-import storage from 'lib/storage';
+import {local as storage} from 'lib/storage';
 import template from 'lodash/utilities/template';
 import Message from 'common/modules/ui/message';
 import messageTemplate from 'raw-loader!common/views/membership-message.html';
@@ -175,7 +175,7 @@ function init() {
 
         var bannerParams = deriveBannerParams(location);
 
-        if (bannerParams && (storage.local.get('gu.alreadyVisited') || 0) >= bannerParams.minArticles) {
+        if (bannerParams && (storage.get('gu.alreadyVisited') || 0) >= bannerParams.minArticles) {
             return commercialFeatures.asynchronous.canDisplayMembershipEngagementBanner.then(function(canShow) {
 
                 if (canShow) {
@@ -195,7 +195,7 @@ function init() {
 }
 
 function selectSequentiallyFrom(array) {
-    return array[storage.local.get('gu.alreadyVisited') % array.length];
+    return array[storage.get('gu.alreadyVisited') % array.length];
 }
 
 export default {

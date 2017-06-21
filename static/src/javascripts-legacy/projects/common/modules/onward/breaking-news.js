@@ -6,7 +6,7 @@ import qwery from 'qwery';
 import config from 'lib/config';
 import fetchJson from 'lib/fetch-json';
 import reportError from 'lib/report-error';
-import storage from 'lib/storage';
+import {local as storage} from 'lib/storage';
 import template from 'lodash/utilities/template';
 import mediator from 'lib/mediator';
 import relativeDates from 'common/modules/ui/relativedates';
@@ -32,7 +32,7 @@ var supportedSections = {
     knownAlertIDs;
 
 function storeKnownAlertIDs() {
-    storage.local.set(knownAlertIDsStorageKey, knownAlertIDs);
+    storage.set(knownAlertIDsStorageKey, knownAlertIDs);
 }
 
 function markAlertAsSeen(id) {
@@ -50,7 +50,7 @@ function updateKnownAlertID(id, state) {
 
 // if we can't record a dismissal, we won't show an alert
 function userCanDismissAlerts() {
-    return storage.local.isAvailable();
+    return storage.isAvailable();
 }
 
 function fetchBreakingNews() {
@@ -204,7 +204,7 @@ function renderSpectre($breakingNews) {
 
 function init() {
     if (userCanDismissAlerts()) {
-        knownAlertIDs = storage.local.get(knownAlertIDsStorageKey) || {};
+        knownAlertIDs = storage.get(knownAlertIDsStorageKey) || {};
 
         return fetchBreakingNews()
             .then(parseResponse)

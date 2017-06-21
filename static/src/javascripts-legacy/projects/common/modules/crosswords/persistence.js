@@ -1,6 +1,5 @@
-import storage from 'lib/storage';
+import {local as storage} from 'lib/storage';
 import map from 'lodash/collections/map';
-var localStorage = storage.local;
 
 var localStorageKey = function(id) {
     return 'crosswords.' + id;
@@ -18,14 +17,14 @@ function saveGridState(id, grid) {
     });
 
     try {
-        return localStorage.set(localStorageKey(id), entries);
+        return storage.set(localStorageKey(id), entries);
     } catch (e) {
         return false;
     }
 }
 
 var loadGridState = function(id) {
-    return localStorage.get(localStorageKey(id));
+    return storage.get(localStorageKey(id));
 };
 
 export default {

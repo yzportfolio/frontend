@@ -5,7 +5,7 @@ import detect from 'lib/detect';
 import fastdomPromise from 'lib/fastdom-promise';
 import fetchJson from 'lib/fetch-json';
 import mediator from 'lib/mediator';
-import storage from 'lib/storage';
+import {session as storage} from 'lib/storage';
 import template from 'lodash/utilities/template';
 import blockTemplate from 'raw-loader!facia/views/liveblog-block.html';
 import compact from 'lodash/arrays/compact';
@@ -148,7 +148,7 @@ function show() {
             var oldBlockDates;
 
             if (!isEmpty(elementsById)) {
-                oldBlockDates = storage.session.get(sessionStorageKey) || {};
+                oldBlockDates = storage.get(sessionStorageKey) || {};
 
                 forEach(elementsById, function(elements, articleId) {
                     fetchJson('/' + articleId + '.json?rendered=false', {
@@ -160,7 +160,7 @@ function show() {
                             if (blocks && blocks.length) {
                                 showBlocks(articleId, elements, blocks, oldBlockDates[articleId]);
                                 oldBlockDates[articleId] = blocks[0].publishedDateTime;
-                                storage.session.set(sessionStorageKey, oldBlockDates);
+                                storage.set(sessionStorageKey, oldBlockDates);
                             }
                         })
                         .catch(function() {});

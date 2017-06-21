@@ -5,7 +5,7 @@
 import fastdom from 'fastdom';
 import $ from 'lib/$';
 import template from 'lodash/utilities/template';
-import storage from 'lib/storage';
+import {local as storage} from 'lib/storage';
 import {getPath} from 'lib/url';
 import viewTag from 'raw-loader!common/views/history/tag.html';
 import viewMegaNav from 'raw-loader!common/views/history/mega-nav.html';
@@ -76,22 +76,22 @@ var editions = [
 
 function saveHistory(history) {
     historyCache = history;
-    return storage.local.set(storageKeyHistory, history);
+    return storage.set(storageKeyHistory, history);
 }
 
 function saveSummary(summary) {
     summaryCache = summary;
-    return storage.local.set(storageKeySummary, summary);
+    return storage.set(storageKeySummary, summary);
 }
 
 function getHistory() {
-    historyCache = historyCache || storage.local.get(storageKeyHistory) || [];
+    historyCache = historyCache || storage.get(storageKeyHistory) || [];
     return historyCache;
 }
 
 function getSummary() {
     if (!summaryCache) {
-        summaryCache = storage.local.get(storageKeySummary);
+        summaryCache = storage.get(storageKeySummary);
 
         if (!isObject(summaryCache) || !isObject(summaryCache.tags) || !isNumber(summaryCache.periodEnd)) {
             summaryCache = {
@@ -283,8 +283,8 @@ function collapsePath(t) {
 function reset() {
     historyCache = undefined;
     summaryCache = undefined;
-    storage.local.remove(storageKeyHistory);
-    storage.local.remove(storageKeySummary);
+    storage.remove(storageKeyHistory);
+    storage.remove(storageKeySummary);
 }
 
 function logHistory(pageConfig) {

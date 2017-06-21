@@ -2,7 +2,7 @@ import $ from 'lib/$';
 import page from 'lib/page';
 import config from 'lib/config';
 import detect from 'lib/detect';
-import storage from 'lib/storage';
+import {session as storage} from 'lib/storage';
 import {logError} from 'lib/robust';
 import every from 'lodash/collections/every';
 import map from 'lodash/collections/map';
@@ -27,7 +27,7 @@ function userHasRemoved(id, formType) {
 }
 
 function userHasSeenThisSession() {
-    return !!storage.session.get('email-sign-up-seen');
+    return !!storage.get('email-sign-up-seen');
 }
 
 function buildUserSubscriptions(response) {
@@ -111,7 +111,7 @@ function allEmailCanRun() {
         !config.page.isFront &&
         (config.page.contentId && config.page.contentId.indexOf("email-sign-up") === -1) &&
         config.switches.emailInArticle &&
-        storage.session.isAvailable() &&
+        storage.isAvailable() &&
         !userHasSeenThisSession() &&
         !(browser === 'MSIE' && contains(['7', '8', '9'], version + ''));
 }

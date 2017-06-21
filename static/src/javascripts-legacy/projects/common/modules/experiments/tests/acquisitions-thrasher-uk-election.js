@@ -1,6 +1,6 @@
 import $ from 'lib/$';
 import elementInView from 'lib/element-inview';
-import storage from 'lib/storage';
+import {local as storage} from 'lib/storage';
 import {isPayingMember} from 'commercial/modules/user-features';
 import contributionUtilities from 'common/modules/commercial/contributions-utilities';
 import ophan from 'ophan/ng';
@@ -14,11 +14,11 @@ var UK_ELECTION_THRASHER_BLOCK_ELEMENT = "election-supporters__container";
 var UK_ELECTION_THRASHER_DEFAULT_CLASS_LIST = "election-supporters__container--ask election-supporters__container--0";
 
 function getThrasherViewedCount() {
-    return parseInt(storage.local.get(UK_ELECTION_THRASHER_VIEW_COUNTER)) || 0;
+    return parseInt(storage.get(UK_ELECTION_THRASHER_VIEW_COUNTER)) || 0;
 }
 
 function incrementThrasherViewedCount() {
-    storage.local.set(UK_ELECTION_THRASHER_VIEW_COUNTER, getThrasherViewedCount() + 1)
+    storage.set(UK_ELECTION_THRASHER_VIEW_COUNTER, getThrasherViewedCount() + 1)
 }
 
 var $ukElectionThrasher = $("." + UK_ELECTION_THRASHER_BLOCK_ELEMENT);

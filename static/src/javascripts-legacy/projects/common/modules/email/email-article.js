@@ -9,7 +9,7 @@ import template from 'lodash/utilities/template';
 import spaceFiller from 'common/modules/article/space-filler';
 import {logError} from 'lib/robust';
 import {setEmailShown, getUserEmailSubscriptions, listCanRun} from 'common/modules/email/run-checks';
-import storage from 'lib/storage';
+import {session as storage} from 'lib/storage';
 import googleAnalytics from 'common/modules/analytics/google';
 import find from 'lodash/collections/find';
 import {waitForCheck} from 'common/modules/check-mediator';
@@ -205,7 +205,7 @@ var insertBottomOfArticle = function($iframeEl) {
                 $iframeEl = $(iframe),
                 onEmailAdded = function() {
                     setEmailShown(listConfig.listName);
-                    storage.session.set('email-sign-up-seen', 'true');
+                    storage.set('email-sign-up-seen', 'true');
                 }
 
             bean.on(iframe, 'load', function() {

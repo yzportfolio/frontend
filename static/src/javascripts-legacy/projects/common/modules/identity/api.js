@@ -4,7 +4,7 @@ import utilAtob from 'lib/atob';
 import config from 'lib/config';
 import {getCookie} from 'lib/cookies';
 import mediator from 'lib/mediator';
-import storage from 'lib/storage';
+import {local as storage} from 'lib/storage';
 import asyncCallMerger from 'common/modules/asyncCallMerger';
 
 /**
@@ -180,12 +180,12 @@ Id.hasUserSignedOutInTheLast24Hours = function() {
  */
 Id.shouldAutoSigninInUser = function() {
     var signedInUser = !!getCookie(Id.cookieName),
-        checkFacebook = !!storage.local.get(Id.fbCheckKey);
+        checkFacebook = !!storage.get(Id.fbCheckKey);
     return !signedInUser && !checkFacebook && !this.hasUserSignedOutInTheLast24Hours();
 };
 
 Id.setNextFbCheckTime = function(nextFbCheckDue) {
-    storage.local.set(Id.fbCheckKey, {}, {
+    storage.set(Id.fbCheckKey, {}, {
         expires: nextFbCheckDue
     });
 };

@@ -1,5 +1,5 @@
 import mediator from 'lib/mediator';
-import storage from 'lib/storage';
+import {session as storage} from 'lib/storage';
 import google from 'common/modules/analytics/google';
 import {catchErrorsWithContext} from 'lib/robust';
 var NG_STORAGE_KEY = 'gu.analytics.referrerVars';
@@ -64,7 +64,7 @@ function trackInternalLinkClick(spec) {
         tag: spec.tag || 'untracked',
         time: new Date().getTime()
     };
-    storage.session.set(NG_STORAGE_KEY, storeObj);
+    storage.set(NG_STORAGE_KEY, storeObj);
 }
 
 function trackExternalLinkClick(spec) {

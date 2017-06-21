@@ -1,14 +1,14 @@
 import Id from 'common/modules/identity/api';
-import storage from 'lib/storage';
+import {local as storage} from 'lib/storage';
 
 function CookieRefresh() {
     this.init = function() {
-        if (storage.local.isAvailable() && Id.isUserLoggedIn()) {
-            var lastRefresh = storage.local.get(Id.lastRefreshKey),
+        if (storage.isAvailable() && Id.isUserLoggedIn()) {
+            var lastRefresh = storage.get(Id.lastRefreshKey),
                 currentTime = new Date().getTime();
             if (this.shouldRefreshCookie(lastRefresh, currentTime)) {
                 Id.getUserFromApiWithRefreshedCookie();
-                storage.local.set(Id.lastRefreshKey, currentTime);
+                storage.set(Id.lastRefreshKey, currentTime);
             }
         }
     };

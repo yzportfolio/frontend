@@ -9,7 +9,7 @@ import {cleanUp, addSessionCookie} from 'lib/cookies';
 import mediator from 'lib/mediator';
 import {getUrlVars} from 'lib/url';
 import {catchErrorsWithContext} from 'lib/robust';
-import storage from 'lib/storage';
+import {remove as removeFromStorage} from 'lib/storage';
 import Foresee from 'common/modules/analytics/foresee-survey';
 import mediaListener from 'common/modules/analytics/media-listener';
 import interactionTracking from 'common/modules/analytics/interaction-tracking';
@@ -122,7 +122,7 @@ var modules = {
             'gu.recommendationsEnabled',
             'gu.abb3.exempt'
         ];
-        forEach(deprecatedKeys, storage.remove);
+        forEach(deprecatedKeys, removeFromStorage);
     },
 
     updateHistory: function() {
