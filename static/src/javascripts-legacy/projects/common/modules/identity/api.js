@@ -2,7 +2,7 @@
 import ajax from 'lib/ajax';
 import utilAtob from 'lib/atob';
 import config from 'lib/config';
-import cookies from 'lib/cookies';
+import {getCookie} from 'lib/cookies';
 import mediator from 'lib/mediator';
 import storage from 'lib/storage';
 import asyncCallMerger from 'common/modules/asyncCallMerger';
@@ -52,7 +52,7 @@ Id.reset = function() {
  */
 Id.getUserFromCookie = function() {
     if (userFromCookieCache === null) {
-        var cookieData = cookies.getCookie(Id.cookieName),
+        var cookieData = getCookie(Id.cookieName),
             userData = cookieData ? JSON.parse(Id.decodeBase64(cookieData.split('.')[0])) : null;
         if (userData) {
             var displayName = decodeURIComponent(userData[2]);
@@ -74,7 +74,7 @@ Id.getUserFromCookie = function() {
  * @return {string}
  */
 Id.getCookie = function() {
-    return cookies.getCookie(Id.cookieName);
+    return getCookie(Id.cookieName);
 };
 
 /**
@@ -167,7 +167,7 @@ Id.decodeBase64 = function(str) {
  * @return {Boolean}
  */
 Id.hasUserSignedOutInTheLast24Hours = function() {
-    var cookieData = cookies.getCookie(Id.signOutCookieName);
+    var cookieData = getCookie(Id.signOutCookieName);
 
     if (cookieData) {
         return ((Math.round(new Date().getTime() / 1000)) < (parseInt(cookieData, 10) + 86400));
@@ -179,7 +179,7 @@ Id.hasUserSignedOutInTheLast24Hours = function() {
  * Returns true if a there is no signed in user and the user has not signed in the last 24 hours
  */
 Id.shouldAutoSigninInUser = function() {
-    var signedInUser = !!cookies.getCookie(Id.cookieName),
+    var signedInUser = !!getCookie(Id.cookieName),
         checkFacebook = !!storage.local.get(Id.fbCheckKey);
     return !signedInUser && !checkFacebook && !this.hasUserSignedOutInTheLast24Hours();
 };

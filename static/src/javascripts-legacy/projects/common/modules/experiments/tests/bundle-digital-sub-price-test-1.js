@@ -1,5 +1,5 @@
 import config from 'lib/config';
-import cookies from 'lib/cookies';
+import {getCookie} from 'lib/cookies';
 import commercialFeatures from 'commercial/modules/commercial-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import template from 'lodash/utilities/template';
@@ -39,7 +39,7 @@ export default contributionsUtilities.makeABTest({
 
     overrideCanRun: false,
     canRun: function() {
-        return !cookies.getCookie('GU_DBPT1ME') &&
+        return !getCookie('GU_DBPT1ME') &&
             config.page.edition.toUpperCase() === 'UK' &&
             config.page.contentType === 'Article' &&
             !config.page.isMinuteArticle &&

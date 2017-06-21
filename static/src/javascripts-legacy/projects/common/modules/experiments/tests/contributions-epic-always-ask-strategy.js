@@ -1,10 +1,10 @@
 import commercialFeatures from 'commercial/modules/commercial-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import config from 'lib/config';
-import cookies from 'lib/cookies';
+import {getCookie} from 'lib/cookies';
 
 function canBeDisplayed() {
-    var userHasNeverContributed = !cookies.getCookie('gu.contributions.contrib-timestamp');
+    var userHasNeverContributed = !getCookie('gu.contributions.contrib-timestamp');
     var worksWellWithPageTemplate = (config.page.contentType === 'Article') && !config.page.isMinuteArticle; // may render badly on other types
     var isSensitive = config.page.isSensitive === true;
 

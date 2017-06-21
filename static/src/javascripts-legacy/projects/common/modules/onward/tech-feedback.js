@@ -3,7 +3,7 @@ import detect from 'lib/detect';
 import ab from 'common/modules/experiments/utils';
 import map from 'lodash/collections/map';
 import keys from 'lodash/objects/keys';
-import cookies from 'lib/cookies';
+import {getCookie} from 'lib/cookies';
 
 var adblockBeingUsed = false;
 
@@ -14,8 +14,8 @@ function getExtraDataInformation() {
         width: window.innerWidth,
         adBlock: adblockBeingUsed,
         devicePixelRatio: window.devicePixelRatio,
-        gu_u: cookies.getCookie('GU_U'),
-        payingMember: cookies.getCookie('gu_paying_member'),
+        gu_u: getCookie('GU_U'),
+        payingMember: getCookie('gu_paying_member'),
         abTests: summariseAbTests(ab.getParticipations())
     };
 }

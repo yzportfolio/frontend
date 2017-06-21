@@ -1,5 +1,5 @@
 import config from 'lib/config';
-import cookie from 'lib/cookies';
+import {getCookie} from 'lib/cookies';
 import detect from 'lib/detect';
 import loadScript from 'lib/load-script';
 
@@ -18,7 +18,7 @@ function load() {
         hasForcedOptIn = /forceForesee/.test(location.hash);
 
     // the Foresee code is large, we only want to load it in when necessary.
-    if (!cookie.getCookie('GU_TEST') && !isNetworkFront && !isProfilePage && (window.openForeseeWhenReady || sample || hasForcedOptIn)) {
+    if (!getCookie('GU_TEST') && !isNetworkFront && !isProfilePage && (window.openForeseeWhenReady || sample || hasForcedOptIn)) {
         openForesee();
     }
 
