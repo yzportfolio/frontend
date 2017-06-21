@@ -32,7 +32,7 @@ import Dropdowns from 'common/modules/ui/dropdowns';
 import fauxBlockLink from 'common/modules/ui/faux-block-link';
 import cookiesBanner from 'common/modules/ui/cookiesBanner';
 import RelativeDates from 'common/modules/ui/relativedates';
-import customSmartAppBanner from 'common/modules/ui/smartAppBanner';
+import {init as initCustomSmartAppBanner} from 'common/modules/ui/smartAppBanner';
 import Tabs from 'common/modules/ui/tabs';
 import Toggles from 'common/modules/ui/toggles';
 import breakingNews from 'common/modules/onward/breaking-news';
@@ -280,7 +280,7 @@ export default {
             ['c-history-nav', modules.showHistoryInMegaNav],
             ['c-forsee', modules.runForseeSurvey],
             ['c-start-register', modules.startRegister],
-            ['c-smart-banner', customSmartAppBanner.init],
+            ['c-smart-banner', initCustomSmartAppBanner],
             ['c-adblock', modules.showAdblockMessage],
             ['c-cookies', modules.cleanupCookies],
             ['c-localStorage', modules.cleanupLocalStorage],
