@@ -8,7 +8,7 @@ var module = {
 
 function init(callback) {
     var BinaryToggle = React.createClass({
-        render: function() {
+            render: function () {
             return React.DOM.div({
                     className: 'form-field'
                 },
@@ -41,19 +41,19 @@ function init(callback) {
     });
 
     var Accessibility = React.createClass({
-        getInitialState: function() {
+            getInitialState: function () {
             return {
                 'flashing-elements': accessibility.isOn('flashing-elements')
             };
         },
-        toggle: function(key) {
+            toggle: function (key) {
             var newState = {};
             newState[key] = !this.state[key];
-            this.setState(newState, function() {
+                this.setState(newState, function () {
                 accessibility.saveState(this.state);
             });
         },
-        render: function() {
+            render: function () {
             return React.DOM.form({
                     className: 'form'
                 },
