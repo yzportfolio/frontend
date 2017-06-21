@@ -1,7 +1,7 @@
 import $ from 'lib/$';
 import elementInView from 'lib/element-inview';
 import storage from 'lib/storage';
-import userFeatures from 'commercial/modules/user-features';
+import {isPayingMember} from 'commercial/modules/user-features';
 import contributionUtilities from 'common/modules/commercial/contributions-utilities';
 import ophan from 'ophan/ng';
 
@@ -24,7 +24,7 @@ function incrementThrasherViewedCount() {
 var $ukElectionThrasher = $("." + UK_ELECTION_THRASHER_BLOCK_ELEMENT);
 
 function isThankYouVariantReader() {
-    return userFeatures.isPayingMember() || contributionUtilities.isContributor
+    return isPayingMember() || contributionUtilities.isContributor
 }
 
 function getThrasherVariant() {

@@ -1,5 +1,5 @@
 import template from 'lodash/utilities/template';
-import userFeatures from 'commercial/modules/user-features';
+import {isPayingMember} from 'commercial/modules/user-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import config from 'lib/config';
 import acquisitionsEpicThankYouTemplate from 'raw-loader!common/views/acquisitions-epic-thank-you.html';
@@ -9,7 +9,7 @@ function isRecentContributor() {
 }
 
 function isTargetReader() {
-    return userFeatures.isPayingMember() || isRecentContributor()
+    return isPayingMember() || isRecentContributor()
 }
 
 function worksWellWithPageTemplate() {

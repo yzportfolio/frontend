@@ -17,7 +17,7 @@ import register from 'common/modules/analytics/register';
 import ScrollDepth from 'common/modules/analytics/scrollDepth';
 import {requestUserSegmentsFromId} from 'commercial/modules/user-ad-targeting';
 import donotUseAdblock from 'common/modules/commercial/donot-use-adblock';
-import userFeatures from 'commercial/modules/user-features';
+import * as userFeatures from 'commercial/modules/user-features';
 import CommentCount from 'common/modules/discussion/comment-count';
 import CookieRefresh from 'common/modules/identity/cookierefresh';
 import navigation from 'common/modules/navigation/navigation';
@@ -293,7 +293,7 @@ export default {
             ['c-hidden-share-toggle', hiddenShareToggle],
             ['c-show-membership-engagement-banner', modules.membershipEngagementBanner],
             ['c-email', modules.initEmail],
-            ['c-user-features', userFeatures.refresh.bind(userFeatures)],
+            ['c-user-features', userFeatures.refresh.bind(userFeatures)], // wat???
             ['c-membership', membership]
         ]);
     }
