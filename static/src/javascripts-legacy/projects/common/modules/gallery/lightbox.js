@@ -10,7 +10,7 @@ import template from 'lodash/utilities/template';
 import { pushUrl, hasHistorySupport, back } from 'lib/url';
 import Component from 'common/modules/component';
 import imagesModule from 'common/modules/ui/images';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import blockSharingTpl from 'raw-loader!common/views/content/block-sharing.html';
 import buttonTpl from 'raw-loader!common/views/content/button.html';
 import endslateTpl from 'raw-loader!common/views/content/endslate.html';
@@ -117,7 +117,7 @@ GalleryLightbox.prototype.generateImgHTML = function(img, i) {
             {
                 text: 'Facebook',
                 css: 'facebook',
-                icon: svgs.inlineSvg('shareFacebook', ['icon']),
+                icon: inlineSvg('shareFacebook', ['icon']),
                 url:
                     'https://www.facebook.com/sharer/sharer.php?u=' +
                         encodeURIComponent(blockShortUrl + '/sfb#img-' + i),
@@ -125,7 +125,7 @@ GalleryLightbox.prototype.generateImgHTML = function(img, i) {
             {
                 text: 'Twitter',
                 css: 'twitter',
-                icon: svgs.inlineSvg('shareTwitter', ['icon']),
+                icon: inlineSvg('shareTwitter', ['icon']),
                 url:
                     'https://twitter.com/intent/tweet?text=' +
                         encodeURIComponent(config.page.webTitle) +
@@ -135,7 +135,7 @@ GalleryLightbox.prototype.generateImgHTML = function(img, i) {
             {
                 text: 'Pinterest',
                 css: 'pinterest',
-                icon: svgs.inlineSvg('sharePinterest', ['icon']),
+                icon: inlineSvg('sharePinterest', ['icon']),
                 url: encodeURI(
                     'http://www.pinterest.com/pin/create/button/?description=' +
                         config.page.webTitle +

@@ -5,7 +5,7 @@ import fetchJSON from 'lib/fetch-json';
 import formatters from 'lib/formatters';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import commentCountTemplate from 'raw-loader!common/views/discussion/comment-count.html';
 import commentCountContentTemplate from 'raw-loader!common/views/discussion/comment-count--content.html';
 import commentCountContentImmersiveTemplate from 'raw-loader!common/views/discussion/comment-count--content-immersive.html';
@@ -56,9 +56,7 @@ function renderCounts(counts, indexedElements) {
             format = $node.data('commentcount-format');
             html = template(templates[format] || defaultTemplate, {
                 url: url,
-                icon: svgs.inlineSvg('commentCount16icon', [
-                    'inline-tone-fill',
-                ]),
+                icon: inlineSvg('commentCount16icon', ['inline-tone-fill']),
                 count: formatters.integerCommas(c.count),
             });
 

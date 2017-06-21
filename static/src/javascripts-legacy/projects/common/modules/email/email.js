@@ -10,7 +10,7 @@ import template from 'lodash/utilities/template';
 import { logError } from 'lib/robust';
 import googleAnalytics from 'common/modules/analytics/google';
 import contains from 'lodash/collections/contains';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import successHtml from 'raw-loader!common/views/email/submissionResponse.html';
 import closeHtml from 'raw-loader!common/views/ui/close-button.html';
 import Id from 'common/modules/identity/api';
@@ -41,8 +41,8 @@ var updateForm = {
                     ? formData.customSuccessDesc || messages.defaultSuccessDesc
                     : 'Please try again.',
                 submissionIcon: isSuccess
-                    ? svgs.inlineSvg('tick')
-                    : svgs.inlineSvg('crossIcon'),
+                    ? inlineSvg('tick')
+                    : inlineSvg('crossIcon'),
             },
             submissionHtml = template(successHtml, submissionMessage);
 
@@ -161,7 +161,7 @@ var classes = {
 
                 if (formCloseButton) {
                     var closeButtonTemplate = {
-                        closeIcon: svgs.inlineSvg('closeCentralIcon'),
+                        closeIcon: inlineSvg('closeCentralIcon'),
                     },
                         closeButtonHtml = template(
                             closeHtml,

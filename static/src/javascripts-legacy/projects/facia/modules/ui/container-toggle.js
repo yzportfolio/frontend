@@ -4,7 +4,7 @@ import $ from 'lib/$';
 import mediator from 'lib/mediator';
 import userPrefs from 'common/modules/user-prefs';
 import template from 'lodash/utilities/template';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import btnTmpl from 'raw-loader!facia/views/button-toggle.html';
 
 export default function(container) {
@@ -14,7 +14,7 @@ export default function(container) {
                 template(btnTmpl, {
                     text: 'Hide',
                     dataLink: 'Show',
-                    icon: svgs.inlineSvg('arrowicon'),
+                    icon: inlineSvg('arrowicon'),
                 })
             )
         ),

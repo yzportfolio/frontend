@@ -6,7 +6,7 @@ import adblockConfig from 'common/modules/commercial/adblock-banner-config';
 import AdblockBanner from 'common/modules/adblock-banner';
 import Message from 'common/modules/ui/message';
 import messageTemplate from 'raw-loader!common/views/membership-message.html';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import sample from 'lodash/collections/sample';
 
 function showAdblockMessage() {
@@ -50,7 +50,7 @@ function showAdblockMessage() {
                 linkHref: adblockLink + '?INTCMP=' + message.campaign,
                 messageText: message.messageText,
                 linkText: message.linkText,
-                arrowWhiteRight: svgs.inlineSvg('arrowWhiteRight'),
+                arrowWhiteRight: inlineSvg('arrowWhiteRight'),
             })
         );
     }

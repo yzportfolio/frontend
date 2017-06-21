@@ -13,7 +13,7 @@ import CommentBox from 'common/modules/discussion/comment-box';
 import WholeDiscussion from 'common/modules/discussion/whole-discussion';
 import relativedates from 'common/modules/ui/relativedates';
 import userPrefs from 'common/modules/user-prefs';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 
 var PREF_RELATIVE_TIMESTAMPS = 'discussion.enableRelativeTimestamps';
 var shouldMakeTimestampsRelative = function() {
@@ -241,7 +241,7 @@ Comments.prototype.addMoreRepliesButtons = function(comments) {
                 var numHiddenReplies = replies - renderedReplies.length,
                     $btn = $.create(
                         '<button class="u-button-reset button button--show-more button--small button--tone-news d-show-more-replies__button">' +
-                            svgs.inlineSvg('plus', ['icon']) +
+                            inlineSvg('plus', ['icon']) +
                             'Show ' +
                             numHiddenReplies +
                             ' more ' +

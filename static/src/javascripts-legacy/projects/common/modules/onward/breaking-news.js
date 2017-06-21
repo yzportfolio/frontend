@@ -10,7 +10,7 @@ import { local as storage } from 'lib/storage';
 import template from 'lodash/utilities/template';
 import mediator from 'lib/mediator';
 import relativeDates from 'common/modules/ui/relativedates';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import alertHtml from 'raw-loader!common/views/breaking-news.html';
 import isArray from 'lodash/objects/isArray';
 import has from 'lodash/objects/has';
@@ -183,8 +183,8 @@ function alert(alert) {
 }
 
 function renderAlert(alert) {
-    alert.marque36icon = svgs.inlineSvg('marque36icon');
-    alert.closeIcon = svgs.inlineSvg('closeCentralIcon');
+    alert.marque36icon = inlineSvg('marque36icon');
+    alert.closeIcon = inlineSvg('closeCentralIcon');
 
     var $alert = bonzo.create(template(alertHtml, alert));
 

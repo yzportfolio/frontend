@@ -7,13 +7,13 @@ import detect from 'lib/detect';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
 import sharingTemplate from 'raw-loader!common/views/ui/selection-sharing.html';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import debounce from 'lodash/functions/debounce';
 import some from 'lodash/collections/some';
 
 var $body = bonzo(document.body),
-    twitterIcon = svgs.inlineSvg('shareTwitter', ['icon', 'centered-icon']),
-    emailIcon = svgs.inlineSvg('shareEmail', ['icon', 'centered-icon']),
+    twitterIcon = inlineSvg('shareTwitter', ['icon', 'centered-icon']),
+    emailIcon = inlineSvg('shareEmail', ['icon', 'centered-icon']),
     selectionSharing = template(sharingTemplate, {
         twitterIcon: twitterIcon,
         emailIcon: emailIcon,

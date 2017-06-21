@@ -8,7 +8,7 @@ import template from 'lodash/utilities/template';
 import Component from 'common/modules/component';
 import events from 'common/modules/video/events';
 import fullscreener from 'common/modules/media/videojs-plugins/fullscreener';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import loadingTmpl from 'raw-loader!common/views/ui/loading.html';
 import titlebarTmpl from 'raw-loader!common/views/media/titlebar.html';
 import debounce from 'lodash/functions/debounce';
@@ -28,7 +28,7 @@ function addTitleBar() {
     var data = {
         webTitle: config.page.webTitle,
         pageId: config.page.pageId,
-        icon: svgs.inlineSvg('marque36icon'),
+        icon: inlineSvg('marque36icon'),
     };
     $('.vjs-control-bar').after(template(titlebarTmpl, data));
 }

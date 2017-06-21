@@ -9,7 +9,7 @@ import { testCanBeRun } from 'common/modules/experiments/test-can-run-checks';
 import MembershipEngagementBannerTests from 'common/modules/experiments/tests/membership-engagement-banner-tests';
 import assign from 'lodash/objects/assign';
 import find from 'lodash/collections/find';
-import svgs from 'common/views/svgs';
+import { inlineSvg } from 'common/views/svgs';
 import segmentUtil from 'common/modules/experiments/segment-util';
 import { epicEngagementBannerTests } from 'common/modules/experiments/acquisition-test-selector';
 import membershipEngagementBannerUtils from 'common/modules/commercial/membership-engagement-banner-parameters';
@@ -166,7 +166,7 @@ function showBanner(params) {
         messageText: messageText,
         buttonCaption: params.buttonCaption,
         colourClass: colourClass,
-        arrowWhiteRight: svgs.inlineSvg('arrowWhiteRight'),
+        arrowWhiteRight: inlineSvg('arrowWhiteRight'),
         paypalLogoSrc: paypalAndCreditCardImage,
     });
 
