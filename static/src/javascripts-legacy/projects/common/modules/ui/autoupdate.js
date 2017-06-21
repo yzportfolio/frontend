@@ -17,7 +17,7 @@ import scroller from 'lib/scroller';
 import toArray from 'lodash/collections/toArray';
 import RelativeDates from 'common/modules/ui/relativedates';
 import NotificationCounter from 'common/modules/ui/notification-counter';
-import youtube from 'common/modules/atoms/youtube';
+import { checkElemsForVideos } from 'common/modules/atoms/youtube';
 
 export default function(opts) {
     var options = assign(
@@ -105,7 +105,7 @@ export default function(opts) {
 
             RelativeDates.init();
             twitter.enhanceTweets();
-            youtube.checkElemsForVideos(elementsToAdd);
+            checkElemsForVideos(elementsToAdd);
         });
     };
 

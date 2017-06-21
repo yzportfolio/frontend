@@ -1,6 +1,6 @@
 import Component from 'common/modules/component';
 import mediator from 'lib/mediator';
-import youtube from 'common/modules/atoms/youtube';
+import { checkElemsForVideos } from 'common/modules/atoms/youtube';
 
 function init(el, mediaType, section, shortUrl, series) {
     var component = new Component();
@@ -20,7 +20,7 @@ function init(el, mediaType, section, shortUrl, series) {
     component.endpoint = endpoint;
 
     component.fetch(el).then(function() {
-        youtube.checkElemsForVideos(el);
+        checkElemsForVideos(el);
         mediator.emit('page:media:moreinloaded', el);
         mediator.emit('page:new-content', el);
     });

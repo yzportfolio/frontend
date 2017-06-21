@@ -1,9 +1,7 @@
-import youtube from 'common/modules/atoms/youtube';
+import { checkElemsForVideos } from 'common/modules/atoms/youtube';
 
 function init() {
-    youtube.checkElemsForVideos();
+    checkElemsForVideos();
 }
 
-export default {
-    init: init,
-};
+export { init };
