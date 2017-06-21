@@ -1,3 +1,5 @@
+// @flow
+
 import $ from 'lib/$';
 import config from 'lib/config';
 import detect from 'lib/detect';
@@ -5,14 +7,14 @@ import mediator from 'lib/mediator';
 import { catchErrorsWithContext } from 'lib/robust';
 import { shouldHideFlashingElements } from 'common/modules/accessibility/helpers';
 import stocks from 'common/modules/business/stocks';
-import geoMostPopularFront from 'facia/modules/onwards/geo-most-popular-front';
+import { GeoMostPopularFront } from 'facia/modules/onwards/geo-most-popular-front';
 import ContainerToggle from 'facia/modules/ui/container-toggle';
-import containerShowMore from 'facia/modules/ui/container-show-more';
+import { init as initContainerShowMore } from 'facia/modules/ui/container-show-more';
 import { lazyLoadContainers } from 'facia/modules/ui/lazy-load-containers';
 import liveblogUpdates from 'facia/modules/ui/live-blog-updates';
 import snaps from 'facia/modules/ui/snaps';
 import sponsorship from 'facia/modules/ui/sponsorship';
-import weather from 'facia/modules/onwards/weather';
+import { Weather } from 'facia/modules/onwards/weather';
 import partial from 'lodash/functions/partial';
 
 var modules = {
@@ -23,8 +25,8 @@ var modules = {
 
     showContainerShowMore: function() {
         mediator.addListeners({
-            'modules:container:rendered': containerShowMore.init,
-            'page:front:ready': containerShowMore.init,
+            'modules:container:rendered': initContainerShowMore,
+            'page:front:ready': initContainerShowMore,
         });
     },
 
@@ -47,14 +49,14 @@ var modules = {
 
     upgradeMostPopularToGeo: function() {
         if (config.switches.geoMostPopular) {
-            new geoMostPopularFront.GeoMostPopularFront().go();
+            new GeoMostPopularFront().go();
         }
     },
 
     showWeather: function() {
         if (config.switches.weather) {
             mediator.on('page:front:ready', function() {
-                weather.Weather.init();
+                Weather.init();
             });
         }
     },
@@ -74,21 +76,21 @@ var modules = {
     finished: function() {
         mediator.emit('page:front:ready');
     },
-},
-    ready = function() {
-        catchErrorsWithContext([
-            ['f-accessibility', shouldHideFlashingElements],
-            ['f-snaps', modules.showSnaps],
-            ['f-show-more', modules.showContainerShowMore],
-            ['f-container-toggle', modules.showContainerToggle],
-            ['f-geo-most-popular', modules.upgradeMostPopularToGeo],
-            ['f-lazy-load-containers', lazyLoadContainers],
-            ['f-stocks', stocks],
-            ['f-sponsorship', sponsorship],
-            ['f-weather', modules.showWeather],
-            ['f-live-blog-updates', modules.showLiveblogUpdates],
-            ['f-finished', modules.finished],
-        ]);
-    };
+};
+var ready = function() {
+    catchErrorsWithContext([
+        ['f-accessibility', shouldHideFlashingElements],
+        ['f-snaps', modules.showSnaps],
+        ['f-show-more', modules.showContainerShowMore],
+        ['f-container-toggle', modules.showContainerToggle],
+        ['f-geo-most-popular', modules.upgradeMostPopularToGeo],
+        ['f-lazy-load-containers', lazyLoadContainers],
+        ['f-stocks', stocks],
+        ['f-sponsorship', sponsorship],
+        ['f-weather', modules.showWeather],
+        ['f-live-blog-updates', modules.showLiveblogUpdates],
+        ['f-finished', modules.finished],
+    ]);
+};
 
 export { ready as init };

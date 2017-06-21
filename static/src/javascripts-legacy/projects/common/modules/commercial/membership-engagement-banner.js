@@ -1,3 +1,5 @@
+// @flow
+
 import config from 'lib/config';
 import { local as storage } from 'lib/storage';
 import template from 'lodash/utilities/template';
@@ -13,7 +15,7 @@ import { inlineSvg } from 'common/views/svgs';
 import segmentUtil from 'common/modules/experiments/segment-util';
 import { epicEngagementBannerTests } from 'common/modules/experiments/acquisition-test-selector';
 import membershipEngagementBannerUtils from 'common/modules/commercial/membership-engagement-banner-parameters';
-import membershipEngagementBannerBlock from 'common/modules/commercial/membership-engagement-banner-block';
+import { isBlocked } from 'common/modules/commercial/membership-engagement-banner-block';
 import ophan from 'ophan/ng';
 import { get as getLocation } from 'lib/geolocation';
 import { constructQuery } from 'lib/url';
@@ -142,10 +144,7 @@ var paypalAndCreditCardImage =
     '';
 
 function showBanner(params) {
-    if (
-        params === DO_NOT_RENDER_ENGAGEMENT_BANNER ||
-        membershipEngagementBannerBlock.isBlocked()
-    ) {
+    if (params === DO_NOT_RENDER_ENGAGEMENT_BANNER || isBlocked()) {
         return;
     }
 
