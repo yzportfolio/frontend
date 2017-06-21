@@ -1,4 +1,4 @@
-import cookies from 'lib/cookies';
+import {getCookie, addCookie} from 'lib/cookies';
 import Message from 'common/modules/ui/message';
 import mediator from 'lib/mediator';
 /**
@@ -11,20 +11,20 @@ import mediator from 'lib/mediator';
  * Persist close state
  */
 function init() {
-    var geoContinentCookie = cookies.getCookie('GU_geo_continent');
+    var geoContinentCookie = getCookie('GU_geo_continent');
     if (geoContinentCookie && geoContinentCookie.toUpperCase() === 'EU') {
         var EU_COOKIE_MSG = 'GU_EU_MSG',
-            euMessageCookie = cookies.getCookie(EU_COOKIE_MSG);
+            euMessageCookie = getCookie(EU_COOKIE_MSG);
         if (!euMessageCookie || euMessageCookie != 'seen') {
             var link = 'https://www.theguardian.com/info/cookies',
-                txt = 'Welcome to the Guardian. This site uses cookies. Read <a href="' + link + '" class="cookie-message__link">our policy</a>.',
+                txt = 'Welcome to the Guardian. This site uses  Read <a href="' + link + '" class="cookie-message__link">our policy</a>.',
                 opts = {
                     important: true
                 },
                 cookieLifeDays = 365,
                 msg = new Message('cookies', opts);
             msg.show(txt);
-            cookies.addCookie(EU_COOKIE_MSG, 'seen', cookieLifeDays);
+            addCookie(EU_COOKIE_MSG, 'seen', cookieLifeDays);
             return true;
         }
     }
