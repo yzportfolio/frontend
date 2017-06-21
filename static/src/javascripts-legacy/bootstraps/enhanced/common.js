@@ -44,6 +44,7 @@ import emailArticle from 'common/modules/email/email-article';
 import { init as identity } from 'bootstraps/enhanced/identity-common';
 import forEach from 'lodash/collections/forEach';
 import ophan from 'ophan/ng';
+
 var modules = {
     initialiseTopNavItems: function() {
         var profile,
@@ -292,7 +293,7 @@ export default {
             ['c-analytics', modules.loadAnalytics],
 
             ['c-cookies-banner', cookiesBanner.init],
-            ['c-identity', identity.init],
+            ['c-identity', identity],
             ['c-adverts', requestUserSegmentsFromId],
             ['c-discussion', modules.initDiscussion],
             ['c-test-cookie', modules.testCookie],
