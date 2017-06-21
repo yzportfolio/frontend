@@ -3,7 +3,7 @@ import page from 'lib/page';
 import config from 'lib/config';
 import detect from 'lib/detect';
 import storage from 'lib/storage';
-import robust from 'lib/robust';
+import {logError} from 'lib/robust';
 import every from 'lodash/collections/every';
 import map from 'lodash/collections/map';
 import contains from 'lodash/collections/contains';
@@ -123,7 +123,7 @@ function getUserEmailSubscriptions() {
         return Id.getUserEmailSignUps()
             .then(buildUserSubscriptions)
             .catch(function(error) {
-                robust.logError('c-email', error);
+                logError('c-email', error);
             });
     }
 }

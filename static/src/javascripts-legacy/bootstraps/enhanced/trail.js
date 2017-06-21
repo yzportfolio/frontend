@@ -5,7 +5,7 @@ import qwery from 'qwery';
 import $ from 'lib/$';
 import config from 'lib/config';
 import contains from 'lodash/collections/contains';
-import robust from 'lib/robust';
+import {catchErrorsWithContext} from 'lib/robust';
 import proximityLoader from 'lib/proximity-loader';
 import commentAdverts from 'commercial/modules/comment-adverts';
 import DiscussionLoader from 'common/modules/discussion/loader';
@@ -92,7 +92,7 @@ function repositionComments() {
 }
 
 export default function() {
-    robust.catchErrorsWithContext([
+    catchErrorsWithContext([
         ['c-discussion', initDiscussion],
         ['c-comments', repositionComments],
         ['c-shares', shareCount.loadShareCounts],

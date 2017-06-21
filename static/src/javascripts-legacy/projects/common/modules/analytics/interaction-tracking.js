@@ -1,7 +1,7 @@
 import mediator from 'lib/mediator';
 import storage from 'lib/storage';
 import google from 'common/modules/analytics/google';
-import robust from 'lib/robust';
+import {catchErrorsWithContext} from 'lib/robust';
 var NG_STORAGE_KEY = 'gu.analytics.referrerVars';
 var loc = document.location;
 
@@ -11,7 +11,7 @@ function addHandlers() {
     mediator.on('module:clickstream:click', function(spec) {
         // We don't want tracking errors to terminate the event emitter, as
         // this will mean other event listeners will not be called.
-        robust.catchErrorsWithContext([
+        catchErrorsWithContext([
             ['c-analytics', function() {
                 trackClick(spec);
             }],

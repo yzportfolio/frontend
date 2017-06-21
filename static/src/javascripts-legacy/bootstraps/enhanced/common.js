@@ -8,7 +8,7 @@ import config from 'lib/config';
 import {cleanUp, addSessionCookie} from 'lib/cookies';
 import mediator from 'lib/mediator';
 import {getUrlVars} from 'lib/url';
-import robust from 'lib/robust';
+import {catchErrorsWithContext} from 'lib/robust';
 import storage from 'lib/storage';
 import Foresee from 'common/modules/analytics/foresee-survey';
 import mediaListener from 'common/modules/analytics/media-listener';
@@ -256,7 +256,7 @@ var modules = {
 };
 export default {
     init: function() {
-        robust.catchErrorsWithContext([
+        catchErrorsWithContext([
             // Analytics comes at the top. If you think your thing is more important then please think again...
             ['c-analytics', modules.loadAnalytics],
 

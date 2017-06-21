@@ -2,7 +2,7 @@ import $ from 'lib/$';
 import config from 'lib/config';
 import detect from 'lib/detect';
 import mediator from 'lib/mediator';
-import robust from 'lib/robust';
+import {catchErrorsWithContext} from 'lib/robust';
 import accessibility from 'common/modules/accessibility/helpers';
 import stocks from 'common/modules/business/stocks';
 import geoMostPopularFront from 'facia/modules/onwards/geo-most-popular-front';
@@ -71,7 +71,7 @@ var modules = {
     },
 
     ready = function() {
-        robust.catchErrorsWithContext([
+        catchErrorsWithContext([
             ['f-accessibility', accessibility.shouldHideFlashingElements],
             ['f-snaps', modules.showSnaps],
             ['f-show-more', modules.showContainerShowMore],

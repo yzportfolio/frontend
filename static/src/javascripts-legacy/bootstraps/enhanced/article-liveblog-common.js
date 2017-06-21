@@ -3,7 +3,7 @@ import fence from 'fence';
 import $ from 'lib/$';
 import config from 'lib/config';
 import mediator from 'lib/mediator';
-import robust from 'lib/robust';
+import {catchErrorsWithContext} from 'lib/robust';
 import accessibility from 'common/modules/accessibility/helpers';
 import twitter from 'common/modules/article/twitter';
 import OpenCta from 'common/modules/open/cta';
@@ -38,7 +38,7 @@ function initTwitter() {
 }
 
 export default function() {
-    robust.catchErrorsWithContext([
+    catchErrorsWithContext([
         ['trail-a11y', accessibility.shouldHideFlashingElements],
         ['trail-article', initOpenCta],
         ['trail-fence', initFence],

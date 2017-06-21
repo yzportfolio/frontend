@@ -7,7 +7,7 @@ import detect from 'lib/detect';
 import fetch from 'lib/fetch';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
-import robust from 'lib/robust';
+import {logError} from 'lib/robust';
 import googleAnalytics from 'common/modules/analytics/google';
 import contains from 'lodash/collections/contains';
 import svgs from 'common/views/svgs';
@@ -236,7 +236,7 @@ var classes = {
                             })
                             .then(handleSubmit(true, $form))
                             .catch(function(error) {
-                                robust.logError('c-email', error);
+                                logError('c-email', error);
                                 googleAnalytics.trackNonClickInteraction(analyticsInfo.replace('%action%', 'error'));
                                 handleSubmit(false, $form)();
                             });

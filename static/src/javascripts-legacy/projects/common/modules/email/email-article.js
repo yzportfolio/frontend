@@ -7,7 +7,7 @@ import config from 'lib/config';
 import iframeTemplate from 'raw-loader!common/views/email/iframe.html';
 import template from 'lodash/utilities/template';
 import spaceFiller from 'common/modules/article/space-filler';
-import robust from 'lib/robust';
+import {logError} from 'lib/robust';
 import emailRunChecks from 'common/modules/email/run-checks';
 import storage from 'lib/storage';
 import googleAnalytics from 'common/modules/analytics/google';
@@ -237,13 +237,13 @@ export default {
                         emailRunChecks.getUserEmailSubscriptions().then(function() {
                             addListToPage(find(listConfigs, emailRunChecks.listCanRun));
                         }).catch(function(error) {
-                            robust.logError('c-email', error);
+                            logError('c-email', error);
                         });
                     }
                 });
             }
         }).catch(function(error) {
-            robust.logError('check-mediator', error);
+            logError('check-mediator', error);
         });
     },
     getListConfigs: function() {
