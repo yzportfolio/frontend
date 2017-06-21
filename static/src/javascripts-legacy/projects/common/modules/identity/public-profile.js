@@ -1,7 +1,7 @@
 import bean from 'bean';
 import bonzo from 'bonzo';
 import $ from 'lib/$';
-import url from 'lib/url';
+import {getUrlVars} from 'lib/url';
 import ActivityStream from 'common/modules/discussion/activity-stream';
 import mapValues from 'lodash/objects/mapValues';
 
@@ -15,7 +15,7 @@ function getActivityStream(cb) {
             return el.getAttribute(key);
         });
 
-        opts.page = url.getUrlVars().page || 1;
+        opts.page = getUrlVars().page || 1;
 
         (activityStream = new ActivityStream(opts)).fetch(el).then(function() {
             bonzo(el).removeClass('activity-stream--loading');

@@ -6,7 +6,7 @@ import fastdom from 'fastdom';
 import $ from 'lib/$';
 import template from 'lodash/utilities/template';
 import storage from 'lib/storage';
-import url from 'lib/url';
+import {getPath} from 'lib/url';
 import viewTag from 'raw-loader!common/views/history/tag.html';
 import viewMegaNav from 'raw-loader!common/views/history/mega-nav.html';
 import isObject from 'lodash/objects/isObject';
@@ -354,7 +354,7 @@ function logSummary(pageConfig, mockToday) {
 
 function getTopNavItems() {
     topNavItemsCache = topNavItemsCache || $('.js-navigation-header .js-top-navigation a').map(function(item) {
-        return collapsePath(url.getPath($(item).attr('href')));
+        return collapsePath(getPath($(item).attr('href')));
     });
 
     return topNavItemsCache;

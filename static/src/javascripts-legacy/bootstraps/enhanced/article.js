@@ -3,7 +3,7 @@ import qwery from 'qwery';
 import $ from 'lib/$';
 import detect from 'lib/detect';
 import mediator from 'lib/mediator';
-import urlutils from 'lib/url';
+import {getUrlVars} from 'lib/url';
 import richLinks from 'common/modules/article/rich-links';
 import membershipEvents from 'common/modules/article/membership-events';
 import geoMostPopular from 'common/modules/onward/geo-most-popular';
@@ -15,7 +15,7 @@ import ophan from 'ophan/ng';
 
 var modules = {
         initCmpParam: function() {
-            var allvars = urlutils.getUrlVars();
+            var allvars = getUrlVars();
 
             if (allvars.CMP) {
                 $('.element-pass-cmp').each(function(el) {

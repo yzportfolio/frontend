@@ -6,7 +6,7 @@ import config from 'lib/config';
 import fetchJson from 'lib/fetch-json';
 import mediator from 'lib/mediator';
 import reportError from 'lib/report-error';
-import urlUtil from 'lib/url';
+import {constructQuery} from 'lib/url';
 import Component from 'common/modules/component';
 import DiscussionApi from 'common/modules/discussion/api';
 import CommentBox from 'common/modules/discussion/comment-box';
@@ -168,7 +168,7 @@ Comments.prototype.fetchComments = function(options) {
             .catch(function() {
                 this.wholeDiscussionErrors = true;
                 queryParams.pageSize = 100;
-                return fetchJson(url + '?' + urlUtil.constructQuery(queryParams), ajaxParams);
+                return fetchJson(url + '?' + constructQuery(queryParams), ajaxParams);
             }.bind(this));
     } else {
         // It is possible that the user has chosen to view all comments,
@@ -176,7 +176,7 @@ Comments.prototype.fetchComments = function(options) {
         if (queryParams.pageSize === 'All') {
             queryParams.pageSize = 100;
         }
-        promise = fetchJson(url + '?' + urlUtil.constructQuery(queryParams), ajaxParams);
+        promise = fetchJson(url + '?' + constructQuery(queryParams), ajaxParams);
     }
     return promise.then(this.renderComments.bind(this));
 };

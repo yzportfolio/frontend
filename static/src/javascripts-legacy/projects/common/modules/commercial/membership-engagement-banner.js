@@ -16,7 +16,7 @@ import membershipEngagementBannerUtils from 'common/modules/commercial/membershi
 import membershipEngagementBannerBlock from 'common/modules/commercial/membership-engagement-banner-block';
 import ophan from 'ophan/ng';
 import geolocation from 'lib/geolocation';
-import url from 'lib/url';
+import {constructQuery} from 'lib/url';
 
 
 // change messageCode to force redisplay of the message to users who already closed it.
@@ -138,7 +138,7 @@ function showBanner(params) {
         REFPVID: params.pageviewId,
         INTCMP: params.campaignCode
     };
-    var linkUrl = params.linkUrl + '?' + url.constructQuery(urlParameters);
+    var linkUrl = params.linkUrl + '?' + constructQuery(urlParameters);
 
     var renderedBanner = template(messageTemplate, {
         linkHref: linkUrl,

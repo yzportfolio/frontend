@@ -7,7 +7,7 @@ import detect from 'lib/detect';
 import FiniteStateMachine from 'lib/fsm';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
-import url from 'lib/url';
+import {pushUrl, hasHistorySupport, back} from 'lib/url';
 import Component from 'common/modules/component';
 import imagesModule from 'common/modules/ui/images';
 import svgs from 'common/views/svgs';
@@ -252,7 +252,7 @@ GalleryLightbox.prototype.states = {
         },
         leave: function() {
             this.show();
-            url.pushUrl({}, document.title, '/' + this.galleryJson.id);
+            pushUrl({}, document.title, '/' + this.galleryJson.id);
         },
         events: {
             'open': function() {
@@ -306,7 +306,7 @@ GalleryLightbox.prototype.states = {
                 max: 'tablet'
             }) ? 100 : 0));
 
-            url.pushUrl({}, document.title, '/' + this.galleryJson.id + '#img-' + this.index, true);
+            pushUrl({}, document.title, '/' + this.galleryJson.id + '#img-' + this.index, true);
 
             // event bindings
             bean.on(this.$swipeContainer[0], 'click', '.js-gallery-content', this.toggleInfo);
@@ -420,8 +420,8 @@ GalleryLightbox.prototype.show = function() {
 };
 
 GalleryLightbox.prototype.close = function() {
-    if (url.hasHistorySupport) {
-        url.back();
+    if (hasHistorySupport) {
+        back();
     } else {
         this.trigger('close');
     }
@@ -514,7 +514,7 @@ function bootstrap() {
             galleryId = '/' + config.page.pageId;
             match = /\?index=(\d+)/.exec(document.location.href);
             if (match) { // index specified so launch lightbox at that index
-                url.pushUrl(null, document.title, galleryId, true); // lets back work properly
+                pushUrl(null, document.title, galleryId, true); // lets back work properly
                 lightbox.loadGalleryfromJson(images, parseInt(match[1], 10));
             } else {
                 res = /^#(?:img-)?(\d+)$/.exec(galleryHash);

@@ -5,9 +5,9 @@ import bonzo from 'bonzo';
 import qwery from 'qwery';
 import $ from 'lib/$';
 import config from 'lib/config';
-import cookies from 'lib/cookies';
+import {cleanUp, addSessionCookie} from 'lib/cookies';
 import mediator from 'lib/mediator';
-import url from 'lib/url';
+import {getUrlVars} from 'lib/url';
 import robust from 'lib/robust';
 import storage from 'lib/storage';
 import Foresee from 'common/modules/analytics/foresee-survey';
@@ -111,7 +111,7 @@ var modules = {
     },
 
     cleanupCookies: function() {
-        cookies.cleanUp(['mmcore.pd', 'mmcore.srv', 'mmid', 'GU_ABFACIA', 'GU_FACIA', 'GU_ALPHA', 'GU_ME', 'at', 'gu_adfree_user']);
+        cleanUp(['mmcore.pd', 'mmcore.srv', 'mmid', 'GU_ABFACIA', 'GU_FACIA', 'GU_ALPHA', 'GU_ME', 'at', 'gu_adfree_user']);
     },
 
     cleanupLocalStorage: function() {
@@ -176,9 +176,9 @@ var modules = {
     },
 
     testCookie: function() {
-        var queryParams = url.getUrlVars();
+        var queryParams = getUrlVars();
         if (queryParams.test) {
-            cookies.addSessionCookie('GU_TEST', encodeURIComponent(queryParams.test));
+            addSessionCookie('GU_TEST', encodeURIComponent(queryParams.test));
         }
     },
 

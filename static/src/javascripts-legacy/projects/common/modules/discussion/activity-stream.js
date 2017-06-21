@@ -1,7 +1,7 @@
 import bonzo from 'bonzo';
 import bean from 'bean';
 import $ from 'lib/$';
-import url from 'lib/url';
+import {hasHistorySupport, constructQuery, getUrlVars, replaceQueryString, pushQueryString} from 'lib/url';
 import component from 'common/modules/component';
 import discussionApi from 'common/modules/discussion/api';
 
@@ -23,7 +23,7 @@ ActivityStream.prototype.ready = function() {
     $('.js-disc-recommend-comment').addClass('disc-comment__recommend--open');
 
     window.onpopstate = function(event) {
-        if (url.hasHistorySupport) {
+        if (hasHistorySupport) {
             this.applyState(event.state.resp.html, event.state.streamType);
         }
     }.bind(this);
@@ -67,9 +67,9 @@ ActivityStream.prototype.applyState = function(html, streamType) {
 };
 ActivityStream.prototype.updateHistory = function(resp) {
     var page = this.options.page;
-    var pageParam = url.getUrlVars().page;
+    var pageParam = getUrlVars().page;
     var streamType = this.options.streamType !== 'discussions' ? '/' + this.options.streamType : '';
-    var qs = '/user/id/' + this.options.userId + streamType + '?' + url.constructQuery({
+    var qs = '/user/id/' + this.options.userId + streamType + '?' + constructQuery({
         page: page
     });
     var state = {
@@ -82,9 +82,9 @@ ActivityStream.prototype.updateHistory = function(resp) {
     };
 
     if (typeof pageParam === 'undefined') { // If first load and without page param, add it and overwrite history
-        url.replaceQueryString(params);
+        replaceQueryString(params);
     } else {
-        url.pushQueryString(params);
+        pushQueryString(params);
     }
 };
 

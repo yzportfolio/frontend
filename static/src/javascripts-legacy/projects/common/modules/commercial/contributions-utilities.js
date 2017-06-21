@@ -6,12 +6,12 @@ import viewLog from 'common/modules/commercial/acquisitions-view-log';
 import tailor from 'common/modules/tailor/tailor';
 import $ from 'lib/$';
 import config from 'lib/config';
-import cookies from 'lib/cookies';
+import {getCookie} from 'lib/cookies';
 import ElementInView from 'lib/element-inview';
 import fastdom from 'lib/fastdom-promise';
 import mediator from 'lib/mediator';
 import geolocation from 'lib/geolocation';
-import url from 'lib/url';
+import {constructQuery} from 'lib/url';
 import noop from 'lib/noop';
 import timeUtils from 'lib/time-utils';
 import assign from 'lodash/objects/assign';
@@ -23,7 +23,7 @@ import acquisitionsTestimonialBlockTemplate from 'raw-loader!common/views/acquis
 var membershipBaseURL = 'https://membership.theguardian.com/supporter';
 var contributionsBaseURL = 'https://contribute.theguardian.com';
 
-var lastContributionDate = cookies.getCookie('gu.contributions.contrib-timestamp');
+var lastContributionDate = getCookie('gu.contributions.contrib-timestamp');
 
 var isContributor = !!lastContributionDate;
 
@@ -262,7 +262,7 @@ ContributionsABTestVariant.prototype.getURL = function(base, campaignCode) {
         INTCMP: campaignCode
     };
 
-    return base + '?' + url.constructQuery(params);
+    return base + '?' + constructQuery(params);
 };
 
 ContributionsABTestVariant.prototype.contributionsURLBuilder = function(codeModifier) {

@@ -1,5 +1,5 @@
 import config from 'lib/config';
-import urlUtils from 'lib/url';
+import {constructQuery} from 'lib/url';
 
 var gatewayUrl = '//pq-direct.revsci.net/pql';
 var sectionPlacements = {
@@ -16,7 +16,7 @@ var audienceSciencePqlUrl = getUrl();
 
 function getUrl() {
     var placements = sectionPlacements[section];
-    var query = urlUtils.constructQuery({
+    var query = constructQuery({
         placementIdList: placements.join(','),
         cb: new Date().getTime()
     });

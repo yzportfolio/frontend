@@ -1,7 +1,7 @@
 import assign from 'lodash/objects/assign';
 import fastdom from 'lib/fastdom-promise';
 import reportError from 'lib/report-error';
-import urlUtil from 'lib/url';
+import {getUrlVars, constructQuery} from 'lib/url';
 var RECOMMENDATION_CLASS = 'js-recommend-comment';
 var TOOLTIP_CLASS = 'js-rec-tooltip';
 
@@ -68,8 +68,8 @@ function updateReturnUrl(links, returnLink) {
     for (var i = 0, len = links.length; i < len; i += 1) {
         var url = links[i].getAttribute('href');
         var baseUrl = url.split('?')[0];
-        var query = urlUtil.getUrlVars(url.split('?')[1] || '&');
-        links[i].setAttribute('href', baseUrl + '?' + urlUtil.constructQuery(assign(query, {
+        var query = getUrlVars(url.split('?')[1] || '&');
+        links[i].setAttribute('href', baseUrl + '?' + constructQuery(assign(query, {
             returnUrl: returnLink
         })));
     }

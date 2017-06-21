@@ -7,7 +7,7 @@
 import $ from 'lib/$';
 import bean from 'bean';
 import bonzo from 'bonzo';
-import url from 'lib/url';
+import {pushUrl} from 'lib/url';
 import avatarApi from 'common/modules/avatar/api';
 
 var accountProfile = function() {
@@ -84,7 +84,7 @@ accountProfile.prototype.handleTabsClick = function(event) {
                 });
             }
         } else {
-            url.pushUrl({}, event.target.innerHTML, event.target.getAttribute('data-pushstate-url'));
+            pushUrl({}, event.target.innerHTML, event.target.getAttribute('data-pushstate-url'));
         }
     }
 };

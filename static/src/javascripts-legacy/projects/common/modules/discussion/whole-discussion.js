@@ -1,7 +1,7 @@
 import bonzo from 'bonzo';
 import $ from 'lib/$';
 import fetchJson from 'lib/fetch-json';
-import urlUtil from 'lib/url';
+import {constructQuery} from 'lib/url';
 import range from 'lodash/arrays/range';
 // This size effectively determines how many calls this module needs to make.
 // Number of ajax calls = number of comments / comments per page
@@ -100,7 +100,7 @@ WholeDiscussion.prototype.loadPage = function(pageNumber) {
         queryParams.maxResponses = this.params.maxResponses;
     }
 
-    var url = '/discussion/' + this.discussionId + '.json?' + urlUtil.constructQuery(queryParams);
+    var url = '/discussion/' + this.discussionId + '.json?' + constructQuery(queryParams);
 
     return fetchJson(url, {
         mode: 'cors'
