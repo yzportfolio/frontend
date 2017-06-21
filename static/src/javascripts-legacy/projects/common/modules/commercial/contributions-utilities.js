@@ -1,7 +1,7 @@
 import commercialFeatures from 'commercial/modules/commercial-features';
 import targetingTool from 'common/modules/commercial/targeting-tool';
 import acquisitionsCopy from 'common/modules/commercial/acquisitions-copy';
-import acquisitionsTestimonialParameters from 'common/modules/commercial/acquisitions-epic-testimonial-parameters';
+import {control} from 'common/modules/commercial/acquisitions-epic-testimonial-parameters';
 import viewLog from 'common/modules/commercial/acquisitions-view-log';
 import tailor from 'common/modules/tailor/tailor';
 import $ from 'lib/$';
@@ -178,7 +178,7 @@ function ContributionsABTestVariant(options, test) {
         membershipURL: options.membershipURL || this.getURL(membershipBaseURL, campaignCode),
         componentName: 'mem_acquisition_' + trackingCampaignId + '_' + this.id,
         template: options.template || controlTemplate,
-        testimonialBlock: options.testimonialBlock || getTestimonialBlock(acquisitionsTestimonialParameters.control),
+        testimonialBlock: options.testimonialBlock || getTestimonialBlock(control),
         blockEngagementBanner: options.blockEngagementBanner || false,
         engagementBannerParams: options.engagementBannerParams || {},
         isOutbrainCompliant: options.isOutbrainCompliant || false,
