@@ -15,7 +15,7 @@ import mediaListener from 'common/modules/analytics/media-listener';
 import interactionTracking from 'common/modules/analytics/interaction-tracking';
 import register from 'common/modules/analytics/register';
 import ScrollDepth from 'common/modules/analytics/scrollDepth';
-import userAdTargeting from 'commercial/modules/user-ad-targeting';
+import {requestUserSegmentsFromId} from 'commercial/modules/user-ad-targeting';
 import donotUseAdblock from 'common/modules/commercial/donot-use-adblock';
 import userFeatures from 'commercial/modules/user-features';
 import CommentCount from 'common/modules/discussion/comment-count';
@@ -262,7 +262,7 @@ export default {
 
             ['c-cookies-banner', cookiesBanner.init],
             ['c-identity', identity.init],
-            ['c-adverts', userAdTargeting.requestUserSegmentsFromId],
+            ['c-adverts', requestUserSegmentsFromId],
             ['c-discussion', modules.initDiscussion],
             ['c-test-cookie', modules.testCookie],
             ['c-event-listeners', modules.windowEventListeners],
