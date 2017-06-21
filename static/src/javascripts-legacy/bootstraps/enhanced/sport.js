@@ -200,6 +200,4 @@ function init() {
     rugby();
 }
 
-export default {
-    init: init,
-};
+export { init };

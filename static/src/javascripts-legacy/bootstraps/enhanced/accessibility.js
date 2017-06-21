@@ -2,10 +2,7 @@
 import React from 'react/addons';
 import accessibility from 'common/modules/accessibility/main';
 
-var module = {
-    DOM_ID: 'js-accessibility-preferences',
-    init: init,
-};
+const DOM_ID = 'js-accessibility-preferences';
 
 function init(callback: Function) {
     var BinaryToggle = React.createClass({
@@ -109,9 +106,9 @@ function init(callback: Function) {
 
     React.render(
         React.createElement(Accessibility),
-        document.getElementById(module.DOM_ID),
+        document.getElementById(DOM_ID),
         callback
     );
 }
 
-export default module;
+export { DOM_ID, init };

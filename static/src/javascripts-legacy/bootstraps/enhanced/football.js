@@ -358,6 +358,4 @@ function init() {
     tagPageStats();
 }
 
-export default {
-    init: init,
-};
+export { init };

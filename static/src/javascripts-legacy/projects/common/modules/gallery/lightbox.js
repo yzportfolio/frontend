@@ -621,7 +621,4 @@ function bootstrap() {
     });
 }
 
-export default {
-    init: bootstrap,
-    GalleryLightbox: GalleryLightbox,
-};
+export { bootstrap as init, GalleryLightbox };

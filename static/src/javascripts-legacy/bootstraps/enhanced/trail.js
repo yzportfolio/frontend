@@ -102,7 +102,7 @@ function repositionComments() {
     }
 }
 
-export default function() {
+export function init() {
     catchErrorsWithContext([
         ['c-discussion', initDiscussion],
         ['c-comments', repositionComments],

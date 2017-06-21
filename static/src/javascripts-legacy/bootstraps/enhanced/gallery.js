@@ -3,7 +3,7 @@ import qwery from 'qwery';
 import config from 'lib/config';
 import mediator from 'lib/mediator';
 import Component from 'common/modules/component';
-import trail from 'bootstraps/enhanced/trail';
+import { init as initTrail } from 'bootstraps/enhanced/trail';
 var transcludeMostPopular = function() {
     var mostViewed = new Component(),
         container = qwery('.js-gallery-most-popular')[0];
@@ -16,7 +16,7 @@ var transcludeMostPopular = function() {
     mostViewed.fetch(container, 'html');
 },
     ready = function() {
-        trail();
+        initTrail();
 
         mediator.emit('ui:images:upgradePictures');
 

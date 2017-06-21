@@ -13,8 +13,8 @@ import {
     registerCompleteEvents,
     trackABTests,
 } from 'common/modules/experiments/ab-ophan';
-import common from 'bootstraps/enhanced/common';
-import sport from 'bootstraps/enhanced/sport';
+import { init as initCommon } from 'bootstraps/enhanced/common';
+import { init as initSport } from 'bootstraps/enhanced/sport';
 import { trackPerformance } from 'common/modules/analytics/google';
 import { init as geolocationInit } from 'lib/geolocation';
 import { initCheckDispatcher } from 'common/modules/check-dispatcher';
@@ -82,7 +82,7 @@ const bootEnhanced = (): void => {
         ],
     ]);
 
-    bootstrapContext('common', common.init);
+    bootstrapContext('common', initCommon);
 
     // geolocation
     catchErrorsWithContext([['geolocation', geolocationInit]]);
@@ -171,7 +171,7 @@ const bootEnhanced = (): void => {
             require => {
                 bootstrapContext(
                     'media : trail',
-                    require('bootstraps/enhanced/trail').default
+                    require('bootstraps/enhanced/trail').init
                 );
             },
             'trail'
@@ -243,7 +243,7 @@ const bootEnhanced = (): void => {
 
     if (config.page.section === 'sport') {
         // Leaving this here for now as it's a tiny bootstrap.
-        bootstrapContext('sport', sport.init);
+        bootstrapContext('sport', initSport);
     }
 
     if (config.page.section === 'identity') {

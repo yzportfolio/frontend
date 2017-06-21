@@ -4,7 +4,7 @@ import history from 'common/modules/onward/history';
 import reduce from 'lodash/collections/reduce';
 import isEmpty from 'lodash/objects/isEmpty';
 
-export default function() {
+export function init() {
     var placeholder = document.getElementById('preferences-history-tags'),
         initialiseSummaryTagsSettings = function() {
             var SummaryTagsList = React.createClass({

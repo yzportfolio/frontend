@@ -288,50 +288,49 @@ var modules = {
         });
     },
 };
-export default {
-    init: function() {
-        catchErrorsWithContext([
-            // Analytics comes at the top. If you think your thing is more important then please think again...
-            ['c-analytics', modules.loadAnalytics],
 
-            ['c-cookies-banner', cookiesBanner.init],
-            ['c-identity', identity],
-            ['c-adverts', requestUserSegmentsFromId],
-            ['c-discussion', modules.initDiscussion],
-            ['c-test-cookie', modules.testCookie],
-            ['c-event-listeners', modules.windowEventListeners],
-            ['c-breaking-news', modules.loadBreakingNews],
-            ['c-block-link', fauxBlockLink],
-            ['c-iframe', modules.checkIframe],
-            ['c-tabs', modules.showTabs],
-            ['c-top-nav', modules.initialiseTopNavItems],
-            ['c-init-nav', modules.initialiseNavigation],
-            ['c-toggles', modules.showToggles],
-            ['c-dates', modules.showRelativeDates],
-            ['c-clickstream', modules.initClickstream],
-            ['c-history', modules.updateHistory],
-            ['c-id-cookie-refresh', modules.idCookieRefresh],
-            ['c-history-nav', modules.showHistoryInMegaNav],
-            ['c-forsee', modules.runForseeSurvey],
-            ['c-start-register', modules.startRegister],
-            ['c-smart-banner', initCustomSmartAppBanner],
-            ['c-adblock', modules.showAdblockMessage],
-            ['c-cookies', modules.cleanupCookies],
-            ['c-localStorage', modules.cleanupLocalStorage],
-            ['c-overlay', modules.initOpenOverlayOnClick],
-            ['c-public-api', modules.initPublicApi],
-            ['c-tech-feedback', techFeedback],
-            ['c-media-listeners', mediaListener],
-            ['c-accessibility-prefs', initAccessibilityPreferences],
-            ['c-pinterest', modules.initPinterest],
-            ['c-hidden-share-toggle', hiddenShareToggle],
-            [
-                'c-show-membership-engagement-banner',
-                modules.membershipEngagementBanner,
-            ],
-            ['c-email', modules.initEmail],
-            ['c-user-features', userFeatures.refresh.bind(userFeatures)], // wat???
-            ['c-membership', membership],
-        ]);
-    },
-};
+export function init() {
+    catchErrorsWithContext([
+        // Analytics comes at the top. If you think your thing is more important then please think again...
+        ['c-analytics', modules.loadAnalytics],
+
+        ['c-cookies-banner', cookiesBanner.init],
+        ['c-identity', identity],
+        ['c-adverts', requestUserSegmentsFromId],
+        ['c-discussion', modules.initDiscussion],
+        ['c-test-cookie', modules.testCookie],
+        ['c-event-listeners', modules.windowEventListeners],
+        ['c-breaking-news', modules.loadBreakingNews],
+        ['c-block-link', fauxBlockLink],
+        ['c-iframe', modules.checkIframe],
+        ['c-tabs', modules.showTabs],
+        ['c-top-nav', modules.initialiseTopNavItems],
+        ['c-init-nav', modules.initialiseNavigation],
+        ['c-toggles', modules.showToggles],
+        ['c-dates', modules.showRelativeDates],
+        ['c-clickstream', modules.initClickstream],
+        ['c-history', modules.updateHistory],
+        ['c-id-cookie-refresh', modules.idCookieRefresh],
+        ['c-history-nav', modules.showHistoryInMegaNav],
+        ['c-forsee', modules.runForseeSurvey],
+        ['c-start-register', modules.startRegister],
+        ['c-smart-banner', initCustomSmartAppBanner],
+        ['c-adblock', modules.showAdblockMessage],
+        ['c-cookies', modules.cleanupCookies],
+        ['c-localStorage', modules.cleanupLocalStorage],
+        ['c-overlay', modules.initOpenOverlayOnClick],
+        ['c-public-api', modules.initPublicApi],
+        ['c-tech-feedback', techFeedback],
+        ['c-media-listeners', mediaListener],
+        ['c-accessibility-prefs', initAccessibilityPreferences],
+        ['c-pinterest', modules.initPinterest],
+        ['c-hidden-share-toggle', hiddenShareToggle],
+        [
+            'c-show-membership-engagement-banner',
+            modules.membershipEngagementBanner,
+        ],
+        ['c-email', modules.initEmail],
+        ['c-user-features', userFeatures.refresh.bind(userFeatures)], // wat???
+        ['c-membership', membership],
+    ]);
+}

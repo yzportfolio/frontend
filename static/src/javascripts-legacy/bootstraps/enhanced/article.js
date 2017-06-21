@@ -11,7 +11,7 @@ import geoMostPopular from 'common/modules/onward/geo-most-popular';
 import quiz from 'common/modules/atoms/quiz';
 import { init as initStoryQuestions } from 'common/modules/atoms/story-questions';
 import articleLiveblogCommon from 'bootstraps/enhanced/article-liveblog-common';
-import trail from 'bootstraps/enhanced/trail';
+import { init as initTrail } from 'bootstraps/enhanced/trail';
 import ophan from 'ophan/ng';
 
 var modules = {
@@ -47,7 +47,7 @@ var modules = {
     },
 },
     ready = function() {
-        trail();
+        initTrail();
         articleLiveblogCommon();
         modules.initRightHandComponent();
         modules.initCmpParam();
@@ -60,7 +60,5 @@ var modules = {
         initStoryQuestions();
     };
 
-export default {
-    init: ready,
-    modules: modules, // exporting for LiveBlog bootstrap to use
-};
+// exporting for LiveBlog bootstrap to use
+export { ready as init, modules };

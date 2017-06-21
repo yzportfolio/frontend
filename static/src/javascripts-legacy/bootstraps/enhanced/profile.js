@@ -87,20 +87,18 @@ var modules = {
     },
 };
 
-export default {
-    init: function(config) {
-        modules.initFormstack();
-        modules.forgottenEmail();
-        modules.forgottenPassword();
-        modules.passwordToggle();
-        modules.userAvatars();
-        modules.validationEmail();
-        modules.tabs();
-        modules.accountProfile();
-        modules.emailPreferences();
-        modules.deleteAccount();
-        PublicProfile.init();
+export function init(config) {
+    modules.initFormstack();
+    modules.forgottenEmail();
+    modules.forgottenPassword();
+    modules.passwordToggle();
+    modules.userAvatars();
+    modules.validationEmail();
+    modules.tabs();
+    modules.accountProfile();
+    modules.emailPreferences();
+    modules.deleteAccount();
+    PublicProfile.init();
 
-        mediator.emit('page:identity:ready', config);
-    },
-};
+    mediator.emit('page:identity:ready', config);
+}

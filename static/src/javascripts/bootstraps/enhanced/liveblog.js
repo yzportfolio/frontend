@@ -7,7 +7,7 @@ import Affix from 'common/modules/experiments/affix';
 import AutoUpdate from 'common/modules/ui/autoupdate';
 import RelativeDates from 'common/modules/ui/relativedates';
 import articleLiveblogCommon from 'bootstraps/enhanced/article-liveblog-common';
-import trail from 'bootstraps/enhanced/trail';
+import { init as initTrail } from 'bootstraps/enhanced/trail';
 import { catchErrorsWithContext } from 'lib/robust';
 
 const affixTimeline = (): void => {
@@ -54,7 +54,7 @@ const init = (): void => {
         ['lb-richlinks', richLinks.upgradeRichLinks],
     ]);
 
-    trail();
+    initTrail();
     articleLiveblogCommon();
 
     catchErrorsWithContext([
