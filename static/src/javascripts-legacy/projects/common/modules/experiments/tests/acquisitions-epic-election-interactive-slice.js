@@ -1,64 +1,50 @@
-define([
-    'common/modules/commercial/contributions-utilities',
-    'lib/$',
-    'lib/geolocation',
-    'lodash/utilities/template',
-    'lib/config',
-    'raw-loader!common/views/acquisitions-epic-slice.html',
-], function (
-    contributionsUtilities,
-    $,
-    geolocation,
-    template,
-    config,
-    epicSlice
-) {
-    return contributionsUtilities.makeABTest({
-        id: 'AcquisitionsElectionInteractiveSlice',
-        campaignId: 'epic_ge2017_interactive_slice',
+import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
+import template from 'lodash/utilities/template';
+import epicSlice from 'raw-loader!common/views/acquisitions-epic-slice.html';
 
-        start: '2017-05-22',
-        expiry: '2017-07-03',
+export default contributionsUtilities.makeABTest({
+    id: 'AcquisitionsElectionInteractiveSlice',
+    campaignId: 'epic_ge2017_interactive_slice',
 
-        author: 'Sam Desborough',
-        description: 'This places the epic (slice design) in the middle of UK election-related interactives',
-        successMeasure: 'Member acquisition and contributions',
-        idealOutcome: 'Our wonderful readers will support The Guardian in this time of need!',
+    start: '2017-05-22',
+    expiry: '2017-07-03',
 
-        audienceCriteria: 'All',
-        audience: 1,
-        audienceOffset: 0,
+    author: 'Sam Desborough',
+    description: 'This places the epic (slice design) in the middle of UK election-related interactives',
+    successMeasure: 'Member acquisition and contributions',
+    idealOutcome: 'Our wonderful readers will support The Guardian in this time of need!',
 
-        showForSensitive: true,
+    audienceCriteria: 'All',
+    audience: 1,
+    audienceOffset: 0,
 
-        pageCheck: function(page) {
-            return page.keywordIds &&
-                page.keywordIds.includes('general-election-2017') &&
-                page.contentType === 'Interactive';
+    showForSensitive: true,
+
+    pageCheck: function(page) {
+        return page.keywordIds &&
+            page.keywordIds.includes('general-election-2017') &&
+            page.contentType === 'Interactive';
+    },
+
+    variants: [{
+        id: 'control',
+        isUnlimited: true,
+
+        insertAtSelector: '#js-interactive-epic',
+        successOnView: true,
+
+        test: function(render) {
+            var article = document.getElementById('article');
+            if (article) article.style['overflow-x'] = 'hidden';
+            render();
         },
 
-        variants: [
-            {
-                id: 'control',
-                isUnlimited: true,
-
-                insertAtSelector: '#js-interactive-epic',
-                successOnView: true,
-
-                test: function(render) {
-                    var article = document.getElementById('article');
-                    if (article) article.style['overflow-x'] = 'hidden';
-                    render();
-                },
-
-                template: function makeSliceTemplate(variant) {
-                    return template(epicSlice, {
-                        membershipUrl: variant.options.membershipURL,
-                        contributionUrl: variant.options.contributeURL,
-                        componentName: variant.options.componentName,
-                    });
-                }
-            }
-        ]
-    });
+        template: function makeSliceTemplate(variant) {
+            return template(epicSlice, {
+                membershipUrl: variant.options.membershipURL,
+                contributionUrl: variant.options.contributeURL,
+                componentName: variant.options.componentName,
+            });
+        }
+    }]
 });
