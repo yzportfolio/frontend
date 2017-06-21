@@ -8,7 +8,7 @@ import stocks from 'common/modules/business/stocks';
 import geoMostPopularFront from 'facia/modules/onwards/geo-most-popular-front';
 import ContainerToggle from 'facia/modules/ui/container-toggle';
 import containerShowMore from 'facia/modules/ui/container-show-more';
-import lazyLoadContainers from 'facia/modules/ui/lazy-load-containers';
+import { lazyLoadContainers } from 'facia/modules/ui/lazy-load-containers';
 import liveblogUpdates from 'facia/modules/ui/live-blog-updates';
 import snaps from 'facia/modules/ui/snaps';
 import sponsorship from 'facia/modules/ui/sponsorship';
@@ -82,7 +82,7 @@ var modules = {
             ['f-show-more', modules.showContainerShowMore],
             ['f-container-toggle', modules.showContainerToggle],
             ['f-geo-most-popular', modules.upgradeMostPopularToGeo],
-            ['f-lazy-load-containers', lazyLoadContainers.lazyLoadContainers],
+            ['f-lazy-load-containers', lazyLoadContainers],
             ['f-stocks', stocks],
             ['f-sponsorship', sponsorship],
             ['f-weather', modules.showWeather],
