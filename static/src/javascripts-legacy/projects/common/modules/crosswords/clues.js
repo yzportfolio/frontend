@@ -4,7 +4,8 @@ import bean from 'bean';
 import fastdom from 'fastdom';
 import classNames from './classNames';
 import detect from 'lib/detect';
-import scroller from 'lib/scroller';
+import { scrollTo } from 'lib/scroller';
+
 var Clue = React.createClass({
     onClick: function() {
         this.props.setReturnPosition();
@@ -103,7 +104,7 @@ var Clues = React.createClass({
 
         if (!visible) {
             var offset = node.offsetTop - this.$cluesNode.clientHeight / 2;
-            scroller.scrollTo(offset, 250, 'easeOutQuad', this.$cluesNode);
+            scrollTo(offset, 250, 'easeOutQuad', this.$cluesNode);
         }
     },
 

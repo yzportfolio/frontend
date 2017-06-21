@@ -2,10 +2,10 @@
 import config from 'lib/config';
 import { getCookie } from 'lib/cookies';
 import detect from 'lib/detect';
-import loadScript from 'lib/load-script';
+import { loadScript } from 'lib/load-script';
 
 function openForesee() {
-    loadScript.loadScript(config.libs.foresee);
+    loadScript(config.libs.foresee);
 }
 
 function load() {

@@ -1,10 +1,13 @@
 // @flow
 import { commercialFeatures } from 'commercial/modules/commercial-features';
 import targetingTool from 'common/modules/commercial/targeting-tool';
-import acquisitionsCopy from 'common/modules/commercial/acquisitions-copy';
+import {
+    regulars as regularsCopy,
+    control as controlCopy,
+} from 'common/modules/commercial/acquisitions-copy';
 import { control } from 'common/modules/commercial/acquisitions-epic-testimonial-parameters';
-import viewLog from 'common/modules/commercial/acquisitions-view-log';
-import tailor from 'common/modules/tailor/tailor';
+import { logView } from 'common/modules/commercial/acquisitions-view-log';
+import { isRegular } from 'common/modules/tailor/tailor';
 import $ from 'lib/$';
 import config from 'lib/config';
 import { getCookie } from 'lib/cookies';
@@ -170,15 +173,13 @@ ContributionsABTest.prototype.makeEvent = function(event) {
 
 function getCopy(useTailor) {
     if (useTailor) {
-        return tailor.isRegular().then(function(regular) {
-            return regular
-                ? acquisitionsCopy.regulars
-                : acquisitionsCopy.control;
+        return isRegular().then(function(regular) {
+            return regular ? regularsCopy : controlCopy;
         });
     }
 
     return new Promise(function(resolve) {
-        return resolve(acquisitionsCopy.control);
+        return resolve(controlCopy);
     });
 }
 
@@ -276,7 +277,7 @@ function ContributionsABTestVariant(options, test) {
                                     );
 
                                     elementInView.on('firstview', function() {
-                                        viewLog.logView(test.id);
+                                        logView(test.id);
                                         mediator.emit(test.viewEvent);
                                         mediator.emit(
                                             'register:end',

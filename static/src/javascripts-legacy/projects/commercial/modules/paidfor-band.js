@@ -1,5 +1,5 @@
 // @flow
-import sticky from 'common/modules/ui/sticky';
+import { Sticky } from 'common/modules/ui/sticky';
 import { commercialFeatures } from 'commercial/modules/commercial-features';
 
 function init() {
@@ -9,7 +9,7 @@ function init() {
 
     var elem = document.querySelector('.paidfor-band');
     if (elem) {
-        new sticky.Sticky(elem).init();
+        new Sticky(elem).init();
     }
 
     return Promise.resolve();

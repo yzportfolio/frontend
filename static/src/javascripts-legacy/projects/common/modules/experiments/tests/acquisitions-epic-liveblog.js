@@ -1,6 +1,6 @@
 // @flow
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
-import viewLog from 'common/modules/commercial/acquisitions-view-log';
+import { logView } from 'common/modules/commercial/acquisitions-view-log';
 import template from 'lodash/utilities/template';
 import $ from 'lib/$';
 import config from 'lib/config';
@@ -8,7 +8,7 @@ import mediator from 'lib/mediator';
 import ElementInView from 'lib/element-inview';
 import fastdom from 'lib/fastdom-promise';
 import liveblogEpicTemplate from 'raw-loader!common/views/acquisitions-epic-liveblog.html';
-import acquisitionsCopy from 'common/modules/commercial/acquisitions-copy';
+import { control } from 'common/modules/commercial/acquisitions-copy';
 var pageId = config.page.pageId || '';
 
 var isAutoUpdateHandlerBound = false;
@@ -22,7 +22,7 @@ function setupViewTracking(el, test) {
     });
 
     elementInView.on('firstview', function() {
-        viewLog.logView(test.id);
+        logView(test.id);
         mediator.emit(test.viewEvent);
     });
 }
@@ -78,7 +78,7 @@ export default contributionsUtilities.makeABTest({
 
             template: function(variant) {
                 return template(liveblogEpicTemplate, {
-                    copy: acquisitionsCopy.control,
+                    copy: control,
                     membershipUrl: variant.options.membershipURL,
                     contributionUrl: variant.options.contributeURL,
                     componentName: variant.options.componentName,

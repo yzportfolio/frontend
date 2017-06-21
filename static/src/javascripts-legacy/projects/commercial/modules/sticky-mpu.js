@@ -2,7 +2,7 @@
 import config from 'lib/config';
 import mediator from 'lib/mediator';
 import fastdom from 'lib/fastdom-promise';
-import sticky from 'common/modules/ui/sticky';
+import { Sticky } from 'common/modules/ui/sticky';
 import { register, unregister } from 'commercial/modules/messenger';
 
 var noSticky = document.documentElement.classList.contains('has-no-sticky');
@@ -48,7 +48,7 @@ function stickyMpu(adSlot) {
                           top: 43,
                       }
                     : {};
-                stickyElement = new sticky.Sticky(adSlot, options);
+                stickyElement = new Sticky(adSlot, options);
                 stickyElement.init();
                 register('resize', onResize);
             }

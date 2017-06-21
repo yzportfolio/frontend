@@ -9,7 +9,7 @@ import fetch from 'lib/fetch';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
 import { logError } from 'lib/robust';
-import googleAnalytics from 'common/modules/analytics/google';
+import { trackNonClickInteraction } from 'common/modules/analytics/google';
 import contains from 'lodash/collections/contains';
 import { inlineSvg } from 'common/views/svgs';
 import successHtml from 'raw-loader!common/views/email/submissionResponse.html';
@@ -82,7 +82,7 @@ var classes = {
 
         $(iframe).remove();
 
-        googleAnalytics.trackNonClickInteraction(
+        trackNonClickInteraction(
             'rtrt | email form inline | ' +
                 analytics.formType +
                 ' | ' +
@@ -301,7 +301,7 @@ var classes = {
                         if (formData.customSuccessEventName) {
                             mediator.emit(formData.customSuccessEventName);
                         }
-                        googleAnalytics.trackNonClickInteraction(
+                        trackNonClickInteraction(
                             analyticsInfo.replace(
                                 '%action%',
                                 'subscribe clicked'
@@ -325,7 +325,7 @@ var classes = {
                                 }
                             })
                             .then(function() {
-                                googleAnalytics.trackNonClickInteraction(
+                                trackNonClickInteraction(
                                     analyticsInfo.replace(
                                         '%action%',
                                         'subscribe successful'
@@ -335,7 +335,7 @@ var classes = {
                             .then(handleSubmit(true, $form))
                             .catch(function(error) {
                                 logError('c-email', error);
-                                googleAnalytics.trackNonClickInteraction(
+                                trackNonClickInteraction(
                                     analyticsInfo.replace('%action%', 'error')
                                 );
                                 handleSubmit(false, $form)();

@@ -3,7 +3,7 @@ import bonzo from 'bonzo';
 import bean from 'bean';
 import $ from 'lib/$';
 import {
-    hasHistorySupport,
+    supportsPushState,
     constructQuery,
     getUrlVars,
     replaceQueryString,
@@ -31,7 +31,7 @@ ActivityStream.prototype.ready = function() {
     $('.js-disc-recommend-comment').addClass('disc-comment__recommend--open');
 
     window.onpopstate = function(event) {
-        if (hasHistorySupport) {
+        if (supportsPushState) {
             this.applyState(event.state.resp.html, event.state.streamType);
         }
     }.bind(this);

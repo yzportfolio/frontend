@@ -1,10 +1,6 @@
 // @flow
-import youtube from 'bootstraps/enhanced/youtube';
-
-function init() {
-    youtube.init();
-}
+import { init } from 'bootstraps/enhanced/youtube';
 
 export default {
-    init: init,
+    init,
 };

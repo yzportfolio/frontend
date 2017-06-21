@@ -13,8 +13,8 @@ import detect from 'lib/detect';
 import mediator from 'lib/mediator';
 import twitter from 'common/modules/article/twitter';
 import assign from 'lodash/objects/assign';
-import sticky from 'common/modules/ui/sticky';
-import scroller from 'lib/scroller';
+import { Sticky } from 'common/modules/ui/sticky';
+import { scrollToElement } from 'lib/scroller';
 import toArray from 'lodash/collections/toArray';
 import RelativeDates from 'common/modules/ui/relativedates';
 import NotificationCounter from 'common/modules/ui/notification-counter';
@@ -185,11 +185,7 @@ export default function(opts) {
         bean.on(document.body, 'click', '.toast__button', function() {
             if (isLivePage) {
                 fastdom.read(function() {
-                    scroller.scrollToElement(
-                        qwery('.blocks')[0],
-                        300,
-                        'easeOutQuad'
-                    );
+                    scrollToElement(qwery('.blocks')[0], 300, 'easeOutQuad');
 
                     fastdom
                         .write(function() {
@@ -230,7 +226,7 @@ export default function(opts) {
     //
 
     new NotificationCounter().init();
-    new sticky.Sticky(toastContainer, {
+    new Sticky(toastContainer, {
         top: options.toastOffsetTop,
         emitMessage: true,
         containInParent: false,

@@ -6,7 +6,11 @@ import $ from 'lib/$';
 import liveblogEpicTemplateControl from 'raw-loader!common/views/acquisitions-epic-liveblog.html';
 import liveblogEpicTemplateOldDesignSubtle from 'raw-loader!common/views/acquisitions-epic-liveblog-old-design-subtle.html';
 import liveblogEpicTemplateOldDesignMinimal from 'raw-loader!common/views/acquisitions-epic-liveblog-old-design-minimal.html';
-import acquisitionsCopy from 'common/modules/commercial/acquisitions-copy';
+import {
+    control,
+    liveblogSubtle,
+    liveblogMinimal,
+} from 'common/modules/commercial/acquisitions-copy';
 
 var pageId = config.page.pageId || '';
 
@@ -97,7 +101,7 @@ export default contributionsUtilities.makeABTest({
 
             template: function(variant) {
                 return template(liveblogEpicTemplateControl, {
-                    copy: acquisitionsCopy.control,
+                    copy: control,
                     membershipUrl: variant.options.membershipURL,
                     contributionUrl: variant.options.contributeURL,
                     componentName: variant.options.componentName,
@@ -115,7 +119,7 @@ export default contributionsUtilities.makeABTest({
 
             template: function(variant) {
                 return template(liveblogEpicTemplateOldDesignSubtle, {
-                    copy: acquisitionsCopy.liveblogSubtle(
+                    copy: liveblogSubtle(
                         variant.options.membershipURL,
                         variant.options.contributeURL
                     ),
@@ -136,7 +140,7 @@ export default contributionsUtilities.makeABTest({
 
             template: function(variant) {
                 return template(liveblogEpicTemplateOldDesignMinimal, {
-                    copy: acquisitionsCopy.liveblogMinimal(
+                    copy: liveblogMinimal(
                         variant.options.membershipURL,
                         variant.options.contributeURL
                     ),

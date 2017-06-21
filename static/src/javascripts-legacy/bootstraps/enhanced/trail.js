@@ -14,8 +14,8 @@ import identityApi from 'common/modules/identity/api';
 import Onward from 'common/modules/onward/onward-content';
 import Popular from 'common/modules/onward/popular';
 import Related from 'common/modules/onward/related';
-import TonalComponent from 'common/modules/onward/tonal';
-import shareCount from 'common/modules/social/share-count';
+import { TonalComponent } from 'common/modules/onward/tonal';
+import { loadShareCounts } from 'common/modules/social/share-count';
 
 function insertOrProximity(selector, insert) {
     if (window.location.hash) {
@@ -74,7 +74,7 @@ function initOnwardContent() {
             new Onward(qwery('.js-onward'));
         } else if (config.page.tones !== '') {
             $('.js-onward').each(function(c) {
-                new TonalComponent.TonalComponent().fetch(c, 'html');
+                new TonalComponent().fetch(c, 'html');
             });
         }
     });
@@ -106,7 +106,7 @@ export default function() {
     catchErrorsWithContext([
         ['c-discussion', initDiscussion],
         ['c-comments', repositionComments],
-        ['c-shares', shareCount.loadShareCounts],
+        ['c-shares', loadShareCounts],
         ['c-popular', initPopular],
         ['c-related', initRelated],
         ['c-onward', initOnwardContent],

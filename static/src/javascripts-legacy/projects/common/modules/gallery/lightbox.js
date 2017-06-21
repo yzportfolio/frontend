@@ -8,9 +8,9 @@ import detect from 'lib/detect';
 import FiniteStateMachine from 'lib/fsm';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
-import { pushUrl, hasHistorySupport, back } from 'lib/url';
+import { pushUrl, supportsPushState, back } from 'lib/url';
 import Component from 'common/modules/component';
-import imagesModule from 'common/modules/ui/images';
+import { upgradePictures } from 'common/modules/ui/images';
 import { inlineSvg } from 'common/views/svgs';
 import blockSharingTpl from 'raw-loader!common/views/content/block-sharing.html';
 import buttonTpl from 'raw-loader!common/views/content/button.html';
@@ -20,7 +20,7 @@ import shareButtonTpl from 'raw-loader!common/views/content/share-button.html';
 import shareButtonMobileTpl from 'raw-loader!common/views/content/share-button-mobile.html';
 import map from 'lodash/collections/map';
 import throttle from 'lodash/functions/throttle';
-import loadCssPromise from 'lib/load-css-promise';
+import { loadCssPromise } from 'lib/load-css-promise';
 
 function GalleryLightbox() {
     // CONFIG
@@ -389,7 +389,7 @@ GalleryLightbox.prototype.states = {
             // meta
             this.$indexEl.text(this.index);
 
-            imagesModule.upgradePictures();
+            upgradePictures();
         },
         leave: function() {
             bean.off(this.$swipeContainer[0], 'click', this.toggleInfo);
@@ -496,7 +496,7 @@ GalleryLightbox.prototype.show = function() {
 };
 
 GalleryLightbox.prototype.close = function() {
-    if (hasHistorySupport) {
+    if (supportsPushState) {
         back();
     } else {
         this.trigger('close');
@@ -516,7 +516,7 @@ GalleryLightbox.prototype.hide = function() {
                 $body.scrollTop(this.bodyScrollPosition);
             }
             this.$lightboxEl.removeClass('gallery-lightbox--open');
-            imagesModule.upgradePictures();
+            upgradePictures();
             mediator.emit('ui:images:vh');
         }.bind(this),
         1
@@ -576,7 +576,7 @@ GalleryLightbox.prototype.loadEndslate = function() {
 };
 
 function bootstrap() {
-    loadCssPromise.loadCssPromise.then(function() {
+    loadCssPromise.then(function() {
         if (
             'lightboxImages' in config.page &&
             config.page.lightboxImages.images.length > 0

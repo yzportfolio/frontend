@@ -9,7 +9,7 @@ import richLinks from 'common/modules/article/rich-links';
 import membershipEvents from 'common/modules/article/membership-events';
 import geoMostPopular from 'common/modules/onward/geo-most-popular';
 import quiz from 'common/modules/atoms/quiz';
-import storyQuestions from 'common/modules/atoms/story-questions';
+import { init as initStoryQuestions } from 'common/modules/atoms/story-questions';
 import articleLiveblogCommon from 'bootstraps/enhanced/article-liveblog-common';
 import trail from 'bootstraps/enhanced/trail';
 import ophan from 'ophan/ng';
@@ -57,7 +57,7 @@ var modules = {
         membershipEvents.upgradeEvents();
         mediator.emit('page:article:ready');
         quiz.handleCompletion();
-        storyQuestions.init();
+        initStoryQuestions();
     };
 
 export default {

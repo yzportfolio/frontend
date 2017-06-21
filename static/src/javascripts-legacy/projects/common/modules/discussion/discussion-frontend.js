@@ -4,7 +4,7 @@ import { integerCommas } from 'lib/formatters';
 import mediator from 'lib/mediator';
 import reportError from 'lib/report-error';
 import config from 'lib/config';
-import loadScript from 'lib/load-script';
+import { loadScript } from 'lib/load-script';
 
 function load(loader, opts) {
     function onDiscussionFrontendLoad(emitter) {
@@ -60,8 +60,7 @@ function load(loader, opts) {
     //   modify discussion-frontend to remove `fetch` polyfill and pass, if needed,
     //   opts.net = { json: fetchJson }
 
-    return loadScript
-        .loadScript(config.page.discussionFrontendUrl)
+    return loadScript(config.page.discussionFrontendUrl)
         .then(function() {
             init(window.guardian.app.discussion);
         })

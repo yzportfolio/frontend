@@ -5,7 +5,7 @@ import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
 import trackAdRender from 'commercial/modules/dfp/track-ad-render';
 import { commercialFeatures } from 'commercial/modules/commercial-features';
-import getAdvertById from 'commercial/modules/dfp/get-advert-by-id';
+import { getAdvertById } from 'commercial/modules/dfp/get-advert-by-id';
 import { register, unregister } from 'commercial/modules/messenger';
 
 var topSlotId = 'dfp-ad--top-above-nav';
@@ -83,7 +83,7 @@ function setupListeners() {
 function onFirstRender() {
     trackAdRender(topSlotId).then(function(isRendered) {
         if (isRendered) {
-            var advert = getAdvertById.getAdvertById(topSlotId);
+            var advert = getAdvertById(topSlotId);
             if (
                 advert &&
                 advert.size &&

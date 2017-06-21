@@ -1,5 +1,5 @@
 // @flow
-import ajax from 'lib/ajax';
+import { ajax } from 'lib/ajax';
 import config from 'lib/config';
 
 /**
@@ -22,7 +22,7 @@ var root = config.page.discussionApiUrl,
 Api.send = function(endpoint, method, data) {
     data = data || {};
 
-    var request = ajax.ajax({
+    var request = ajax({
         url: Api.root + endpoint,
         type: method === 'get' ? 'jsonp' : 'json',
         method: method,

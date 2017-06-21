@@ -1,7 +1,7 @@
 // @flow
 import raven from 'lib/raven';
 import fastdom from 'lib/fastdom-promise';
-import spacefinder from 'common/modules/spacefinder';
+import { findSpace, SpaceError } from 'common/modules/spacefinder';
 
 function SpaceFiller() {
     this.queue = Promise.resolve();
@@ -25,9 +25,7 @@ SpaceFiller.prototype.fillSpace = function(rules, writer, options) {
     return (this.queue = this.queue.then(insertNextContent).catch(onError));
 
     function insertNextContent() {
-        return spacefinder
-            .findSpace(rules, options)
-            .then(onSpacesFound, onNoSpacesFound);
+        return findSpace(rules, options).then(onSpacesFound, onNoSpacesFound);
     }
 
     function onSpacesFound(paragraphs) {
@@ -37,7 +35,7 @@ SpaceFiller.prototype.fillSpace = function(rules, writer, options) {
     }
 
     function onNoSpacesFound(ex) {
-        if (ex instanceof spacefinder.SpaceError) {
+        if (ex instanceof SpaceError) {
             return false;
         } else {
             throw ex;

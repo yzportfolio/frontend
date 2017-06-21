@@ -7,7 +7,7 @@ import raven from 'lib/raven';
 import config from 'lib/config';
 import detect from 'lib/detect';
 import mediator from 'lib/mediator';
-import scroller from 'lib/scroller';
+import { scrollToElement } from 'lib/scroller';
 import fastdom from 'lib/fastdom-promise';
 import fetchJson from 'lib/fetch-json';
 import DiscussionAnalytics from 'common/modules/analytics/discussion';
@@ -481,7 +481,7 @@ Loader.prototype.gotoComment = function(id, fromRequest) {
         // The comment didn't exist in the response
 
         // Scroll to toolbar and show message
-        scroller.scrollToElement(qwery('.js-discussion-toolbar'), 100);
+        scrollToElement(qwery('.js-discussion-toolbar'), 100);
         fastdom.write(function() {
             $('.js-discussion-main-comments').prepend(
                 '<div class="d-discussion__message d-discussion__message--error">The comment you requested could not be found.</div>'
@@ -499,7 +499,7 @@ Loader.prototype.gotoComment = function(id, fromRequest) {
 };
 
 Loader.prototype.gotoPage = function(page) {
-    scroller.scrollToElement(qwery('.js-discussion-toolbar'), 100);
+    scrollToElement(qwery('.js-discussion-toolbar'), 100);
     this.comments.relativeDates();
     this.loadComments({
         page: page,

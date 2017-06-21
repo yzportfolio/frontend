@@ -101,61 +101,61 @@ function submitSignUpForm(event) {
     }
 }
 
-export default {
-    init: function() {
-        var askQuestionLinks = $('.js-ask-question-link');
-        var isEmailSubmissionReadyElement = document.getElementById(
-            'js-storyquestion-is-email-submission-ready'
-        );
+const init = function() {
+    var askQuestionLinks = $('.js-ask-question-link');
+    var isEmailSubmissionReadyElement = document.getElementById(
+        'js-storyquestion-is-email-submission-ready'
+    );
 
-        var isEmailSubmissionReady = false;
+    var isEmailSubmissionReady = false;
 
-        if (isEmailSubmissionReadyElement) {
-            isEmailSubmissionReady = isEmailSubmissionReadyElement.dataset
-                .isEmailSubmissionReady
-                ? isEmailSubmissionReadyElement.dataset.isEmailSubmissionReady
-                : false;
-        }
+    if (isEmailSubmissionReadyElement) {
+        isEmailSubmissionReady = isEmailSubmissionReadyElement.dataset
+            .isEmailSubmissionReady
+            ? isEmailSubmissionReadyElement.dataset.isEmailSubmissionReady
+            : false;
+    }
 
-        askQuestionLinks.each(function(el) {
-            bean.on(el, 'click', function(event) {
-                askQuestion(event, isEmailSubmissionReady);
-                this.classList.add('is-clicked');
-            });
+    askQuestionLinks.each(function(el) {
+        bean.on(el, 'click', function(event) {
+            askQuestion(event, isEmailSubmissionReady);
+            this.classList.add('is-clicked');
         });
+    });
 
-        var answersEmailSignupForms = $('.js-storyquestion-email-signup-form');
+    var answersEmailSignupForms = $('.js-storyquestion-email-signup-form');
 
-        answersEmailSignupForms.each(function(el) {
-            bean.on(el, 'submit', submitSignUpForm);
-        });
+    answersEmailSignupForms.each(function(el) {
+        bean.on(el, 'submit', submitSignUpForm);
+    });
 
-        var storyQuestionsComponent = document.querySelector(
-            '.js-view-tracking-component'
-        );
-        var atomElement = $('.js-storyquestion-atom-id');
+    var storyQuestionsComponent = document.querySelector(
+        '.js-view-tracking-component'
+    );
+    var atomElement = $('.js-storyquestion-atom-id');
 
-        if (storyQuestionsComponent && atomElement) {
-            mediator.on('window:throttledScroll', function onScroll() {
-                var height = detect.getViewport().height;
-                var coords = storyQuestionsComponent.getBoundingClientRect();
-                var isStoryQuestionsInView =
-                    0 <= coords.top && coords.bottom <= height;
+    if (storyQuestionsComponent && atomElement) {
+        mediator.on('window:throttledScroll', function onScroll() {
+            var height = detect.getViewport().height;
+            var coords = storyQuestionsComponent.getBoundingClientRect();
+            var isStoryQuestionsInView =
+                0 <= coords.top && coords.bottom <= height;
 
-                if (isStoryQuestionsInView) {
-                    var atomId = atomElement.attr('id');
+            if (isStoryQuestionsInView) {
+                var atomId = atomElement.attr('id');
 
-                    if (atomId) {
-                        ophan.record({
-                            atomId: atomId.trim(),
-                            component: atomId.trim(),
-                            value: 'question_component_in_view',
-                        });
-                    }
-
-                    mediator.off('window:throttledScroll', onScroll);
+                if (atomId) {
+                    ophan.record({
+                        atomId: atomId.trim(),
+                        component: atomId.trim(),
+                        value: 'question_component_in_view',
+                    });
                 }
-            });
-        }
-    },
+
+                mediator.off('window:throttledScroll', onScroll);
+            }
+        });
+    }
 };
+
+export { init };

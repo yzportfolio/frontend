@@ -11,7 +11,7 @@ import { cleanUp, addSessionCookie } from 'lib/cookies';
 import mediator from 'lib/mediator';
 import { getUrlVars } from 'lib/url';
 import { catchErrorsWithContext } from 'lib/robust';
-import { remove as removeFromStorage } from 'lib/storage';
+import { local as storage } from 'lib/storage';
 import Foresee from 'common/modules/analytics/foresee-survey';
 import mediaListener from 'common/modules/analytics/media-listener';
 import interactionTracking from 'common/modules/analytics/interaction-tracking';
@@ -38,7 +38,7 @@ import { init as initCustomSmartAppBanner } from 'common/modules/ui/smartAppBann
 import Tabs from 'common/modules/ui/tabs';
 import Toggles from 'common/modules/ui/toggles';
 import breakingNews from 'common/modules/onward/breaking-news';
-import pinterest from 'common/modules/social/pinterest';
+import { initPinterest } from 'common/modules/social/pinterest';
 import hiddenShareToggle from 'common/modules/social/hidden-share-toggle';
 import membershipEngagementBanner from 'common/modules/commercial/membership-engagement-banner';
 import email from 'common/modules/email/email';
@@ -138,7 +138,7 @@ var modules = {
             'gu.recommendationsEnabled',
             'gu.abb3.exempt',
         ];
-        forEach(deprecatedKeys, removeFromStorage);
+        forEach(deprecatedKeys, storage.remove);
     },
 
     updateHistory: function() {
@@ -251,7 +251,7 @@ var modules = {
 
     initPinterest: function() {
         if (/Article|LiveBlog|Gallery|Video/.test(config.page.contentType)) {
-            pinterest.initPinterest();
+            initPinterest();
         }
     },
 

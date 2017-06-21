@@ -15,7 +15,7 @@ import {
     listCanRun,
 } from 'common/modules/email/run-checks';
 import { session as storage } from 'lib/storage';
-import googleAnalytics from 'common/modules/analytics/google';
+import { trackNonClickInteraction } from 'common/modules/analytics/google';
 import find from 'lodash/collections/find';
 import { waitForCheck } from 'common/modules/check-mediator';
 
@@ -234,7 +234,7 @@ var insertBottomOfArticle = function($iframeEl) {
             if (listConfig.insertMethod) {
                 fastdom.write(function() {
                     listConfig.insertMethod($iframeEl);
-                    googleAnalytics.trackNonClickInteraction(
+                    trackNonClickInteraction(
                         'rtrt | email form inline | article | ' +
                             listConfig.listId +
                             ' | sign-up shown'
@@ -244,7 +244,7 @@ var insertBottomOfArticle = function($iframeEl) {
             } else {
                 spaceFiller.fillSpace(getSpacefinderRules(), function(paras) {
                     $iframeEl.insertBefore(paras[0]);
-                    googleAnalytics.trackNonClickInteraction(
+                    trackNonClickInteraction(
                         'rtrt | email form inline | article | ' +
                             listConfig.listId +
                             ' | sign-up shown'

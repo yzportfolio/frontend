@@ -10,7 +10,7 @@ import toArray from 'lodash/collections/toArray';
 import proximityLoader from 'lib/proximity-loader';
 import reportError from 'lib/report-error';
 import relativeDates from 'common/modules/ui/relativedates';
-import FootballSnaps from 'facia/modules/ui/football-snaps';
+import { resizeForFootballSnaps } from 'facia/modules/ui/football-snaps';
 import once from 'lodash/functions/once';
 import find from 'lodash/collections/find';
 
@@ -57,7 +57,7 @@ function init() {
 function addCss(el, isResize) {
     setSnapPoint(el, isResize);
     if ($(el).hasClass('facia-snap--football')) {
-        FootballSnaps.resizeForFootballSnaps(el);
+        resizeForFootballSnaps(el);
     }
 }
 

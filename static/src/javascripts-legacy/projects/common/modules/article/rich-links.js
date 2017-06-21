@@ -9,7 +9,7 @@ import reportError from 'lib/report-error';
 import template from 'lodash/utilities/template';
 import fastdomPromise from 'lib/fastdom-promise';
 import spaceFiller from 'common/modules/article/space-filler';
-import imagesModule from 'common/modules/ui/images';
+import { upgradePictures } from 'common/modules/ui/images';
 import richLinkTagTmpl from 'raw-loader!common/views/content/richLinkTag.html';
 import contains from 'lodash/collections/contains';
 import 'common/modules/experiments/ab';
@@ -40,7 +40,7 @@ function upgradeRichLink(el) {
                     .html(resp.html)
                     .removeClass('element-rich-link--not-upgraded')
                     .addClass('element-rich-link--upgraded');
-                imagesModule.upgradePictures(el);
+                upgradePictures(el);
                 $('.submeta-container--break').removeClass(
                     'submeta-container--break'
                 );

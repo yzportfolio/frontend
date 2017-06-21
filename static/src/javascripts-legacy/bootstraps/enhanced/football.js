@@ -6,13 +6,13 @@ import config from 'lib/config';
 import fetchJson from 'lib/fetch-json';
 import page from 'lib/page';
 import reportError from 'lib/report-error';
-import Doughnut from 'common/modules/charts/table-doughnut';
+import { TableDoughnut } from 'common/modules/charts/table-doughnut';
 import football from 'common/modules/sport/football/football';
 import MatchInfo from 'common/modules/sport/football/match-info';
 import MatchListLive from 'common/modules/sport/football/match-list-live';
 import tagPageStats from 'common/modules/sport/football/tag-page-stats';
 import ScoreBoard from 'common/modules/sport/score-board';
-import rhc from 'common/modules/ui/rhc';
+import { addComponent } from 'common/modules/ui/rhc';
 import relativeDates from 'common/modules/ui/relativedates';
 
 function renderNav(match, callback) {
@@ -101,7 +101,7 @@ function renderExtras(extras, dropdownTemplate) {
             },
             function() {
                 extras.forEach(function(extra) {
-                    rhc.addComponent(extra.content, extra.importance);
+                    addComponent(extra.content, extra.importance);
                 });
             }
         );
@@ -204,7 +204,7 @@ function init() {
                             .fetch(container)
                             .then(function() {
                                 $('.js-chart', container).each(function(el) {
-                                    new Doughnut.TableDoughnut().render(el);
+                                    new TableDoughnut().render(el);
                                 });
                                 extras[0] = {
                                     name: 'Match stats',
@@ -311,7 +311,7 @@ function init() {
 
     page.isFootballStatsPage(function() {
         $('.js-chart').each(function(el) {
-            new Doughnut().render(el);
+            new TableDoughnut().render(el);
         });
     });
 

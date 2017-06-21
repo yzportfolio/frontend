@@ -5,10 +5,10 @@ import template from 'lodash/utilities/template';
 import config from 'lib/config';
 import detect from 'lib/detect';
 import page from 'lib/page';
-import Doughnut from 'common/modules/charts/table-doughnut';
+import { TableDoughnut } from 'common/modules/charts/table-doughnut';
 import Component from 'common/modules/component';
 import ScoreBoard from 'common/modules/sport/score-board';
-import rhc from 'common/modules/ui/rhc';
+import { addComponent } from 'common/modules/ui/rhc';
 
 function cricket() {
     var cricketScore,
@@ -94,7 +94,7 @@ function rugby() {
                     '</div>'
             ).each(function(container) {
                 $('.js-chart', container).each(function(el) {
-                    new Doughnut.TableDoughnut().render(el);
+                    new TableDoughnut().render(el);
                 });
                 var extras = [];
                 extras[0] = {
@@ -188,7 +188,7 @@ function renderExtras(extras, dropdownTemplate) {
             },
             function() {
                 extras.forEach(function(extra) {
-                    rhc.addComponent(extra.content, extra.importance);
+                    addComponent(extra.content, extra.importance);
                 });
             }
         );

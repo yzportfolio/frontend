@@ -3,7 +3,7 @@ import React from 'react/addons';
 import bonzo from 'bonzo';
 import fastdom from 'fastdom';
 import $ from 'lib/$';
-import scroller from 'lib/scroller';
+import { scrollTo } from 'lib/scroller';
 import detect from 'lib/detect';
 var HiddenInput = React.createClass({
     getInitialState: function() {
@@ -23,7 +23,7 @@ var HiddenInput = React.createClass({
                     var offsets = bonzo(
                         React.findDOMNode(this.refs.input)
                     ).offset();
-                    scroller.scrollTo(
+                    scrollTo(
                         offsets.top -
                             offsets.height * 1.5 -
                             $('.crossword__sticky-clue').offset().height,

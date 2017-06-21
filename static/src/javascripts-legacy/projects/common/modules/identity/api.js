@@ -1,6 +1,6 @@
 // @flow
 /*global escape:true */
-import ajax from 'lib/ajax';
+import { ajax } from 'lib/ajax';
 import utilAtob from 'lib/atob';
 import config from 'lib/config';
 import { getCookie } from 'lib/cookies';
@@ -100,19 +100,17 @@ Id.getUrl = function() {
  */
 Id.getUserFromApi = asyncCallMerger.mergeCalls(function(mergingCallback) {
     if (Id.isUserLoggedIn()) {
-        ajax
-            .ajax({
-                url: Id.idApiRoot + '/user/me',
-                type: 'jsonp',
-                crossOrigin: true,
-            })
-            .then(function(response) {
-                if (response.status === 'ok') {
-                    mergingCallback(response.user);
-                } else {
-                    mergingCallback(null);
-                }
-            });
+        ajax({
+            url: Id.idApiRoot + '/user/me',
+            type: 'jsonp',
+            crossOrigin: true,
+        }).then(function(response) {
+            if (response.status === 'ok') {
+                mergingCallback(response.user);
+            } else {
+                mergingCallback(null);
+            }
+        });
     } else {
         mergingCallback(null);
     }

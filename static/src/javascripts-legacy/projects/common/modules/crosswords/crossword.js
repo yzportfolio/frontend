@@ -4,8 +4,8 @@ import fastdom from 'fastdom';
 import $ from 'lib/$';
 import mediator from 'lib/mediator';
 import detect from 'lib/detect';
-import scroller from 'lib/scroller';
-import AnagramHelper from 'common/modules/crosswords/anagram-helper/main';
+import { scrollTo } from 'lib/scroller';
+import { AnagramHelper } from 'common/modules/crosswords/anagram-helper/main';
 import Clues from './clues';
 import Controls from './controls';
 import HiddenInput from './hidden-input';
@@ -369,7 +369,7 @@ var Crossword = React.createClass({
             })
         ) {
             if (this.returnPosition) {
-                scroller.scrollTo(this.returnPosition, 250, 'easeOutQuad');
+                scrollTo(this.returnPosition, 250, 'easeOutQuad');
             }
             this.returnPosition = null;
         }
@@ -721,7 +721,7 @@ var Crossword = React.createClass({
 
         var anagramHelper =
             this.state.showAnagramHelper &&
-            React.createElement(AnagramHelper.AnagramHelper, {
+            React.createElement(AnagramHelper, {
                 focussedEntry: focussed,
                 entries: this.props.data.entries,
                 grid: this.state.grid,

@@ -12,7 +12,7 @@ import MembershipEngagementBannerTests from 'common/modules/experiments/tests/me
 import assign from 'lodash/objects/assign';
 import find from 'lodash/collections/find';
 import { inlineSvg } from 'common/views/svgs';
-import segmentUtil from 'common/modules/experiments/segment-util';
+import { isInTest, variantFor } from 'common/modules/experiments/segment-util';
 import { epicEngagementBannerTests } from 'common/modules/experiments/acquisition-test-selector';
 import membershipEngagementBannerUtils from 'common/modules/commercial/membership-engagement-banner-parameters';
 import { isBlocked } from 'common/modules/commercial/membership-engagement-banner-block';
@@ -32,12 +32,12 @@ function getUserTest() {
     );
 
     return find(engagementBannerTests, function(test) {
-        return testCanBeRun(test) && segmentUtil.isInTest(test);
+        return testCanBeRun(test) && isInTest(test);
     });
 }
 
 function getUserVariant(test) {
-    return test ? segmentUtil.variantFor(test) : undefined;
+    return test ? variantFor(test) : undefined;
 }
 
 function buildCampaignCode(offering, campaignId, variantId) {

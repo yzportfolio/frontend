@@ -3,8 +3,8 @@ import config from 'lib/config';
 import template from 'lodash/utilities/template';
 import mediator from 'lib/mediator';
 import { showAdblockMsg } from 'common/modules/commercial/adblock-messages';
-import adblockConfig from 'common/modules/commercial/adblock-banner-config';
-import AdblockBanner from 'common/modules/adblock-banner';
+import { getBanners } from 'common/modules/commercial/adblock-banner-config';
+import { AdblockBanner } from 'common/modules/adblock-banner';
 import Message from 'common/modules/ui/message';
 import messageTemplate from 'raw-loader!common/views/membership-message.html';
 import { inlineSvg } from 'common/views/svgs';
@@ -58,7 +58,7 @@ function showAdblockMessage() {
 }
 
 function showAdblockBanner() {
-    var banners = adblockConfig.getBanners(config.page.edition);
+    var banners = getBanners(config.page.edition);
 
     var flatBanners = [];
     banners.forEach(function(bannerList) {
@@ -68,10 +68,7 @@ function showAdblockBanner() {
     var bannerToUse = sample(flatBanners);
 
     if (bannerToUse) {
-        new AdblockBanner.AdblockBanner(
-            bannerToUse.template,
-            bannerToUse
-        ).show();
+        new AdblockBanner(bannerToUse.template, bannerToUse).show();
     }
 }
 
