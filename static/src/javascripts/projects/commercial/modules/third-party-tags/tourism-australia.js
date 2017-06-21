@@ -24,4 +24,4 @@ const shouldRun: boolean =
 const url: string = getUrl(window.location);
 const useImage: boolean = true;
 
-export { shouldRun, url, useImage };
+export default { shouldRun, url, useImage };

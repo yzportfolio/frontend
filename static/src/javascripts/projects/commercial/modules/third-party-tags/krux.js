@@ -16,4 +16,4 @@ const getKruxSegments = (): Array<string> =>
 
 const shouldRun = config.switches.krux;
 
-export { shouldRun, url, getKruxSegments };
+export default { shouldRun, url, getKruxSegments };

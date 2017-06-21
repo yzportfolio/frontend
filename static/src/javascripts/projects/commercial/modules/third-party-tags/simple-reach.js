@@ -32,4 +32,4 @@ if (shouldRun) {
 
 const url = simpleReachUrl;
 
-export { shouldRun, url };
+export default { shouldRun, url };
