@@ -10,7 +10,7 @@ import {getCookie} from 'lib/cookies';
 import ElementInView from 'lib/element-inview';
 import fastdom from 'lib/fastdom-promise';
 import mediator from 'lib/mediator';
-import geolocation from 'lib/geolocation';
+import {getSync} from 'lib/geolocation';
 import {constructQuery} from 'lib/url';
 import {noop} from 'lib/noop';
 import {daysSince} from 'lib/time-utils';
@@ -83,7 +83,7 @@ function defaultCanEpicBeDisplayed(testConfig) {
 
     var worksWellWithPageTemplate = (typeof testConfig.pageCheck === 'function') ? testConfig.pageCheck(config.page) : config.page.contentType === 'Article' && !config.page.isMinuteArticle;
 
-    var storedGeolocation = geolocation.getSync();
+    var storedGeolocation = getSync();
     var inCompatibleLocation = testConfig.locations ? testConfig.locations.some(function(geo) {
         return geo === storedGeolocation;
     }) : true;

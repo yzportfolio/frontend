@@ -1,6 +1,6 @@
 import config from 'lib/config';
 import assign from 'lodash/objects/assign';
-import geolocation from 'lib/geolocation';
+import {getSupporterPaymentRegion} from 'lib/geolocation';
 
 var offerings = {
     membership: 'membership',
@@ -27,7 +27,7 @@ function engagementBannerCopy(cta) {
 // Prices taken from https://membership.theguardian.com/<region>/supporter
 function monthlySupporterCost(location) {
 
-    var region = geolocation.getSupporterPaymentRegion(location);
+    var region = getSupporterPaymentRegion(location);
 
     if (region === 'EU') {
 

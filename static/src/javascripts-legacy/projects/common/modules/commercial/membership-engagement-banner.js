@@ -15,7 +15,7 @@ import {epicEngagementBannerTests} from 'common/modules/experiments/acquisition-
 import membershipEngagementBannerUtils from 'common/modules/commercial/membership-engagement-banner-parameters';
 import membershipEngagementBannerBlock from 'common/modules/commercial/membership-engagement-banner-block';
 import ophan from 'ophan/ng';
-import geolocation from 'lib/geolocation';
+import {get as getLocation} from 'lib/geolocation';
 import {constructQuery} from 'lib/url';
 
 
@@ -171,7 +171,7 @@ function showBanner(params) {
 
 function init() {
 
-    return geolocation.get().then(function(location) {
+    return getLocation().then(function(location) {
 
         var bannerParams = deriveBannerParams(location);
 
