@@ -1,3 +1,4 @@
+// @flow
 import formInlineLabels from 'lib/formInlineLabels';
 import bean from 'bean';
 import fastdom from 'fastdom';

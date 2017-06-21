@@ -1,3 +1,4 @@
+// @flow
 import qwery from 'qwery';
 import config from 'lib/config';
 import Component from 'common/modules/component';

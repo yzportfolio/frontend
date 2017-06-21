@@ -1,3 +1,4 @@
+// @flow
 /*
  *  The register module is used to measure whether a module was executed, how
  *  long it took, and whether an error was caught. The data is sent to Ophan.

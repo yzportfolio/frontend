@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import config from 'lib/config';
 import fastdomPromise from 'lib/fastdom-promise';

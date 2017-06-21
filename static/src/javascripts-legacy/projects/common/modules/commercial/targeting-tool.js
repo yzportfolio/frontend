@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 
 function clean(string) {

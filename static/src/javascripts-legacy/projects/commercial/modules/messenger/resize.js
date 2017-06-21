@@ -1,3 +1,4 @@
+// @flow
 import assign from 'lodash/objects/assign';
 import fastdom from 'lib/fastdom-promise';
 import { register } from 'commercial/modules/messenger';

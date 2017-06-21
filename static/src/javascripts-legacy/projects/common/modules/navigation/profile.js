@@ -1,3 +1,4 @@
+// @flow
 import bonzo from 'bonzo';
 import fastdom from 'fastdom';
 import mediator from 'lib/mediator';

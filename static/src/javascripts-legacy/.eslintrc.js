@@ -1,4 +1,6 @@
+// @flow
 module.exports = {
+    parser: 'babel-eslint',
     env: {
         browser: true,
         jasmine: true,
@@ -13,7 +15,7 @@ module.exports = {
             jsx: true,
         },
     },
-    plugins: ['guardian-frontend', 'prettier'],
+    plugins: ['guardian-frontend', 'flowtype', 'flow-header', 'prettier'],
     rules: {
         camelcase: 'off',
         'no-shadow': 'off',
@@ -66,6 +68,7 @@ module.exports = {
                 tabWidth: 4,
             },
         ],
+        'flow-header/flow-header': 'error',
     },
     globals: {
         Promise: true,

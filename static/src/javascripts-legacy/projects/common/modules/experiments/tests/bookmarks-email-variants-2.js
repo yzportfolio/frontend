@@ -1,3 +1,4 @@
+// @flow
 import genericEmailTest from 'common/modules/experiments/tests/generic-email-variants';
 export default new genericEmailTest({
     id: 'BookmarksEmailVariants2',

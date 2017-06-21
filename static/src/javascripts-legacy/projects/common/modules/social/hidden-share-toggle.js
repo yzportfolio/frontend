@@ -1,3 +1,4 @@
+// @flow
 import fastdom from 'fastdom';
 import bean from 'bean';
 import $ from 'lib/$';

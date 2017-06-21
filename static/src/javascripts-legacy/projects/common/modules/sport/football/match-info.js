@@ -1,3 +1,4 @@
+// @flow
 import fetchJSON from 'lib/fetch-json';
 
 /**

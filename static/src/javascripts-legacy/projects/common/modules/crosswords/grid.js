@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import helpers from './helpers';
 import constants from './constants';

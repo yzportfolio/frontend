@@ -1,3 +1,4 @@
+// @flow
 import video from 'videojs';
 import 'videojs-ima';
 import 'videojs-embed';

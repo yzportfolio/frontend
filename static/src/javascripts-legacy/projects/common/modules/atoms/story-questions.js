@@ -1,3 +1,4 @@
+// @flow
 import mediator from 'lib/mediator';
 import detect from 'lib/detect';
 import $ from 'lib/$';

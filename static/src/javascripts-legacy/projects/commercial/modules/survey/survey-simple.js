@@ -1,3 +1,4 @@
+// @flow
 import fastdom from 'lib/fastdom-promise';
 import $ from 'lib/$';
 import template from 'lodash/utilities/template';

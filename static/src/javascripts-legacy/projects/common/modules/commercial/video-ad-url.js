@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import { constructQuery } from 'lib/url';
 import buildPageTargeting from 'commercial/modules/build-page-targeting';

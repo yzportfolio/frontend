@@ -1,3 +1,4 @@
+// @flow
 /* global StripeCheckout */
 import $ from 'lib/$';
 import bean from 'bean';

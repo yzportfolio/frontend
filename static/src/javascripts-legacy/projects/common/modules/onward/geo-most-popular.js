@@ -1,3 +1,4 @@
+// @flow
 /*
  Module: geo-most-popular.js
  Description: Shows popular trails for a given country.

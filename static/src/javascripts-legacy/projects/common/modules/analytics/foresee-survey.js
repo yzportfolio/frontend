@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import { getCookie } from 'lib/cookies';
 import detect from 'lib/detect';

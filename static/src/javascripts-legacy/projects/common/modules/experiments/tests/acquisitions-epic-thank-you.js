@@ -1,3 +1,4 @@
+// @flow
 import template from 'lodash/utilities/template';
 import { isPayingMember } from 'commercial/modules/user-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';

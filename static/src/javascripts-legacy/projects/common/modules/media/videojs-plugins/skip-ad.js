@@ -1,3 +1,4 @@
+// @flow
 import qwery from 'qwery';
 import bean from 'bean';
 import $ from 'lib/$';

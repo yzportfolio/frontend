@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import elementInView from 'lib/element-inview';
 import { local as storage } from 'lib/storage';

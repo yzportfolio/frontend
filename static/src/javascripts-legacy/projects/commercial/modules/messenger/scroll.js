@@ -1,3 +1,4 @@
+// @flow
 import { addEventListener } from 'lib/events';
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';

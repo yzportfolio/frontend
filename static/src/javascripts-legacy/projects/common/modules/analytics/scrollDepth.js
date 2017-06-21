@@ -1,3 +1,4 @@
+// @flow
 import mediator from 'lib/mediator';
 import assign from 'lodash/objects/assign';
 import bindAll from 'lodash/functions/bindAll';

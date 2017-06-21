@@ -1,3 +1,4 @@
+// @flow
 import mediator from 'lib/mediator';
 import forEach from 'lodash/collections/forEach';
 import config from 'lib/config';

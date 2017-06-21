@@ -1,3 +1,4 @@
+// @flow
 import mediator from 'lib/mediator';
 export default function() {
     if (window.matchMedia) {

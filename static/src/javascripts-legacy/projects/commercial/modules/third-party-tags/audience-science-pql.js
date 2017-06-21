@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import { constructQuery } from 'lib/url';
 

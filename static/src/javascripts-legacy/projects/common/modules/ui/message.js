@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import bean from 'bean';
 import userPrefs from 'common/modules/user-prefs';

@@ -1,3 +1,4 @@
+// @flow
 import youtube from 'bootstraps/enhanced/youtube';
 
 function init() {

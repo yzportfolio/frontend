@@ -1,3 +1,4 @@
+// @flow
 import { addEventListener } from 'lib/events';
 import config from 'lib/config';
 import detect from 'lib/detect';

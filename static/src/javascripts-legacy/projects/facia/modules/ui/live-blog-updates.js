@@ -1,3 +1,4 @@
+// @flow
 import bonzo from 'bonzo';
 import relativeDates from 'common/modules/ui/relativedates';
 import $ from 'lib/$';

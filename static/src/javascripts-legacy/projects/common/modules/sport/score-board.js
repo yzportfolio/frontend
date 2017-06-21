@@ -1,3 +1,4 @@
+// @flow
 import bonzo from 'bonzo';
 import detect from 'lib/detect';
 import $ from 'lib/$';

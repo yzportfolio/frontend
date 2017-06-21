@@ -1,3 +1,4 @@
+// @flow
 import raven from 'lib/raven';
 import fastdom from 'lib/fastdom-promise';
 import spacefinder from 'common/modules/spacefinder';

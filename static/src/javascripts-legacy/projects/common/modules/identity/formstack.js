@@ -1,3 +1,4 @@
+// @flow
 import bean from 'bean';
 import $ from 'lib/$';
 import idApi from 'common/modules/identity/api';

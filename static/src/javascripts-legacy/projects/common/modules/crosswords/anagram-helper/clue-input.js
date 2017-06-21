@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 var ClueInput = React.createClass({
     componentDidMount: function() {

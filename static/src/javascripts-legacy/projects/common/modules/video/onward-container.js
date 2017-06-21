@@ -1,3 +1,4 @@
+// @flow
 import bean from 'bean';
 import config from 'lib/config';
 import Component from 'common/modules/component';

@@ -1,3 +1,4 @@
+// @flow
 /**
     Formstack - composer integration
 

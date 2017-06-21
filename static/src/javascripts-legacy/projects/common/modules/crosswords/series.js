@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import proximityLoader from 'lib/proximity-loader';
 import Series from 'common/modules/onward/onward-content';

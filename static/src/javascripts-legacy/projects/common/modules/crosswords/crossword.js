@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import fastdom from 'fastdom';
 import $ from 'lib/$';

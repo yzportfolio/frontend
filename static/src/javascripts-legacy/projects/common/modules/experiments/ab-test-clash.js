@@ -1,3 +1,4 @@
+// @flow
 import some from 'lodash/collections/some';
 import { isInVariant } from 'common/modules/experiments/utils';
 import { abTestClashData } from 'common/modules/experiments/acquisition-test-selector';

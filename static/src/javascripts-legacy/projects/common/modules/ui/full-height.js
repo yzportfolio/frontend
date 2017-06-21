@@ -1,3 +1,4 @@
+// @flow
 import fastdomPromise from 'lib/fastdom-promise';
 import $ from 'lib/$';
 import mediator from 'lib/mediator';

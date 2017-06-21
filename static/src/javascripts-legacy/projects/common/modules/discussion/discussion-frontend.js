@@ -1,3 +1,4 @@
+// @flow
 import fastdom from 'fastdom';
 import { integerCommas } from 'lib/formatters';
 import mediator from 'lib/mediator';

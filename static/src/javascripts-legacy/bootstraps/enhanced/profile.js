@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import Identity from 'common/modules/identity/forms';
 import Formstack from 'common/modules/identity/formstack';

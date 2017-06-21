@@ -1,3 +1,4 @@
+// @flow
 import fastdom from 'fastdom';
 import $ from 'lib/$';
 import config from 'lib/config';

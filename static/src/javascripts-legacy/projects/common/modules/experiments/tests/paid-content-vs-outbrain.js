@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 export default function() {
     this.id = 'PaidContentVsOutbrain2';

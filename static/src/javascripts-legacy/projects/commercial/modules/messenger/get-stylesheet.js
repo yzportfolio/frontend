@@ -1,3 +1,4 @@
+// @flow
 import { register } from 'commercial/modules/messenger';
 var aProto = Array.prototype;
 

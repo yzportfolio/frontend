@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import fetchJson from 'lib/fetch-json';
 import reportError from 'lib/report-error';

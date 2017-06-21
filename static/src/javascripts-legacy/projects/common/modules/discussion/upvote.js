@@ -1,3 +1,4 @@
+// @flow
 import assign from 'lodash/objects/assign';
 import fastdom from 'lib/fastdom-promise';
 import reportError from 'lib/report-error';

@@ -1,3 +1,4 @@
+// @flow
 import bonzo from 'bonzo';
 import bean from 'bean';
 

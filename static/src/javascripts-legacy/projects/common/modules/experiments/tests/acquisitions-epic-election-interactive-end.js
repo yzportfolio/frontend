@@ -1,3 +1,4 @@
+// @flow
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import template from 'lodash/utilities/template';
 import epicControlTemplate from 'raw-loader!common/views/acquisitions-epic-control.html';

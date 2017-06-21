@@ -1,3 +1,4 @@
+// @flow
 import mediator from 'lib/mediator';
 import { session as storage } from 'lib/storage';
 import google from 'common/modules/analytics/google';

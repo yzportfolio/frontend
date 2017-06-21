@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import bean from 'bean';
 import $ from 'lib/$';

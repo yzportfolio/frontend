@@ -1,3 +1,4 @@
+// @flow
 import bonzo from 'bonzo';
 import $ from 'lib/$';
 import fetchJson from 'lib/fetch-json';

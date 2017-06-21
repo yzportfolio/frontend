@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import template from 'lodash/utilities/template';
 import mediator from 'lib/mediator';

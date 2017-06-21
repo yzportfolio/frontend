@@ -1,3 +1,4 @@
+// @flow
 /*global escape:true */
 import ajax from 'lib/ajax';
 import utilAtob from 'lib/atob';

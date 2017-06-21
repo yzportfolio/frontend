@@ -1,3 +1,4 @@
+// @flow
 // From https://github.com/edg2s/range-get-client-rects/blob/master/rangefix.js
 var isBroken,
     isGetClientRectsBroken = function() {

@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import accessibility from 'common/modules/accessibility/main';
 
@@ -6,7 +7,7 @@ var module = {
     init: init,
 };
 
-function init(callback) {
+function init(callback: Function) {
     var BinaryToggle = React.createClass({
         render: function() {
             return React.DOM.div(

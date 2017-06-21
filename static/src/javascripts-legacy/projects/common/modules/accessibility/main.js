@@ -1,3 +1,4 @@
+// @flow
 import userPrefs from 'common/modules/user-prefs';
 var KEY_PREFIX = 'accessibility';
 

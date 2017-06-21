@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import map from 'lodash/collections/map';
 var round = function(x) {

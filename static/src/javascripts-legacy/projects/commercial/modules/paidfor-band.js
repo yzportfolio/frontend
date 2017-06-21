@@ -1,3 +1,4 @@
+// @flow
 import sticky from 'common/modules/ui/sticky';
 import { commercialFeatures } from 'commercial/modules/commercial-features';
 

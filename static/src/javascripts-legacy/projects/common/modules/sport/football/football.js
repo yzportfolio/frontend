@@ -1,3 +1,4 @@
+// @flow
 import Component from 'common/modules/component';
 
 /**

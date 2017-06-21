@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import page from 'lib/page';
 import config from 'lib/config';

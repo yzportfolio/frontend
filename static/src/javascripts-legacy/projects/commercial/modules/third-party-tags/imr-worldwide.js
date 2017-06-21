@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 // The Nielsen NetRatings tag. Also known as IMR worldwide.
 var imrWorldwideUrl = '//secure-dcr.imrworldwide.com/novms/js/2/ggcmb510.js';

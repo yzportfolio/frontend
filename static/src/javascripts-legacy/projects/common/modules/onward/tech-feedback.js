@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import detect from 'lib/detect';
 import { getParticipations } from 'common/modules/experiments/utils';

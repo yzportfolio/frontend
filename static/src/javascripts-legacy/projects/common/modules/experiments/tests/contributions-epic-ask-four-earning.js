@@ -1,3 +1,4 @@
+// @flow
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 
 export default contributionsUtilities.makeABTest({

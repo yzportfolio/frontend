@@ -1,3 +1,4 @@
+// @flow
 /*
     Module: expandable.js
     Description: Used to make a list of items expand and contract

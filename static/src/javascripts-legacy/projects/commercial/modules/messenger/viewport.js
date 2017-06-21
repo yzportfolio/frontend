@@ -1,3 +1,4 @@
+// @flow
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
 import { register } from 'commercial/modules/messenger';

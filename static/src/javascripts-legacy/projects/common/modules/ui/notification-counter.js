@@ -1,3 +1,4 @@
+// @flow
 import mediator from 'lib/mediator';
 
 var originalPageTitle = document.title;

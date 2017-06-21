@@ -1,3 +1,4 @@
+// @flow
 import { commercialFeatures } from 'commercial/modules/commercial-features';
 import targetingTool from 'common/modules/commercial/targeting-tool';
 import acquisitionsCopy from 'common/modules/commercial/acquisitions-copy';

@@ -1,3 +1,4 @@
+// @flow
 import { commercialFeatures } from 'commercial/modules/commercial-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import config from 'lib/config';

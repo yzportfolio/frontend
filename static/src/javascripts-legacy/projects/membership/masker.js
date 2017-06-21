@@ -1,3 +1,4 @@
+// @flow
 /*
  *   Usage:
  *   el.addEventListener('keyup', maskInput(' ', 4)) // cc

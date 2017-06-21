@@ -1,3 +1,4 @@
+// @flow
 import bean from 'bean';
 import fastdom from 'fastdom';
 import mediator from 'lib/mediator';

@@ -1,3 +1,4 @@
+// @flow
 /*eslint-disable no-new*/
 /** Bootstrap for functionality common to all trail pages: article, live blogs, podcasts, videos, etc. */
 import fastdom from 'fastdom';

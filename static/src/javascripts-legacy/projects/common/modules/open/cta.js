@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import clamp from 'lib/clamp';
 import Component from 'common/modules/component';

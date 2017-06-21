@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import history from 'common/modules/onward/history';
 import reduce from 'lodash/collections/reduce';

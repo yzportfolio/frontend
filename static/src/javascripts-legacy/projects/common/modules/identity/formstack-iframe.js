@@ -1,3 +1,4 @@
+// @flow
 import bean from 'bean';
 import $ from 'lib/$';
 import mediator from 'lib/mediator';

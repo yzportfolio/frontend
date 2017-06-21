@@ -1,3 +1,4 @@
+// @flow
 import fetchJSON from 'lib/fetch-json';
 import fastdom from 'lib/fastdom-promise';
 import bonzo from 'bonzo';

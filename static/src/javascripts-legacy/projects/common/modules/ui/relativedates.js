@@ -1,3 +1,4 @@
+// @flow
 import $ from 'lib/$';
 import mediator from 'lib/mediator';
 import bonzo from 'bonzo';

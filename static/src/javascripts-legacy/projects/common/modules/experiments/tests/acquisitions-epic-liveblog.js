@@ -1,3 +1,4 @@
+// @flow
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import viewLog from 'common/modules/commercial/acquisitions-view-log';
 import template from 'lodash/utilities/template';

@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import DiscussionLoader from 'common/modules/discussion/loader';
 import qwery from 'qwery';

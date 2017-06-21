@@ -1,3 +1,4 @@
+// @flow
 function buildGoogleAnalyticsEvent(
     mediaEvent,
     metrics,

@@ -1,3 +1,4 @@
+// @flow
 import fastdom from 'fastdom';
 import id from 'common/modules/identity/api';
 import config from 'lib/config';

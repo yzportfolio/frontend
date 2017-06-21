@@ -1,3 +1,4 @@
+// @flow
 export default function(props) {
     return Object.keys(props)
         .filter(function(f) {

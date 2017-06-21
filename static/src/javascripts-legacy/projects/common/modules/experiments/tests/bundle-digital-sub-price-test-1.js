@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import { getCookie } from 'lib/cookies';
 import { commercialFeatures } from 'commercial/modules/commercial-features';

@@ -1,3 +1,4 @@
+// @flow
 export default {
     formatAmount: function(amount, glyph) {
         return amount ? glyph + (amount / 100).toFixed(2) : 'FREE';

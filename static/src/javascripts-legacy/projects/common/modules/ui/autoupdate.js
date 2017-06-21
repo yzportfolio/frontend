@@ -1,3 +1,4 @@
+// @flow
 /*
     Module: autoupdate.js
     Description: Used to load update fragments of the DOM from specfied endpoint

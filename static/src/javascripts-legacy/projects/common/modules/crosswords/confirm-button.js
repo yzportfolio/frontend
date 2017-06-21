@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import assign from 'lodash/objects/assign';
 import classNames from './classNames';

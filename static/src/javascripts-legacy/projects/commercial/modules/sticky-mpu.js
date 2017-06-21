@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import mediator from 'lib/mediator';
 import fastdom from 'lib/fastdom-promise';

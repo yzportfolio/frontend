@@ -1,3 +1,4 @@
+// @flow
 /*
  Module: history.js
  Description: Gets and sets users reading history

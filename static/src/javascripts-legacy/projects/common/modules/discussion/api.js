@@ -1,3 +1,4 @@
+// @flow
 import ajax from 'lib/ajax';
 import config from 'lib/config';
 

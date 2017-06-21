@@ -1,3 +1,4 @@
+// @flow
 import bonzo from 'bonzo';
 import qwery from 'qwery';
 import videojs from 'videojs';

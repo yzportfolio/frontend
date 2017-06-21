@@ -1,3 +1,4 @@
+// @flow
 /*
     Module: detect/detect.js                                                                                                 8
     Description: Used to detect various characteristics of the current browsing environment.

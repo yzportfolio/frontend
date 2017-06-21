@@ -1,3 +1,4 @@
+// @flow
 /**
  * This module is used to merge calls to async functions that use callbacks. Ensuring the target function is
  * called once only but the result is passed to all the call backs that require it.

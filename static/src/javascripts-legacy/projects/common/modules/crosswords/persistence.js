@@ -1,3 +1,4 @@
+// @flow
 import { local as storage } from 'lib/storage';
 import map from 'lodash/collections/map';
 

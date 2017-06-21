@@ -1,3 +1,4 @@
+// @flow
 import bean from 'bean';
 import debounce from 'lodash/functions/debounce';
 import assign from 'lodash/objects/assign';

@@ -1,3 +1,4 @@
+// @flow
 import Id from 'common/modules/identity/api';
 import { local as storage } from 'lib/storage';
 

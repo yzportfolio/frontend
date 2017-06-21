@@ -1,3 +1,5 @@
+// @flow
+
 /*eslint-disable no-new*/
 /* TODO - fix module constructors */
 import bean from 'bean';

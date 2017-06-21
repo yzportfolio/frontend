@@ -1,3 +1,4 @@
+// @flow
 import { getCookie, addCookie } from 'lib/cookies';
 import Message from 'common/modules/ui/message';
 import mediator from 'lib/mediator';

@@ -1,3 +1,4 @@
+// @flow
 import { checkElemsForVideos } from 'common/modules/atoms/youtube';
 
 function init() {

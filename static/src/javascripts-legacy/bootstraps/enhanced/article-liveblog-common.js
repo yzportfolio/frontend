@@ -1,3 +1,4 @@
+// @flow
 /** Bootstrap for functionality common to articles and live blogs */
 import fence from 'fence';
 import $ from 'lib/$';

@@ -1,3 +1,4 @@
+// @flow
 import bean from 'bean';
 import mediator from 'lib/mediator';
 import merge from 'lodash/objects/merge';

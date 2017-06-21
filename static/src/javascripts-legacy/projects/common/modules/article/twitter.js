@@ -1,3 +1,4 @@
+// @flow
 /*global twttr:false */
 
 import bonzo from 'bonzo';

@@ -1,3 +1,4 @@
+// @flow
 import constants from './constants';
 import findIndex from 'lodash/arrays/findIndex';
 import find from 'lodash/collections/find';

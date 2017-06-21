@@ -1,3 +1,4 @@
+// @flow
 import React from 'react/addons';
 import ConfirmButton from './confirm-button';
 var buttonClassName = 'button button--primary';

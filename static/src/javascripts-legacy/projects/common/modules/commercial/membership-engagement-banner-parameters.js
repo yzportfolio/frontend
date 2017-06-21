@@ -1,3 +1,4 @@
+// @flow
 import config from 'lib/config';
 import assign from 'lodash/objects/assign';
 import { getSupporterPaymentRegion } from 'lib/geolocation';

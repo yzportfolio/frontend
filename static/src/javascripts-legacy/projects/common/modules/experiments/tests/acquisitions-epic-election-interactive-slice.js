@@ -1,3 +1,4 @@
+// @flow
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import template from 'lodash/utilities/template';
 import epicSlice from 'raw-loader!common/views/acquisitions-epic-slice.html';
