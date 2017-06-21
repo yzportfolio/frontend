@@ -1,7 +1,7 @@
-import messenger from 'commercial/modules/messenger';
+import {register} from 'commercial/modules/messenger';
 var aProto = Array.prototype;
 
-messenger.register('get-styles', function(specs) {
+register('get-styles', function(specs) {
     return getStyles(specs, document.styleSheets);
 });
 export default getStyles;

@@ -5,7 +5,8 @@ import fastdom from 'lib/fastdom-promise';
 import trackAdRender from 'commercial/modules/dfp/track-ad-render';
 import commercialFeatures from 'commercial/modules/commercial-features';
 import getAdvertById from 'commercial/modules/dfp/get-advert-by-id';
-import messenger from 'commercial/modules/messenger';
+import {register, unregister} from 'commercial/modules/messenger';
+
 var topSlotId = 'dfp-ad--top-above-nav';
 var updateQueued = false;
 var win, header, headerHeight, topSlot, topSlotHeight, topSlotStyles, stickyBanner, scrollY;
@@ -60,7 +61,7 @@ function initState() {
 // We also listen for scroll events if we need to, to snap the slot in
 // place when it reaches the end of the header.
 function setupListeners() {
-    messenger.register('resize', onResize);
+    register('resize', onResize);
     if (!config.page.hasSuperStickyBanner) {
         events.addEventListener(win, 'scroll', onScroll, {
             passive: true
@@ -98,7 +99,7 @@ function onFirstRender() {
 function onResize(specs, _, iframe) {
     if (topSlot.contains(iframe)) {
         update(specs.height);
-        messenger.unregister('resize', onResize);
+        unregister('resize', onResize);
     }
 }
 

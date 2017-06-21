@@ -1,6 +1,7 @@
 import fastdom from 'lib/fastdom-promise';
-import messenger from 'commercial/modules/messenger';
-messenger.register('type', function(specs, ret, iframe) {
+import {register} from 'commercial/modules/messenger';
+
+register('type', function(specs, ret, iframe) {
     return setType(specs, iframe.closest('.js-ad-slot'));
 });
 

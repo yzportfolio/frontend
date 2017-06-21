@@ -1,7 +1,7 @@
 import assign from 'lodash/objects/assign';
 import fastdom from 'lib/fastdom-promise';
-import messenger from 'commercial/modules/messenger';
-messenger.register('resize', function(specs, ret, iframe) {
+import {register} from 'commercial/modules/messenger';
+register('resize', function(specs, ret, iframe) {
     var adSlot = iframe && iframe.closest('.js-ad-slot');
     return resize(specs, iframe, adSlot);
 });

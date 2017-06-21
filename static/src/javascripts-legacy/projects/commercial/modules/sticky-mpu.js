@@ -2,7 +2,8 @@ import config from 'lib/config';
 import mediator from 'lib/mediator';
 import fastdom from 'lib/fastdom-promise';
 import sticky from 'common/modules/ui/sticky';
-import messenger from 'commercial/modules/messenger';
+import {register, unregister} from 'commercial/modules/messenger';
+
 var noSticky = document.documentElement.classList.contains('has-no-sticky');
 var stickyElement;
 var rightSlot;
@@ -33,7 +34,7 @@ function stickyMpu(adSlot) {
             } : {};
             stickyElement = new sticky.Sticky(adSlot, options);
             stickyElement.init();
-            messenger.register('resize', onResize);
+            register('resize', onResize);
         }
         mediator.emit('page:commercial:sticky-mpu');
     });
@@ -41,7 +42,7 @@ function stickyMpu(adSlot) {
 
 function onResize(specs, _, iframe) {
     if (rightSlot.contains(iframe)) {
-        messenger.unregister('resize', onResize);
+        unregister('resize', onResize);
         stickyElement.updatePosition();
     }
 }

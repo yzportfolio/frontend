@@ -1,13 +1,14 @@
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
-import messenger from 'commercial/modules/messenger';
+import {register} from 'commercial/modules/messenger';
+
 var w = window;
 var iframes = {};
 var iframeCounter = 0;
 var taskQueued = false;
 var lastViewportRead, lastViewport;
 
-messenger.register('viewport', onMessage, {
+register('viewport', onMessage, {
     persist: true
 });
 lastViewportRead = fastdom.read(function() {
