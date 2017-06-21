@@ -1,7 +1,7 @@
 import bean from 'bean';
 import qwery from 'qwery';
 import config from 'lib/config';
-import commercialFeatures from 'commercial/modules/commercial-features';
+import {commercialFeatures} from 'commercial/modules/commercial-features';
 import mediator from 'lib/mediator';
 
 var EditionTest = function(edition, id, start, expiry, campaignPrefix) {
@@ -24,7 +24,7 @@ var EditionTest = function(edition, id, start, expiry, campaignPrefix) {
     // Required by the A/B testing framework - can not be async, unfortunately
     this.canRun = function() {
         var matchesEdition = config.page.edition == edition;
-        return matchesEdition && commercialFeatures.commercialFeatures.canReasonablyAskForMoney;
+        return matchesEdition && commercialFeatures.canReasonablyAskForMoney;
     };
 
     this.completer = function(complete) {

@@ -1,8 +1,8 @@
 import sticky from 'common/modules/ui/sticky';
-import commercialFeatures from 'commercial/modules/commercial-features';
+import { commercialFeatures } from 'commercial/modules/commercial-features';
 
 function init() {
-    if (!commercialFeatures.commercialFeatures.paidforBand) {
+    if (!commercialFeatures.paidforBand) {
         return Promise.resolve(false);
     }
 

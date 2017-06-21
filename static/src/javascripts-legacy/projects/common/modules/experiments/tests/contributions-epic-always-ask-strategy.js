@@ -1,4 +1,4 @@
-import commercialFeatures from 'commercial/modules/commercial-features';
+import {commercialFeatures} from 'commercial/modules/commercial-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import config from 'lib/config';
 import {getCookie} from 'lib/cookies';
@@ -9,7 +9,7 @@ function canBeDisplayed() {
     var isSensitive = config.page.isSensitive === true;
 
     return userHasNeverContributed &&
-        commercialFeatures.commercialFeatures.canReasonablyAskForMoney &&
+        commercialFeatures.canReasonablyAskForMoney &&
         worksWellWithPageTemplate && !isSensitive;
 }
 

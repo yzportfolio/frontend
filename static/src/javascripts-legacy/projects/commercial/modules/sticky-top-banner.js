@@ -3,7 +3,7 @@ import config from 'lib/config';
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
 import trackAdRender from 'commercial/modules/dfp/track-ad-render';
-import commercialFeatures from 'commercial/modules/commercial-features';
+import { commercialFeatures } from 'commercial/modules/commercial-features';
 import getAdvertById from 'commercial/modules/dfp/get-advert-by-id';
 import {register, unregister} from 'commercial/modules/messenger';
 
@@ -19,7 +19,7 @@ export default {
 };
 
 function init(_window) {
-    if (!commercialFeatures.commercialFeatures.stickyTopBannerAd) {
+    if (!commercialFeatures.stickyTopBannerAd) {
         return Promise.resolve();
     }
 

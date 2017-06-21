@@ -7,7 +7,7 @@ import fastdom from 'lib/fastdom-promise';
 import template from 'lodash/utilities/template';
 import testCanRunChecks from 'common/modules/experiments/test-can-run-checks';
 import {getTestVariantId} from 'common/modules/experiments/utils';
-import commercialFeatures from 'commercial/modules/commercial-features';
+import {commercialFeatures} from 'commercial/modules/commercial-features';
 import audienceScienceGateway from 'commercial/modules/third-party-tags/audience-science-gateway';
 import audienceSciencePql from 'commercial/modules/third-party-tags/audience-science-pql';
 import imrWorldwide from 'commercial/modules/third-party-tags/imr-worldwide';
@@ -55,7 +55,7 @@ function loadExternalContentWidget() {
 
 function init() {
 
-    if (!commercialFeatures.commercialFeatures.thirdPartyTags) {
+    if (!commercialFeatures.thirdPartyTags) {
         return Promise.resolve(false);
     }
 

@@ -3,7 +3,7 @@ import storage from 'lib/storage';
 import template from 'lodash/utilities/template';
 import Message from 'common/modules/ui/message';
 import messageTemplate from 'raw-loader!common/views/membership-message.html';
-import commercialFeatures from 'commercial/modules/commercial-features';
+import {commercialFeatures} from 'commercial/modules/commercial-features';
 import mediator from 'lib/mediator';
 import testCanRunChecks from 'common/modules/experiments/test-can-run-checks';
 import MembershipEngagementBannerTests from 'common/modules/experiments/tests/membership-engagement-banner-tests';
@@ -176,7 +176,7 @@ function init() {
         var bannerParams = deriveBannerParams(location);
 
         if (bannerParams && (storage.local.get('gu.alreadyVisited') || 0) >= bannerParams.minArticles) {
-            return commercialFeatures.commercialFeatures.asynchronous.canDisplayMembershipEngagementBanner.then(function(canShow) {
+            return commercialFeatures.asynchronous.canDisplayMembershipEngagementBanner.then(function(canShow) {
 
                 if (canShow) {
                     mediator.on('modules:onwards:breaking-news:ready', function(breakingShown) {

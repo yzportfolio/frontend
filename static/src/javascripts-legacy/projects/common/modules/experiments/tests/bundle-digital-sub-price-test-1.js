@@ -1,6 +1,6 @@
 import config from 'lib/config';
 import {getCookie} from 'lib/cookies';
-import commercialFeatures from 'commercial/modules/commercial-features';
+import {commercialFeatures} from 'commercial/modules/commercial-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import template from 'lodash/utilities/template';
 import contributionsEpicSingleButton from 'raw-loader!common/views/contributions-epic-single-button.html';
@@ -43,7 +43,7 @@ export default contributionsUtilities.makeABTest({
             config.page.edition.toUpperCase() === 'UK' &&
             config.page.contentType === 'Article' &&
             !config.page.isMinuteArticle &&
-            commercialFeatures.commercialFeatures.canReasonablyAskForMoney
+            commercialFeatures.canReasonablyAskForMoney
     },
 
     variants: [{
