@@ -5,7 +5,6 @@
  *   el.addEventListener('keyup', maskInput('', 4)) // cvc
  */
 function maskInput(delim, len) {
-
     var tokRegex = new RegExp('\\d{1,' + len + '}', 'g'),
         validRegex = new RegExp('\\d|(' + delim + ')|^', 'g'),
         delimRegex = new RegExp(delim, 'g'),
@@ -17,7 +16,10 @@ function maskInput(delim, len) {
                 value = '';
 
             if (toks && this.selectionEnd === this.value.length) {
-                if (this.value.length >= prevValue.length && toks[toks.length - 1].length === len) {
+                if (
+                    this.value.length >= prevValue.length &&
+                    toks[toks.length - 1].length === len
+                ) {
                     toks.push('');
                 }
 

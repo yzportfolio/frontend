@@ -1,5 +1,5 @@
 import Id from 'common/modules/identity/api';
-import {local as storage} from 'lib/storage';
+import { local as storage } from 'lib/storage';
 
 function CookieRefresh() {
     this.init = function() {
@@ -13,8 +13,14 @@ function CookieRefresh() {
         }
     };
 
-    CookieRefresh.prototype.shouldRefreshCookie = function(lastRefresh, currentTime) {
-        return (!lastRefresh) || (currentTime > (parseInt(lastRefresh, 10) + (1000 * 86400 * 30)));
+    CookieRefresh.prototype.shouldRefreshCookie = function(
+        lastRefresh,
+        currentTime
+    ) {
+        return (
+            !lastRefresh ||
+            currentTime > parseInt(lastRefresh, 10) + 1000 * 86400 * 30
+        );
     };
 }
 export default CookieRefresh;

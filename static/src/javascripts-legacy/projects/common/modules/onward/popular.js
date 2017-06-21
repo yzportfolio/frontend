@@ -11,8 +11,14 @@ function MostPopular() {
     // Don't even come ask...
     var sectionsWithoutPopular = ['info', 'global'];
     mediator.emit('register:begin', 'popular-in-section');
-    this.hasSection = config.page && config.page.section && !contains(sectionsWithoutPopular, config.page.section);
-    this.endpoint = '/most-read' + (this.hasSection ? '/' + config.page.section : '') + '.json';
+    this.hasSection =
+        config.page &&
+        config.page.section &&
+        !contains(sectionsWithoutPopular, config.page.section);
+    this.endpoint =
+        '/most-read' +
+        (this.hasSection ? '/' + config.page.section : '') +
+        '.json';
 }
 
 Component.define(MostPopular);

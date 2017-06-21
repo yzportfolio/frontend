@@ -1,5 +1,11 @@
-function buildGoogleAnalyticsEvent(mediaEvent, metrics, canonicalUrl, player, eventAction, videoId) {
-
+function buildGoogleAnalyticsEvent(
+    mediaEvent,
+    metrics,
+    canonicalUrl,
+    player,
+    eventAction,
+    videoId
+) {
     var category = 'media';
     var playerName = player;
     var action = eventAction(mediaEvent);
@@ -8,7 +14,7 @@ function buildGoogleAnalyticsEvent(mediaEvent, metrics, canonicalUrl, player, ev
         eventAction: action,
         eventLabel: canonicalUrl,
         dimension19: videoId,
-        dimension20: playerName
+        dimension20: playerName,
     };
     // Increment the appropriate metric based on the event type
     var metricId = metrics[mediaEvent.eventType];
@@ -30,5 +36,5 @@ function getGoogleAnalyticsEventAction(mediaEvent) {
 
 export default {
     buildGoogleAnalyticsEvent: buildGoogleAnalyticsEvent,
-    getGoogleAnalyticsEventAction: getGoogleAnalyticsEventAction
+    getGoogleAnalyticsEventAction: getGoogleAnalyticsEventAction,
 };

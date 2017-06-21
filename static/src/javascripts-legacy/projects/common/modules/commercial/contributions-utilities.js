@@ -1,19 +1,19 @@
-import {commercialFeatures} from 'commercial/modules/commercial-features';
+import { commercialFeatures } from 'commercial/modules/commercial-features';
 import targetingTool from 'common/modules/commercial/targeting-tool';
 import acquisitionsCopy from 'common/modules/commercial/acquisitions-copy';
-import {control} from 'common/modules/commercial/acquisitions-epic-testimonial-parameters';
+import { control } from 'common/modules/commercial/acquisitions-epic-testimonial-parameters';
 import viewLog from 'common/modules/commercial/acquisitions-view-log';
 import tailor from 'common/modules/tailor/tailor';
 import $ from 'lib/$';
 import config from 'lib/config';
-import {getCookie} from 'lib/cookies';
+import { getCookie } from 'lib/cookies';
 import ElementInView from 'lib/element-inview';
 import fastdom from 'lib/fastdom-promise';
 import mediator from 'lib/mediator';
-import {getSync} from 'lib/geolocation';
-import {constructQuery} from 'lib/url';
-import {noop} from 'lib/noop';
-import {daysSince} from 'lib/time-utils';
+import { getSync } from 'lib/geolocation';
+import { constructQuery } from 'lib/url';
+import { noop } from 'lib/noop';
+import { daysSince } from 'lib/time-utils';
 import assign from 'lodash/objects/assign';
 import template from 'lodash/utilities/template';
 import toArray from 'lodash/collections/toArray';
@@ -34,7 +34,7 @@ var isContributor = !!lastContributionDate;
 var maxViews = {
     days: 30,
     count: 4,
-    minDaysBetweenViews: 0
+    minDaysBetweenViews: 0,
 };
 
 var daysSinceLastContribution = daysSince(lastContributionDate);
@@ -45,12 +45,14 @@ function controlTemplate(variant, copy) {
         membershipUrl: variant.options.membershipURL,
         contributionUrl: variant.options.contributeURL,
         componentName: variant.options.componentName,
-        testimonialBlock: variant.options.testimonialBlock
+        testimonialBlock: variant.options.testimonialBlock,
     });
 }
 
 function doTagsMatch(options) {
-    return options.useTargetingTool ? targetingTool.isAbTestTargeted(options) : true;
+    return options.useTargetingTool
+        ? targetingTool.isAbTestTargeted(options)
+        : true;
 }
 
 // Returns an array containing:
@@ -74,28 +76,38 @@ function getTestimonialBlock(testimonialParameters, citeImage) {
         quoteSvg: testimonialParameters.quoteSvg,
         testimonialMessage: testimonialParameters.testimonialMessage,
         testimonialName: testimonialParameters.testimonialName,
-        citeImage: citeImage
+        citeImage: citeImage,
     });
 }
 
 function defaultCanEpicBeDisplayed(testConfig) {
-    var canReasonablyAskForMoney = testConfig.showToContributorsAndSupporters || commercialFeatures.canReasonablyAskForMoney;
+    var canReasonablyAskForMoney =
+        testConfig.showToContributorsAndSupporters ||
+        commercialFeatures.canReasonablyAskForMoney;
 
-    var worksWellWithPageTemplate = (typeof testConfig.pageCheck === 'function') ? testConfig.pageCheck(config.page) : config.page.contentType === 'Article' && !config.page.isMinuteArticle;
+    var worksWellWithPageTemplate = typeof testConfig.pageCheck === 'function'
+        ? testConfig.pageCheck(config.page)
+        : config.page.contentType === 'Article' && !config.page.isMinuteArticle;
 
     var storedGeolocation = getSync();
-    var inCompatibleLocation = testConfig.locations ? testConfig.locations.some(function(geo) {
-        return geo === storedGeolocation;
-    }) : true;
-    var locationCheck = (typeof testConfig.locationCheck === 'function') ? testConfig.locationCheck(storedGeolocation) : true;
+    var inCompatibleLocation = testConfig.locations
+        ? testConfig.locations.some(function(geo) {
+              return geo === storedGeolocation;
+          })
+        : true;
+    var locationCheck = typeof testConfig.locationCheck === 'function'
+        ? testConfig.locationCheck(storedGeolocation)
+        : true;
 
     var tagsMatch = doTagsMatch(testConfig);
 
-    return canReasonablyAskForMoney &&
+    return (
+        canReasonablyAskForMoney &&
         worksWellWithPageTemplate &&
         inCompatibleLocation &&
         locationCheck &&
         tagsMatch
+    );
 }
 
 function ContributionsABTest(options) {
@@ -133,18 +145,22 @@ function ContributionsABTest(options) {
      *
      * @type {Function}
      */
-    this.canRun = (function() {
+    this.canRun = function() {
         if (options.overrideCanRun) {
             return doTagsMatch(options) && options.canRun();
         }
 
-        var testCanRun = (typeof options.canRun === 'function') ? options.canRun() : true;
+        var testCanRun = typeof options.canRun === 'function'
+            ? options.canRun()
+            : true;
         return testCanRun && defaultCanEpicBeDisplayed(options);
-    }).bind(this);
+    }.bind(this);
 
-    this.variants = options.variants.map(function(variant) {
-        return new ContributionsABTestVariant(variant, this);
-    }.bind(this));
+    this.variants = options.variants.map(
+        function(variant) {
+            return new ContributionsABTestVariant(variant, this);
+        }.bind(this)
+    );
 }
 
 ContributionsABTest.prototype.makeEvent = function(event) {
@@ -154,8 +170,10 @@ ContributionsABTest.prototype.makeEvent = function(event) {
 function getCopy(useTailor) {
     if (useTailor) {
         return tailor.isRegular().then(function(regular) {
-            return regular ? acquisitionsCopy.regulars : acquisitionsCopy.control;
-        })
+            return regular
+                ? acquisitionsCopy.regulars
+                : acquisitionsCopy.control;
+        });
     }
 
     return new Promise(function(resolve) {
@@ -164,8 +182,15 @@ function getCopy(useTailor) {
 }
 
 function ContributionsABTestVariant(options, test) {
-    var trackingCampaignId = test.epic ? 'epic_' + test.campaignId : test.campaignId;
-    var campaignCode = getCampaignCode(test.campaignPrefix, test.campaignId, options.id, test.campaignSuffix);
+    var trackingCampaignId = test.epic
+        ? 'epic_' + test.campaignId
+        : test.campaignId;
+    var campaignCode = getCampaignCode(
+        test.campaignPrefix,
+        test.campaignId,
+        options.id,
+        test.campaignSuffix
+    );
 
     this.id = options.id;
 
@@ -174,11 +199,16 @@ function ContributionsABTestVariant(options, test) {
         isUnlimited: options.isUnlimited || false,
         campaignCode: campaignCode,
         campaignCodes: [campaignCode],
-        contributeURL: options.contributeURL || this.getURL(contributionsBaseURL, campaignCode),
-        membershipURL: options.membershipURL || this.getURL(membershipBaseURL, campaignCode),
+        contributeURL:
+            options.contributeURL ||
+                this.getURL(contributionsBaseURL, campaignCode),
+        membershipURL:
+            options.membershipURL ||
+                this.getURL(membershipBaseURL, campaignCode),
         componentName: 'mem_acquisition_' + trackingCampaignId + '_' + this.id,
         template: options.template || controlTemplate,
-        testimonialBlock: options.testimonialBlock || getTestimonialBlock(control),
+        testimonialBlock:
+            options.testimonialBlock || getTestimonialBlock(control),
         blockEngagementBanner: options.blockEngagementBanner || false,
         engagementBannerParams: options.engagementBannerParams || {},
         isOutbrainCompliant: options.isOutbrainCompliant || false,
@@ -187,8 +217,9 @@ function ContributionsABTestVariant(options, test) {
     };
 
     this.test = function() {
-        var displayEpic = (typeof options.canEpicBeDisplayed === 'function') ?
-            options.canEpicBeDisplayed(test) : true;
+        var displayEpic = typeof options.canEpicBeDisplayed === 'function'
+            ? options.canEpicBeDisplayed(test)
+            : true;
 
         if (!displayEpic) {
             return;
@@ -198,117 +229,168 @@ function ContributionsABTestVariant(options, test) {
         var onView = options.onView || noop;
 
         function render(templateFn) {
-            return getCopy(options.useTailoredCopyForRegulars).then(function(copy) {
-                var template = templateFn || this.options.template;
-                return template(this, copy);
-            }.bind(this)).then(function(template) {
-                var component = $.create(template);
+            return getCopy(options.useTailoredCopyForRegulars)
+                .then(
+                    function(copy) {
+                        var template = templateFn || this.options.template;
+                        return template(this, copy);
+                    }.bind(this)
+                )
+                .then(function(template) {
+                    var component = $.create(template);
 
-                mediator.emit('register:begin', trackingCampaignId);
+                    mediator.emit('register:begin', trackingCampaignId);
 
-                return fastdom.write(function() {
-                    var targets = [];
+                    return fastdom.write(
+                        function() {
+                            var targets = [];
 
-                    if (!options.insertAtSelector) {
-                        targets = getTargets('.submeta', false);
-                    } else {
-                        targets = getTargets(options.insertAtSelector, options.insertMultiple);
-                    }
+                            if (!options.insertAtSelector) {
+                                targets = getTargets('.submeta', false);
+                            } else {
+                                targets = getTargets(
+                                    options.insertAtSelector,
+                                    options.insertMultiple
+                                );
+                            }
 
-                    if (targets.length > 0) {
-                        if (options.insertAfter) {
-                            component.insertAfter(targets);
-                        } else {
-                            component.insertBefore(targets);
-                        }
+                            if (targets.length > 0) {
+                                if (options.insertAfter) {
+                                    component.insertAfter(targets);
+                                } else {
+                                    component.insertBefore(targets);
+                                }
 
-                        mediator.emit(test.insertEvent, component);
-                        onInsert(component);
+                                mediator.emit(test.insertEvent, component);
+                                onInsert(component);
 
-                        component.each(function(element) {
-                            // top offset of 18 ensures view only counts when half of element is on screen
-                            var elementInView = ElementInView(element, window, {
-                                top: 18
-                            });
+                                component.each(function(element) {
+                                    // top offset of 18 ensures view only counts when half of element is on screen
+                                    var elementInView = ElementInView(
+                                        element,
+                                        window,
+                                        {
+                                            top: 18,
+                                        }
+                                    );
 
-                            elementInView.on('firstview', function() {
-                                viewLog.logView(test.id);
-                                mediator.emit(test.viewEvent);
-                                mediator.emit('register:end', trackingCampaignId);
-                                onView(this);
-                            });
-                        });
-                    }
-                }.bind(this));
-            });
+                                    elementInView.on('firstview', function() {
+                                        viewLog.logView(test.id);
+                                        mediator.emit(test.viewEvent);
+                                        mediator.emit(
+                                            'register:end',
+                                            trackingCampaignId
+                                        );
+                                        onView(this);
+                                    });
+                                });
+                            }
+                        }.bind(this)
+                    );
+                });
         }
 
-        return (typeof options.test === 'function') ? options.test(render.bind(this), this, test) : render.apply(this);
+        return typeof options.test === 'function'
+            ? options.test(render.bind(this), this, test)
+            : render.apply(this);
     };
 
     this.registerIframeListener();
-    this.registerListener('impression', 'impressionOnInsert', test.insertEvent, options);
+    this.registerListener(
+        'impression',
+        'impressionOnInsert',
+        test.insertEvent,
+        options
+    );
     this.registerListener('success', 'successOnView', test.viewEvent, options);
 }
 
-function getCampaignCode(campaignCodePrefix, campaignID, id, campaignCodeSuffix) {
-    var suffix = campaignCodeSuffix ? ('_' + campaignCodeSuffix) : '';
+function getCampaignCode(
+    campaignCodePrefix,
+    campaignID,
+    id,
+    campaignCodeSuffix
+) {
+    var suffix = campaignCodeSuffix ? '_' + campaignCodeSuffix : '';
     return campaignCodePrefix + '_' + campaignID + '_' + id + suffix;
 }
 
 ContributionsABTestVariant.prototype.getURL = function(base, campaignCode) {
     var params = {
         REFPVID: (config.ophan && config.ophan.pageViewId) || 'not_found',
-        INTCMP: campaignCode
+        INTCMP: campaignCode,
     };
 
     return base + '?' + constructQuery(params);
 };
 
-ContributionsABTestVariant.prototype.contributionsURLBuilder = function(codeModifier) {
-    return this.getURL(contributionsBaseURL, codeModifier(this.options.campaignCode));
+ContributionsABTestVariant.prototype.contributionsURLBuilder = function(
+    codeModifier
+) {
+    return this.getURL(
+        contributionsBaseURL,
+        codeModifier(this.options.campaignCode)
+    );
 };
 
-ContributionsABTestVariant.prototype.membershipURLBuilder = function(codeModifier) {
-    return this.getURL(membershipBaseURL, codeModifier(this.options.campaignCode));
+ContributionsABTestVariant.prototype.membershipURLBuilder = function(
+    codeModifier
+) {
+    return this.getURL(
+        membershipBaseURL,
+        codeModifier(this.options.campaignCode)
+    );
 };
 
-ContributionsABTestVariant.prototype.registerListener = function(type, defaultFlag, event, options) {
+ContributionsABTestVariant.prototype.registerListener = function(
+    type,
+    defaultFlag,
+    event,
+    options
+) {
     if (options[type]) this[type] = options[type];
     else if (options[defaultFlag]) {
-        this[type] = (function(track) {
+        this[type] = function(track) {
             return mediator.on(event, track);
-        }).bind(this);
+        }.bind(this);
     }
 };
 
 ContributionsABTestVariant.prototype.registerIframeListener = function() {
     if (!this.options.usesIframe) return;
 
-    window.addEventListener('message', function(message) {
-        var iframe = document.getElementById(this.options.iframeId);
+    window.addEventListener(
+        'message',
+        function(message) {
+            var iframe = document.getElementById(this.options.iframeId);
 
-        if (iframe) {
-            try {
-                var data = JSON.parse(message.data);
+            if (iframe) {
+                try {
+                    var data = JSON.parse(message.data);
 
-                if (data.type === 'set-height' && data.value) {
-                    iframe.style.height = data.value + 'px';
+                    if (data.type === 'set-height' && data.value) {
+                        iframe.style.height = data.value + 'px';
+                    }
+                } catch (e) {
+                    return;
                 }
-            } catch (e) {
-                return;
             }
-        }
-    }.bind(this));
-}
+        }.bind(this)
+    );
+};
 
 // Utility function to build variants with common properties.
 function variantBuilderFactory(commonVariantProps) {
     return function(id, variantProps) {
-        return assign({}, commonVariantProps, {
-            id: id
-        }, variantProps)
-    }
+        return assign(
+            {},
+            commonVariantProps,
+            {
+                id: id,
+            },
+            variantProps
+        );
+    };
 }
 
 export default {
@@ -322,5 +404,5 @@ export default {
     getTestimonialBlock: getTestimonialBlock,
     variantBuilderFactory: variantBuilderFactory,
     daysSinceLastContribution: daysSinceLastContribution,
-    isContributor: isContributor
+    isContributor: isContributor,
 };

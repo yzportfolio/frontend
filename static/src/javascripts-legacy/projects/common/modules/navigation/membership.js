@@ -1,4 +1,4 @@
-import {isPayingMember} from 'commercial/modules/user-features';
+import { isPayingMember } from 'commercial/modules/user-features';
 import fastdom from 'lib/fastdom-promise';
 import $ from 'lib/$';
 

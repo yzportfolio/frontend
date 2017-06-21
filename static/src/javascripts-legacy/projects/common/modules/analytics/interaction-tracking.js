@@ -1,7 +1,7 @@
 import mediator from 'lib/mediator';
-import {session as storage} from 'lib/storage';
+import { session as storage } from 'lib/storage';
 import google from 'common/modules/analytics/google';
-import {catchErrorsWithContext} from 'lib/robust';
+import { catchErrorsWithContext } from 'lib/robust';
 var NG_STORAGE_KEY = 'gu.analytics.referrerVars';
 var loc = document.location;
 
@@ -12,9 +12,12 @@ function addHandlers() {
         // We don't want tracking errors to terminate the event emitter, as
         // this will mean other event listeners will not be called.
         catchErrorsWithContext([
-            ['c-analytics', function() {
-                trackClick(spec);
-            }],
+            [
+                'c-analytics',
+                function() {
+                    trackClick(spec);
+                },
+            ],
         ]);
     });
 }
@@ -62,7 +65,7 @@ function trackInternalLinkClick(spec) {
     var storeObj = {
         path: loc.pathname,
         tag: spec.tag || 'untracked',
-        time: new Date().getTime()
+        time: new Date().getTime(),
     };
     storage.set(NG_STORAGE_KEY, storeObj);
 }
@@ -86,5 +89,5 @@ function init(options) {
 export default {
     init: init,
     trackClick: trackClick,
-    trackNonClickInteraction: trackNonClickInteraction
+    trackNonClickInteraction: trackNonClickInteraction,
 };

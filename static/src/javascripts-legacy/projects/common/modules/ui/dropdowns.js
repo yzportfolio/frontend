@@ -4,12 +4,14 @@ import bean from 'bean';
 var s = {
     container: '.dropdown',
     button: '.dropdown__button',
-    content: '.dropdown__content'
+    content: '.dropdown__content',
 };
 
 function init() {
     bean.on(document.body, 'click', s.button, function(e) {
-        var $container = bonzo($.ancestor(e.currentTarget, s.container.substring(1)));
+        var $container = bonzo(
+            $.ancestor(e.currentTarget, s.container.substring(1))
+        );
         $container.toggleClass('dropdown--active');
         updateAria($container);
     });
@@ -26,5 +28,5 @@ function updateAria($container) {
 
 export default {
     init: init,
-    updateAria: updateAria
+    updateAria: updateAria,
 };

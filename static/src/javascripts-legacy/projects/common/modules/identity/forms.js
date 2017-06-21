@@ -2,7 +2,8 @@ import bean from 'bean';
 import bonzo from 'bonzo';
 
 function forgottenEmail() {
-    var hashEmail, input,
+    var hashEmail,
+        input,
         form = document.body.querySelector('.js-reset-form');
     if (form) {
         hashEmail = window.location.hash.match('email=([^&#]*)');
@@ -14,7 +15,9 @@ function forgottenEmail() {
 }
 
 function forgottenPassword() {
-    var email, link, href,
+    var email,
+        link,
+        href,
         form = document.body.querySelector('.js-signin-form');
     if (form) {
         email = form.querySelector('.js-signin-email');
@@ -31,13 +34,19 @@ function forgottenPassword() {
 }
 
 function passwordToggle() {
-    var password, toggleClass, toggleTmpl, $toggle,
+    var password,
+        toggleClass,
+        toggleTmpl,
+        $toggle,
         form = document.body.querySelector('.js-register-form');
     if (form) {
         password = form.querySelector('.js-register-password');
         toggleClass = 'js-toggle-password';
-        toggleTmpl = '<div class="form-field__note form-field__note--right mobile-only">' +
-            '<a href="#toggle-password" class="' + toggleClass + '" data-password-label="Show password"' +
+        toggleTmpl =
+            '<div class="form-field__note form-field__note--right mobile-only">' +
+            '<a href="#toggle-password" class="' +
+            toggleClass +
+            '" data-password-label="Show password"' +
             ' data-text-label="Hide password" data-link-name="Toggle password field">Show password</a>' +
             '</div>';
         $toggle = bonzo(bonzo.create(toggleTmpl)).insertBefore(password);
@@ -46,7 +55,9 @@ function passwordToggle() {
         bean.add($toggle[0], '.' + toggleClass, 'click', function(e) {
             e.preventDefault();
             var link = e.target,
-                inputType = password.getAttribute('type') === 'password' ? 'text' : 'password',
+                inputType = password.getAttribute('type') === 'password'
+                    ? 'text'
+                    : 'password',
                 label = link.getAttribute('data-' + inputType + '-label');
             password.setAttribute('type', inputType);
             bonzo(link).text(label);
@@ -57,5 +68,5 @@ function passwordToggle() {
 export default {
     forgottenEmail: forgottenEmail,
     forgottenPassword: forgottenPassword,
-    passwordToggle: passwordToggle
+    passwordToggle: passwordToggle,
 };

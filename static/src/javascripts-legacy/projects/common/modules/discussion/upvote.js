@@ -1,28 +1,37 @@
 import assign from 'lodash/objects/assign';
 import fastdom from 'lib/fastdom-promise';
 import reportError from 'lib/report-error';
-import {getUrlVars, constructQuery} from 'lib/url';
+import { getUrlVars, constructQuery } from 'lib/url';
 var RECOMMENDATION_CLASS = 'js-recommend-comment';
 var TOOLTIP_CLASS = 'js-rec-tooltip';
 
-function handle(target, container, user, discussionApi, allowAnonymousRecommends) {
+function handle(
+    target,
+    container,
+    user,
+    discussionApi,
+    allowAnonymousRecommends
+) {
     if (!allowAnonymousRecommends && !user) {
         target.setAttribute('data-link-name', 'Recommend comment anonymous');
         return showSignInTooltip(target);
-    } else if ((allowAnonymousRecommends || user) && isOpenForRecommendations(container)) {
+    } else if (
+        (allowAnonymousRecommends || user) &&
+        isOpenForRecommendations(container)
+    ) {
         var id = target.getAttribute('data-comment-id');
 
         return Promise.all([
-                setClicked(target),
-                discussionApi.recommendComment(id)
-            ])
+            setClicked(target),
+            discussionApi.recommendComment(id),
+        ])
             .then(function() {
                 return setRecommended(target);
             })
             .catch(function(ex) {
                 return unsetClicked(target).then(function() {
                     reportError(ex, {
-                        feature: 'comments-recommend'
+                        feature: 'comments-recommend',
                     });
                 });
             });
@@ -69,9 +78,16 @@ function updateReturnUrl(links, returnLink) {
         var url = links[i].getAttribute('href');
         var baseUrl = url.split('?')[0];
         var query = getUrlVars(url.split('?')[1] || '&');
-        links[i].setAttribute('href', baseUrl + '?' + constructQuery(assign(query, {
-            returnUrl: returnLink
-        })));
+        links[i].setAttribute(
+            'href',
+            baseUrl +
+                '?' +
+                constructQuery(
+                    assign(query, {
+                        returnUrl: returnLink,
+                    })
+                )
+        );
     }
 }
 
@@ -83,5 +99,5 @@ function closeTooltip() {
 
 export default {
     handle: handle,
-    closeTooltip: closeTooltip
+    closeTooltip: closeTooltip,
 };

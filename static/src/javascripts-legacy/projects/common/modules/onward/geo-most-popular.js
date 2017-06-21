@@ -31,12 +31,13 @@ GeoMostPopular.prototype.error = function(error) {
 };
 
 export default {
-
     render: once(function() {
-        new GeoMostPopular().fetch(qwery('.js-components-container'), 'rightHtml');
+        new GeoMostPopular().fetch(
+            qwery('.js-components-container'),
+            'rightHtml'
+        );
         return promise;
     }),
 
-    whenRendered: promise
-
+    whenRendered: promise,
 };

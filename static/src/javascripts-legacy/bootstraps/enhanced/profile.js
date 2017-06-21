@@ -25,7 +25,6 @@ var modules = {
                 } else {
                     new Formstack(el, id, config).init();
                 }
-
             });
 
             // Load old js if necessary
@@ -84,7 +83,7 @@ var modules = {
         mediator.on('page:identity:ready', function() {
             DeleteAccount.init();
         });
-    }
+    },
 };
 
 export default {
@@ -102,5 +101,5 @@ export default {
         PublicProfile.init();
 
         mediator.emit('page:identity:ready', config);
-    }
+    },
 };

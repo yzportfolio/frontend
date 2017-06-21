@@ -17,8 +17,8 @@ var isAcross = function(clue) {
 };
 var getLastCellInClue = function(clue) {
     var ax = {
-        'true': 'x',
-        'false': 'y'
+        true: 'x',
+        false: 'y',
     };
     var axis = ax[isAcross(clue)];
     var otherAxis = ax[!isAcross(clue)];
@@ -41,27 +41,33 @@ var isLastCellInClue = function(cell, clue) {
 };
 
 var getNextClueInGroup = function(entries, clue) {
-    var newClueId = clue.group[findIndex(clue.group, function(id) {
-        return id === clue.id;
-    }) + 1];
+    var newClueId =
+        clue.group[
+            findIndex(clue.group, function(id) {
+                return id === clue.id;
+            }) + 1
+        ];
     return find(entries, {
-        id: newClueId
+        id: newClueId,
     });
 };
 
 var getPreviousClueInGroup = function(entries, clue) {
-    var newClueId = clue.group[findIndex(clue.group, function(id) {
-        return id === clue.id;
-    }) - 1];
+    var newClueId =
+        clue.group[
+            findIndex(clue.group, function(id) {
+                return id === clue.id;
+            }) - 1
+        ];
     return find(entries, {
-        id: newClueId
+        id: newClueId,
     });
 };
 
 var getGroupEntriesForClue = function(entries, group) {
     return map(group, function(clueId) {
         return find(entries, {
-            id: clueId
+            id: clueId,
         });
     });
 };
@@ -71,18 +77,19 @@ var clueIsInGroup = function clueIsInGroup(clue) {
 };
 
 var getAllSeparatorsForGroup = function(clues) {
-
     var k = {};
 
     forEach([',', '-'], function(separator) {
         var cnt = 0;
-        var flattenedSeparators = flatten(map(clues, function(clue) {
-            var seps = map(clue.separatorLocations[separator], function(s) {
-                return s + cnt;
-            });
-            cnt += clue.length;
-            return seps;
-        }));
+        var flattenedSeparators = flatten(
+            map(clues, function(clue) {
+                var seps = map(clue.separatorLocations[separator], function(s) {
+                    return s + cnt;
+                });
+                cnt += clue.length;
+                return seps;
+            })
+        );
         k[separator] = flattenedSeparators;
     });
     return k;
@@ -97,10 +104,14 @@ var getNumbersForGroupedEntries = function(clueGroup) {
 };
 
 var getTtotalLengthOfGroup = function(clueGroup) {
-    var length = reduce(clueGroup, function(total, clue) {
-        var t = total += clue.length;
-        return t;
-    }, 0);
+    var length = reduce(
+        clueGroup,
+        function(total, clue) {
+            var t = (total += clue.length);
+            return t;
+        },
+        0
+    );
     return length;
 };
 
@@ -113,7 +124,7 @@ var getAnagramClueData = function(entries, clue) {
             length: getTtotalLengthOfGroup(groupEnts),
             separatorLocations: getAllSeparatorsForGroup(groupEnts),
             direction: '',
-            clue: getClueForGroupedEntries(groupEnts)
+            clue: getClueForGroupedEntries(groupEnts),
         };
     }
     return clue;
@@ -124,22 +135,30 @@ var cluesAreInGroup = function(clue, otherClue) {
 };
 
 var cellsForEntry = function(entry) {
-    return isAcross(entry) ? map(range(entry.position.x, entry.position.x + entry.length), function(x) {
-        return {
-            x: x,
-            y: entry.position.y
-        };
-    }) : map(range(entry.position.y, entry.position.y + entry.length), function(y) {
-        return {
-            x: entry.position.x,
-            y: y
-        };
-    });
+    return isAcross(entry)
+        ? map(
+              range(entry.position.x, entry.position.x + entry.length),
+              function(x) {
+                  return {
+                      x: x,
+                      y: entry.position.y,
+                  };
+              }
+          )
+        : map(
+              range(entry.position.y, entry.position.y + entry.length),
+              function(y) {
+                  return {
+                      x: entry.position.x,
+                      y: y,
+                  };
+              }
+          );
 };
 
 var checkClueHasBeenAnswered = function(grid, entry) {
     return every(cellsForEntry(entry), function(position) {
-        return (/^[A-Z]$/.test(grid[position.x][position.y].value));
+        return /^[A-Z]$/.test(grid[position.x][position.y].value);
     });
 };
 
@@ -150,9 +169,11 @@ var otherDirection = function(direction) {
 var cellsForClue = function(entries, clue) {
     if (clueIsInGroup(clue)) {
         var entriesForClue = getGroupEntriesForClue(entries, clue.group);
-        return flatten(map(entriesForClue, function(entry) {
-            return cellsForEntry(entry);
-        }));
+        return flatten(
+            map(entriesForClue, function(entry) {
+                return cellsForEntry(entry);
+            })
+        );
     } else {
         return cellsForEntry(clue);
     }
@@ -173,7 +194,10 @@ var getClearableCellsForEntry = function(grid, clueMap, entries, entry) {
         var clues = cluesFor(clueMap, cell.x, cell.y);
         var otherClue = clues[direction];
         if (otherClue) {
-            return cluesAreInGroup(entry, otherClue) || !checkClueHasBeenAnswered(grid, otherClue);
+            return (
+                cluesAreInGroup(entry, otherClue) ||
+                !checkClueHasBeenAnswered(grid, otherClue)
+            );
         }
         return true;
     });
@@ -182,11 +206,21 @@ var getClearableCellsForEntry = function(grid, clueMap, entries, entry) {
 var getClearableCellsForClue = function(grid, clueMap, entries, clue) {
     if (clueIsInGroup(clue)) {
         var entriesForClue = getGroupEntriesForClue(entries, clue.group);
-        return uniq(flatten(map(entriesForClue, function(entry) {
-            return getClearableCellsForEntry(grid, clueMap, entries, entry);
-        })), function(cell) {
-            return [cell.x, cell.y].join();
-        });
+        return uniq(
+            flatten(
+                map(entriesForClue, function(entry) {
+                    return getClearableCellsForEntry(
+                        grid,
+                        clueMap,
+                        entries,
+                        entry
+                    );
+                })
+            ),
+            function(cell) {
+                return [cell.x, cell.y].join();
+            }
+        );
     } else {
         return getClearableCellsForEntry(grid, clueMap, entries, clue);
     }
@@ -203,7 +237,9 @@ var buildGrid = function(rows, columns, entries, savedState) {
                 isEditable: false,
                 isError: false,
                 isAnimating: false,
-                value: savedState && savedState[x] && savedState[x][y] ? savedState[x][y] : ''
+                value: savedState && savedState[x] && savedState[x][y]
+                    ? savedState[x][y]
+                    : '',
             };
         });
     });
@@ -255,29 +291,42 @@ var buildSeparatorMap = function(clues) {
         return a.concat(b);
     };
 
-    return clues.map(function(clue) {
-        return Object.keys(clue.separatorLocations).map(function(separator) {
-            var locations = clue.separatorLocations[separator];
+    return clues
+        .map(function(clue) {
+            return Object.keys(clue.separatorLocations).map(function(
+                separator
+            ) {
+                var locations = clue.separatorLocations[separator];
 
-            return locations.map(function(location) {
-                var key = isAcross(clue) ? clueMapKey(clue.position.x + location, clue.position.y) : clueMapKey(clue.position.x, clue.position.y + location);
+                return locations.map(function(location) {
+                    var key = isAcross(clue)
+                        ? clueMapKey(
+                              clue.position.x + location,
+                              clue.position.y
+                          )
+                        : clueMapKey(
+                              clue.position.x,
+                              clue.position.y + location
+                          );
 
-                return {
-                    key: key,
-                    direction: clue.direction,
-                    separator: separator
-                };
+                    return {
+                        key: key,
+                        direction: clue.direction,
+                        separator: separator,
+                    };
+                });
             });
         })
-    }).reduce(flatten, []).reduce(function(map, d) {
-        if (map[d.key] === undefined) {
-            map[d.key] = {};
-        }
+        .reduce(flatten, [])
+        .reduce(function(map, d) {
+            if (map[d.key] === undefined) {
+                map[d.key] = {};
+            }
 
-        map[d.key][d.direction] = d.separator;
+            map[d.key][d.direction] = d.separator;
 
-        return map;
-    }, {});
+            return map;
+        }, {});
 };
 
 var entryHasCell = function(entry, x, y) {
@@ -288,7 +337,10 @@ var entryHasCell = function(entry, x, y) {
 
 /** Can be used for width or height, as the cell height == cell width */
 var gridSize = function(cells) {
-    return cells * (constants.cellSize + constants.borderSize) + constants.borderSize;
+    return (
+        cells * (constants.cellSize + constants.borderSize) +
+        constants.borderSize
+    );
 };
 
 var mapGrid = function(grid, f) {
@@ -326,5 +378,5 @@ export default {
     getTtotalLengthOfGroup: getTtotalLengthOfGroup,
     cluesAreInGroup: cluesAreInGroup,
     checkClueHasBeenAnswered: checkClueHasBeenAnswered,
-    getClearableCellsForClue: getClearableCellsForClue
+    getClearableCellsForClue: getClearableCellsForClue,
 };

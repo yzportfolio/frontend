@@ -16,25 +16,33 @@ import 'common/modules/experiments/ab';
 function elementIsBelowViewport(el) {
     return fastdomPromise.read(function() {
         var rect = el.getBoundingClientRect();
-        return rect.top > (window.innerHeight || document.documentElement.clientHeight);
+        return (
+            rect.top >
+            (window.innerHeight || document.documentElement.clientHeight)
+        );
     });
 }
 
 function upgradeRichLink(el) {
     var href = $('a', el).attr('href');
-    var matches = href.match(/(?:^https?:\/\/(?:www\.|m\.code\.dev-)theguardian\.com)?(\/.*)/);
+    var matches = href.match(
+        /(?:^https?:\/\/(?:www\.|m\.code\.dev-)theguardian\.com)?(\/.*)/
+    );
     var isOnMobile = detect.isBreakpoint({
-        max: 'mobileLandscape'
+        max: 'mobileLandscape',
     });
 
     function doUpgrade(shouldUpgrade, resp) {
         if (shouldUpgrade) {
             return fastdom.write(function() {
-                $(el).html(resp.html)
+                $(el)
+                    .html(resp.html)
                     .removeClass('element-rich-link--not-upgraded')
                     .addClass('element-rich-link--upgraded');
                 imagesModule.upgradePictures(el);
-                $('.submeta-container--break').removeClass('submeta-container--break');
+                $('.submeta-container--break').removeClass(
+                    'submeta-container--break'
+                );
                 mediator.emit('rich-link:loaded', el);
             });
         }
@@ -42,13 +50,15 @@ function upgradeRichLink(el) {
 
     if (matches && matches[1]) {
         return fetchJson('/embed/card' + matches[1] + '.json', {
-                mode: 'cors'
-            }).then(function(resp) {
+            mode: 'cors',
+        })
+            .then(function(resp) {
                 if (resp.html) {
-
                     // Fastdom read the viewport height before upgrading if on mobile
                     if (isOnMobile) {
-                        elementIsBelowViewport(el).then(function(shouldUpgrade) {
+                        elementIsBelowViewport(el).then(function(
+                            shouldUpgrade
+                        ) {
                             doUpgrade(shouldUpgrade, resp);
                         });
                     } else {
@@ -58,13 +68,12 @@ function upgradeRichLink(el) {
             })
             .catch(function(ex) {
                 reportError(ex, {
-                    feature: 'rich-links'
+                    feature: 'rich-links',
                 });
             });
     } else {
         return Promise.resolve(null);
     }
-
 }
 
 function getSpacefinderRules() {
@@ -77,28 +86,27 @@ function getSpacefinderRules() {
         selectors: {
             ' > h2': {
                 minAbove: detect.getBreakpoint() === 'mobile' ? 20 : 0,
-                minBelow: 200
+                minBelow: 200,
             },
             ' > *:not(p):not(h2):not(blockquote)': {
                 minAbove: 35,
-                minBelow: 300
+                minBelow: 300,
             },
             ' .ad-slot': {
                 minAbove: 150,
-                minBelow: 200
+                minBelow: 200,
             },
             ' .element-rich-link': {
                 minAbove: 500,
-                minBelow: 500
-            }
-        }
+                minBelow: 500,
+            },
+        },
     };
 }
 
 function insertTagRichLink() {
     var $insertedEl,
-        richLinkHrefs = $('.element-rich-link a')
-        .map(function(el) {
+        richLinkHrefs = $('.element-rich-link a').map(function(el) {
             return $(el).attr('href');
         }),
         testIfDuplicate = function(richLinkHref) {
@@ -106,28 +114,38 @@ function insertTagRichLink() {
             return contains(config.page.richLink, richLinkHref);
         },
         isDuplicate = richLinkHrefs.some(testIfDuplicate),
-        isSensitive = config.page.shouldHideAdverts || !config.page.showRelatedContent;
+        isSensitive =
+            config.page.shouldHideAdverts || !config.page.showRelatedContent;
 
-    if (config.page.richLink &&
+    if (
+        config.page.richLink &&
         config.page.richLink.indexOf(config.page.pageId) === -1 &&
         !isSensitive &&
         !isDuplicate
     ) {
-        return spaceFiller.fillSpace(getSpacefinderRules(), function(paras) {
-            $insertedEl = $.create(template(richLinkTagTmpl, {
-                href: config.page.richLink
-            }));
-            $insertedEl.insertBefore(paras[0]);
-            return $insertedEl[0];
-        }, {
-            waitForAds: true
-        }).then(function(didInsert) {
-            if (didInsert) {
-                return Promise.resolve(upgradeRichLink($insertedEl[0]));
-            } else {
-                return Promise.resolve(null);
-            }
-        });
+        return spaceFiller
+            .fillSpace(
+                getSpacefinderRules(),
+                function(paras) {
+                    $insertedEl = $.create(
+                        template(richLinkTagTmpl, {
+                            href: config.page.richLink,
+                        })
+                    );
+                    $insertedEl.insertBefore(paras[0]);
+                    return $insertedEl[0];
+                },
+                {
+                    waitForAds: true,
+                }
+            )
+            .then(function(didInsert) {
+                if (didInsert) {
+                    return Promise.resolve(upgradeRichLink($insertedEl[0]));
+                } else {
+                    return Promise.resolve(null);
+                }
+            });
     } else {
         return Promise.resolve(null);
     }
@@ -140,5 +158,5 @@ function upgradeRichLinks() {
 export default {
     upgradeRichLinks: upgradeRichLinks,
     insertTagRichLink: insertTagRichLink,
-    getSpacefinderRules: getSpacefinderRules
+    getSpacefinderRules: getSpacefinderRules,
 };

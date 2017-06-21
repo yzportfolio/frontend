@@ -1,18 +1,20 @@
 import bean from 'bean';
 import qwery from 'qwery';
 import config from 'lib/config';
-import {commercialFeatures} from 'commercial/modules/commercial-features';
+import { commercialFeatures } from 'commercial/modules/commercial-features';
 import mediator from 'lib/mediator';
 
 var EditionTest = function(edition, id, start, expiry, campaignPrefix) {
-
     this.edition = edition;
     this.campaignPrefix = campaignPrefix;
     this.id = id;
     this.start = start;
     this.expiry = expiry;
     this.author = 'Roberto Tyley';
-    this.description = 'Show contributions/membership messages for the ' + edition + ' edition.';
+    this.description =
+        'Show contributions/membership messages for the ' +
+        edition +
+        ' edition.';
     this.showForSensitive = false;
     this.audience = 0;
     this.audienceOffset = 0;
@@ -33,12 +35,15 @@ var EditionTest = function(edition, id, start, expiry, campaignPrefix) {
              * ...note that for Membership & Contributions this completion is only the start of a longer
              * journey that will hopefully end pages later with the user giving us money.
              */
-            bean.on(qwery('#membership__engagement-message-link')[0], 'click', complete);
+            bean.on(
+                qwery('#membership__engagement-message-link')[0],
+                'click',
+                complete
+            );
         });
     };
 
     this.variants = [];
-
 };
 
 EditionTest.prototype.addMessageVariant = function(variantId, variantParams) {
@@ -49,22 +54,28 @@ EditionTest.prototype.addMessageVariant = function(variantId, variantParams) {
          * is performed in membership-engagement-banner.js, modifying the banner using the data in variantParams.
          */
         test: function() {},
-        success: this.completer
+        success: this.completer,
     });
     return this;
 };
 
-EditionTest.prototype.addMembershipVariant = function(variantId, variantParams) {
+EditionTest.prototype.addMembershipVariant = function(
+    variantId,
+    variantParams
+) {
     variantParams.campaignCode = this.campaignPrefix + variantId;
     return this.addMessageVariant(variantId, variantParams);
 };
 
-EditionTest.prototype.addContributionsVariant = function(variantId, variantParams) {
+EditionTest.prototype.addContributionsVariant = function(
+    variantId,
+    variantParams
+) {
     variantParams.campaignCode = this.campaignPrefix + variantId;
 
     return this.addMessageVariant(variantId, {
-        contributions: variantParams
+        contributions: variantParams,
     });
 };
 
-export default []
+export default [];

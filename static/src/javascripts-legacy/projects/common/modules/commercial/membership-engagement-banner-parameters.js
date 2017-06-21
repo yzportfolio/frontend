@@ -1,36 +1,37 @@
 import config from 'lib/config';
 import assign from 'lodash/objects/assign';
-import {getSupporterPaymentRegion} from 'lib/geolocation';
+import { getSupporterPaymentRegion } from 'lib/geolocation';
 
 var offerings = {
     membership: 'membership',
-    contributions: 'contributions'
+    contributions: 'contributions',
 };
 
 var baseParams = {
     minArticles: 3,
     colourStrategy: function() {
-        return 'membership-prominent yellow'
+        return 'membership-prominent yellow';
     },
     campaignCode: 'gdnwb_copts_memco_banner',
     // Used for tracking the new implementation by querying the interactions field.
     interactionOnMessageShow: {
         component: 'engagement_banner',
-        value: 'default_paypal_and_paywall'
-    }
+        value: 'default_paypal_and_paywall',
+    },
 };
 
 function engagementBannerCopy(cta) {
-    return 'Unlike many others, we haven\'t put up a paywall &ndash; we want to keep our journalism as open as we can. ' + cta
+    return (
+        "Unlike many others, we haven't put up a paywall &ndash; we want to keep our journalism as open as we can. " +
+        cta
+    );
 }
 
 // Prices taken from https://membership.theguardian.com/<region>/supporter
 function monthlySupporterCost(location) {
-
     var region = getSupporterPaymentRegion(location);
 
     if (region === 'EU') {
-
         // Format either 4.99 € or €4.99 depending on country
         // See https://en.wikipedia.org/wiki/Linguistic_issues_concerning_the_euro
         var euro = '€';
@@ -55,31 +56,33 @@ function monthlySupporterCost(location) {
             'SK',
             'SI',
             'ES',
-            'SE'
+            'SE',
         ];
 
-        return euroAfterCountryCodes.includes(location) ? amount + ' ' + euro : euro + amount;
-
+        return euroAfterCountryCodes.includes(location)
+            ? amount + ' ' + euro
+            : euro + amount;
     } else {
-
         var payment = {
             GB: '£5',
             US: '$6.99',
             AU: '$10',
             CA: '$6.99',
-            INT: '$6.99'
+            INT: '$6.99',
         }[region];
 
-        return payment || '£5'
+        return payment || '£5';
     }
 }
 
 function supporterEngagementBannerCopy(location) {
-    return engagementBannerCopy('Support us for ' + monthlySupporterCost(location) + ' per month.')
+    return engagementBannerCopy(
+        'Support us for ' + monthlySupporterCost(location) + ' per month.'
+    );
 }
 
 function contributionEngagementBannerCopy() {
-    return engagementBannerCopy('Support us with a one-off contribution')
+    return engagementBannerCopy('Support us with a one-off contribution');
 }
 
 function supporterParams(location) {
@@ -88,8 +91,8 @@ function supporterParams(location) {
         linkUrl: 'https://membership.theguardian.com/supporter',
         offering: offerings.membership,
         messageText: supporterEngagementBannerCopy(location),
-        pageviewId: (config.ophan && config.ophan.pageViewId) || 'not_found'
-    })
+        pageviewId: (config.ophan && config.ophan.pageViewId) || 'not_found',
+    });
 }
 
 function contributionParams() {
@@ -98,7 +101,7 @@ function contributionParams() {
         linkUrl: 'https://contribute.theguardian.com',
         offering: offerings.contributions,
         messageText: contributionEngagementBannerCopy(),
-        pageviewId: (config.ophan && config.ophan.pageViewId) || 'not_found'
+        pageviewId: (config.ophan && config.ophan.pageViewId) || 'not_found',
     });
 }
 
@@ -108,5 +111,5 @@ function engagementBannerParams(location) {
 
 export default {
     defaultParams: engagementBannerParams,
-    offerings: offerings
-}
+    offerings: offerings,
+};

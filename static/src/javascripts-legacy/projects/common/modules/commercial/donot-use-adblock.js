@@ -1,7 +1,7 @@
 import config from 'lib/config';
 import template from 'lodash/utilities/template';
 import mediator from 'lib/mediator';
-import {showAdblockMsg} from 'common/modules/commercial/adblock-messages';
+import { showAdblockMsg } from 'common/modules/commercial/adblock-messages';
 import adblockConfig from 'common/modules/commercial/adblock-banner-config';
 import AdblockBanner from 'common/modules/adblock-banner';
 import Message from 'common/modules/ui/message';
@@ -15,27 +15,27 @@ function showAdblockMessage() {
             UK: {
                 campaign: 'ADB_UK',
                 messageText: [
-                    'We notice you\'re using an ad-blocker. Perhaps you\'ll support us another way?',
-                    'Become a Supporter for less than £1 per week'
+                    "We notice you're using an ad-blocker. Perhaps you'll support us another way?",
+                    'Become a Supporter for less than £1 per week',
                 ].join(' '),
-                linkText: 'Find out more'
+                linkText: 'Find out more',
             },
             US: {
                 campaign: 'ADB_US',
                 messageText: [
-                    'We notice you\'re using an ad-blocker. Perhaps you\'ll support us another way?',
-                    'Become a Supporter for less than $1 per week'
+                    "We notice you're using an ad-blocker. Perhaps you'll support us another way?",
+                    'Become a Supporter for less than $1 per week',
                 ].join(' '),
-                linkText: 'Find out more'
+                linkText: 'Find out more',
             },
             INT: {
                 campaign: 'ADB_INT',
                 messageText: [
-                    'We notice you\'re using an ad-blocker. Perhaps you\'ll support us another way?',
-                    'Become a Supporter for less than $1/€1 per week'
+                    "We notice you're using an ad-blocker. Perhaps you'll support us another way?",
+                    'Become a Supporter for less than $1/€1 per week',
                 ].join(' '),
-                linkText: 'Find out more'
-            }
+                linkText: 'Find out more',
+            },
         },
         message = messages[config.page.edition];
 
@@ -44,13 +44,15 @@ function showAdblockMessage() {
             pinOnHide: false,
             siteMessageLinkName: 'adblock',
             siteMessageCloseBtn: 'hide',
-            cssModifierClass: 'adblock-message'
-        }).show(template(messageTemplate, {
-            linkHref: adblockLink + '?INTCMP=' + message.campaign,
-            messageText: message.messageText,
-            linkText: message.linkText,
-            arrowWhiteRight: svgs.inlineSvg('arrowWhiteRight')
-        }));
+            cssModifierClass: 'adblock-message',
+        }).show(
+            template(messageTemplate, {
+                linkHref: adblockLink + '?INTCMP=' + message.campaign,
+                messageText: message.messageText,
+                linkText: message.linkText,
+                arrowWhiteRight: svgs.inlineSvg('arrowWhiteRight'),
+            })
+        );
     }
 }
 
@@ -65,7 +67,10 @@ function showAdblockBanner() {
     var bannerToUse = sample(flatBanners);
 
     if (bannerToUse) {
-        new AdblockBanner.AdblockBanner(bannerToUse.template, bannerToUse).show();
+        new AdblockBanner.AdblockBanner(
+            bannerToUse.template,
+            bannerToUse
+        ).show();
     }
 }
 
@@ -78,8 +83,7 @@ function init() {
         }
         mediator.emit('banner-message:complete');
     });
-
 }
 export default {
-    init: init
+    init: init,
 };

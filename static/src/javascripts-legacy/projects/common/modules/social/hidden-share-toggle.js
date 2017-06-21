@@ -3,7 +3,6 @@ import bean from 'bean';
 import $ from 'lib/$';
 
 function toggleDisplay(e) {
-
     e && e.preventDefault();
 
     $('.js-social__secondary').each(function(icon) {
@@ -25,7 +24,11 @@ export default function hiddenShareToggle() {
     });
 
     bean.on(document.body, 'click', function(e) {
-        if ($.ancestor(e.target, 'js-social--top') || !$('.js-social--top').hasClass('social--expanded-top')) return;
+        if (
+            $.ancestor(e.target, 'js-social--top') ||
+            !$('.js-social--top').hasClass('social--expanded-top')
+        )
+            return;
         toggleDisplay();
     });
 

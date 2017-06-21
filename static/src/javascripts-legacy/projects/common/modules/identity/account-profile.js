@@ -7,11 +7,10 @@
 import $ from 'lib/$';
 import bean from 'bean';
 import bonzo from 'bonzo';
-import {pushUrl} from 'lib/url';
+import { pushUrl } from 'lib/url';
 import avatarApi from 'common/modules/avatar/api';
 
 var accountProfile = function() {
-
     var self = this;
 
     self.classes = {
@@ -25,42 +24,59 @@ var accountProfile = function() {
         textInput: '.text-input',
         avatarUploadForm: '.js-avatar-upload-form',
         avatarUploadButton: '.js-avatar-upload-button',
-        memberShipContainer: '.js-memebership-tab-container'
+        memberShipContainer: '.js-memebership-tab-container',
     };
 
     self.messages = {
-        noServerError: 'Sorry, the Avatar upload service is currently unavailable. Please try again shortly.',
-        avatarUploadSuccess: 'Thank you for uploading your avatar. It will be checked by Guardian moderators shortly.',
-        avatarUploadFailure: 'Sorry, something went wrong. Please try again.'
+        noServerError:
+            'Sorry, the Avatar upload service is currently unavailable. Please try again shortly.',
+        avatarUploadSuccess:
+            'Thank you for uploading your avatar. It will be checked by Guardian moderators shortly.',
+        avatarUploadFailure: 'Sorry, something went wrong. Please try again.',
     };
 
     self.unsavedFields = [];
 
     return {
         init: function() {
-
-            self.accountProfileForms = document.body.querySelector(self.classes.forms);
+            self.accountProfileForms = document.body.querySelector(
+                self.classes.forms
+            );
 
             if (self.accountProfileForms) {
-
                 self.bindAvatarUpload();
 
-                self.bindInputs(self.accountProfileForms.querySelector(self.classes.accountForm));
-                self.bindInputs(self.accountProfileForms.querySelector(self.classes.publicForm));
+                self.bindInputs(
+                    self.accountProfileForms.querySelector(
+                        self.classes.accountForm
+                    )
+                );
+                self.bindInputs(
+                    self.accountProfileForms.querySelector(
+                        self.classes.publicForm
+                    )
+                );
 
-                var tabs = self.accountProfileForms.querySelector(self.classes.tabs);
+                var tabs = self.accountProfileForms.querySelector(
+                    self.classes.tabs
+                );
 
-                require.ensure([], function (require) {
-                    require('bootstraps/enhanced/membership').init();
-                }, 'membership');
+                require.ensure(
+                    [],
+                    function(require) {
+                        require('bootstraps/enhanced/membership').init();
+                    },
+                    'membership'
+                );
 
-                $(self.classes.tabs + ' .tabs__tab a').each(function() { // enhance tab urls to work with JS tabs module
+                $(self.classes.tabs + ' .tabs__tab a').each(function() {
+                    // enhance tab urls to work with JS tabs module
                     this.href = this.getAttribute('data-tabs-href');
                 });
 
                 bean.on(tabs, 'click', self.handleTabsClick.bind(self));
             }
-        }
+        },
     };
 };
 
@@ -75,41 +91,65 @@ accountProfile.prototype.handleTabsClick = function(event) {
             event.preventDefault();
             event.stopImmediatePropagation();
             // Prevent multiple errors from appearing
-            if (!self.unsavedChangesForm.querySelector(self.classes.formError)) {
+            if (
+                !self.unsavedChangesForm.querySelector(self.classes.formError)
+            ) {
                 // Append error message
                 bonzo(self.unsavedChangesForm).prepend(self.genUnsavedError());
                 // Bind form submit to error message 'save' action
-                bean.on(self.unsavedChangesForm.querySelector('.js-save-unsaved'), 'click', function() {
-                    self.unsavedChangesForm.submit();
-                });
+                bean.on(
+                    self.unsavedChangesForm.querySelector('.js-save-unsaved'),
+                    'click',
+                    function() {
+                        self.unsavedChangesForm.submit();
+                    }
+                );
             }
         } else {
-            pushUrl({}, event.target.innerHTML, event.target.getAttribute('data-pushstate-url'));
+            pushUrl(
+                {},
+                event.target.innerHTML,
+                event.target.getAttribute('data-pushstate-url')
+            );
         }
     }
 };
 
 accountProfile.prototype.avatarUploadByApi = function(avatarForm) {
     var self = this;
-    var formData = new FormData(document.querySelector('form' + self.classes.avatarUploadForm));
+    var formData = new FormData(
+        document.querySelector('form' + self.classes.avatarUploadForm)
+    );
 
     // disable form while submitting to prevent overlapping submissions
     document.querySelector(self.classes.avatarUploadButton).disabled = true;
 
-    avatarApi.updateAvatar(formData)
-        .then(function() {
-            self.prependSuccessMessage(self.messages.avatarUploadSuccess, avatarForm);
-        }, function(err) {
+    avatarApi.updateAvatar(formData).then(
+        function() {
+            self.prependSuccessMessage(
+                self.messages.avatarUploadSuccess,
+                avatarForm
+            );
+        },
+        function(err) {
             if (err.status >= 400 && err.status < 500) {
                 self.prependErrorMessage(
-                    JSON.parse(err.responseText).message || self.messages.avatarUploadFailure,
-                    avatarForm);
+                    JSON.parse(err.responseText).message ||
+                        self.messages.avatarUploadFailure,
+                    avatarForm
+                );
             } else {
-                self.prependErrorMessage(self.messages.noServerError, avatarForm);
+                self.prependErrorMessage(
+                    self.messages.noServerError,
+                    avatarForm
+                );
             }
 
-            document.querySelector(self.classes.avatarUploadButton).disabled = false;
-        });
+            document.querySelector(
+                self.classes.avatarUploadButton
+            ).disabled = false;
+        }
+    );
 };
 
 /*
@@ -118,7 +158,9 @@ accountProfile.prototype.avatarUploadByApi = function(avatarForm) {
  */
 accountProfile.prototype.bindAvatarUpload = function() {
     var self = this,
-        avatarForm = self.accountProfileForms.querySelector(self.classes.avatarUploadForm);
+        avatarForm = self.accountProfileForms.querySelector(
+            self.classes.avatarUploadForm
+        );
 
     if (avatarForm) {
         bean.on(avatarForm, 'submit', function(event) {
@@ -127,7 +169,6 @@ accountProfile.prototype.bindAvatarUpload = function() {
             self.avatarUploadByApi(avatarForm);
         });
     }
-
 };
 
 accountProfile.prototype.prependMessage = function(message, location, clazz) {
@@ -152,7 +193,9 @@ accountProfile.prototype.prependSuccessMessage = function(message, location) {
  *   a form with unsaved changes.
  */
 accountProfile.prototype.genUnsavedError = function() {
-    var i, labelId, text,
+    var i,
+        labelId,
+        text,
         errorDivStart = '<div class="form__error">',
         errorDivEnd = '</div>',
         errorSaveLink = '<a href="#" class="js-save-unsaved">Save changes</a>',
@@ -160,7 +203,8 @@ accountProfile.prototype.genUnsavedError = function() {
 
     for (i = 0; i < this.unsavedFields.length; i++) {
         labelId = this.unsavedFields[i].id;
-        text = this.accountProfileForms.querySelector('[for="' + labelId + '"]').innerHTML;
+        text = this.accountProfileForms.querySelector('[for="' + labelId + '"]')
+            .innerHTML;
         errorMessageStart += '"' + text + '"';
         if (i === this.unsavedFields.length - 1) {
             errorMessageStart += '. ';
@@ -180,9 +224,11 @@ accountProfile.prototype.genUnsavedError = function() {
 accountProfile.prototype.onInputChange = function(event) {
     bonzo(event.target.form).addClass(this.classes.changed);
     this.unsavedChangesForm = event.target.form;
-    if (!this.unsavedFields.some(function(el) {
+    if (
+        !this.unsavedFields.some(function(el) {
             return el === event.target;
-        })) {
+        })
+    ) {
         this.unsavedFields.push(event.target);
     }
 };
@@ -191,9 +237,14 @@ accountProfile.prototype.onInputChange = function(event) {
  *   Bind keyup events on input fields and register parent form on element
  */
 accountProfile.prototype.bindInputs = function(form) {
-    var i, input,
-        inputs = Array.prototype.slice.call(form.querySelectorAll(this.classes.textInput));
-    inputs = inputs.concat(Array.prototype.slice.call(form.querySelectorAll('select')));
+    var i,
+        input,
+        inputs = Array.prototype.slice.call(
+            form.querySelectorAll(this.classes.textInput)
+        );
+    inputs = inputs.concat(
+        Array.prototype.slice.call(form.querySelectorAll('select'))
+    );
     for (i = inputs.length - 1; i >= 0; i--) {
         input = inputs[i];
         input.form = form;

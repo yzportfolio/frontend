@@ -22,16 +22,19 @@ export default contributionsUtilities.makeABTest({
 
     useTargetingTool: true,
 
-    variants: [{
-        id: 'control',
-        isUnlimited: true,
-        template: function(variant) {
-            return template(iframeTemplate, {
-                componentName: variant.options.componentName,
-                id: variant.options.iframeId,
-                iframeUrl: 'https://interactive.guim.co.uk/embed/2017/05/this-land-is-your-land/contribute-series.html',
-            })
+    variants: [
+        {
+            id: 'control',
+            isUnlimited: true,
+            template: function(variant) {
+                return template(iframeTemplate, {
+                    componentName: variant.options.componentName,
+                    id: variant.options.iframeId,
+                    iframeUrl:
+                        'https://interactive.guim.co.uk/embed/2017/05/this-land-is-your-land/contribute-series.html',
+                });
+            },
+            usesIframe: true,
         },
-        usesIframe: true
-    }]
+    ],
 });

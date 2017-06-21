@@ -3,7 +3,6 @@ import $ from 'lib/$';
 import mediator from 'lib/mediator';
 
 function FormstackIframe(el, config) {
-
     var self = this;
 
     self.init = function() {
@@ -48,25 +47,29 @@ function FormstackIframe(el, config) {
             // If a height is set on the iframe, the following calculation
             // will be at least that height, optionally reset first
             $(el).css({
-                'height': 0
+                height: 0,
             });
         }
 
         var iframe = el.contentWindow.document,
             body = iframe.body,
             html = iframe.documentElement,
-            height = Math.max(body.scrollHeight, body.offsetHeight,
-                html.clientHeight, html.scrollHeight, html.offsetHeight);
+            height = Math.max(
+                body.scrollHeight,
+                body.offsetHeight,
+                html.clientHeight,
+                html.scrollHeight,
+                html.offsetHeight
+            );
 
         $(el).css({
-            'height': height
+            height: height,
         });
     };
 
     self.show = function() {
         $(el).removeClass('is-hidden');
     };
-
 }
 
 export default FormstackIframe;

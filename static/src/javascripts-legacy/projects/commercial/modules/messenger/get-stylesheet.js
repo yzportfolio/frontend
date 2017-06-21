@@ -1,4 +1,4 @@
-import {register} from 'commercial/modules/messenger';
+import { register } from 'commercial/modules/messenger';
 var aProto = Array.prototype;
 
 register('get-styles', function(specs) {
@@ -16,13 +16,23 @@ function getStyles(specs, styleSheets) {
     var result = [];
     while (i < ii) {
         var sheet = styleSheets[i++];
-        if (sheet.ownerNode && sheet.ownerNode.matches && sheet.ownerNode.matches(specs.selector)) {
+        if (
+            sheet.ownerNode &&
+            sheet.ownerNode.matches &&
+            sheet.ownerNode.matches(specs.selector)
+        ) {
             if (sheet.ownerNode.tagName === 'STYLE') {
                 result.push(sheet.ownerNode.textContent);
             } else {
-                result.push(aProto.reduce.call(sheet.cssRules || [], function(res, input) {
-                    return res + input.cssText;
-                }, ''));
+                result.push(
+                    aProto.reduce.call(
+                        sheet.cssRules || [],
+                        function(res, input) {
+                            return res + input.cssText;
+                        },
+                        ''
+                    )
+                );
             }
         }
     }

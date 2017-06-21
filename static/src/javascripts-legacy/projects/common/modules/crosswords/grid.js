@@ -8,7 +8,6 @@ import range from 'lodash/arrays/range';
 import map from 'lodash/collections/map';
 import assign from 'lodash/objects/assign';
 var Grid = React.createClass({
-
     getSeparators: function(x, y) {
         return this.props.separators[helpers.clueMapKey(x, y)];
     },
@@ -30,7 +29,7 @@ var Grid = React.createClass({
                 y: top,
                 key: ['sep', direction, x, y].join('_'),
                 width: width,
-                height: constants.cellSize
+                height: constants.cellSize,
             });
         } else if (direction === 'down') {
             var height = 1;
@@ -39,7 +38,7 @@ var Grid = React.createClass({
                 y: top - borderWidth - height,
                 key: ['sep', direction, x, y].join('_'),
                 width: constants.cellSize,
-                height: height
+                height: height,
             });
         }
     },
@@ -58,7 +57,7 @@ var Grid = React.createClass({
                 x: left - borderWidth / 2 - width / 2,
                 y: top + constants.cellSize / 2 + height / 2,
                 width: width,
-                height: height
+                height: height,
             });
         } else if (direction === 'down') {
             width = 1;
@@ -67,7 +66,7 @@ var Grid = React.createClass({
                 x: left + constants.cellSize / 2 + width / 2,
                 y: top - borderWidth / 2 - height / 2,
                 width: width,
-                height: height
+                height: height,
             });
         }
     },
@@ -86,51 +85,92 @@ var Grid = React.createClass({
         var cells = [];
         var separators = [];
 
-        forEach(range(this.props.rows), function(y) {
-            map(range(this.props.columns), function(x) {
-                var cellProps = this.props.cells[x][y];
+        forEach(
+            range(this.props.rows),
+            function(y) {
+                map(
+                    range(this.props.columns),
+                    function(x) {
+                        var cellProps = this.props.cells[x][y];
 
-                if (cellProps.isEditable) {
-                    cells.push(React.createElement(Cell, assign({}, cellProps, {
-                        handleSelect: this.handleSelect,
-                        x: x,
-                        y: y,
-                        key: 'cell_' + x + '_' + y,
-                        isHighlighted: this.props.isHighlighted(x, y),
-                        isFocussed: this.props.focussedCell && x === this.props.focussedCell.x && y === this.props.focussedCell.y
-                    }, this)));
+                        if (cellProps.isEditable) {
+                            cells.push(
+                                React.createElement(
+                                    Cell,
+                                    assign(
+                                        {},
+                                        cellProps,
+                                        {
+                                            handleSelect: this.handleSelect,
+                                            x: x,
+                                            y: y,
+                                            key: 'cell_' + x + '_' + y,
+                                            isHighlighted: this.props.isHighlighted(
+                                                x,
+                                                y
+                                            ),
+                                            isFocussed:
+                                                this.props.focussedCell &&
+                                                    x ===
+                                                        this.props.focussedCell
+                                                            .x &&
+                                                    y ===
+                                                        this.props.focussedCell
+                                                            .y,
+                                        },
+                                        this
+                                    )
+                                )
+                            );
 
-                    separators = separators.concat(map(this.getSeparators(x, y), function(separator, direction) {
-                        return this.createSeparator(x, y, separator, direction);
-                    }, this));
-                }
-            }, this);
-        }, this);
+                            separators = separators.concat(
+                                map(
+                                    this.getSeparators(x, y),
+                                    function(separator, direction) {
+                                        return this.createSeparator(
+                                            x,
+                                            y,
+                                            separator,
+                                            direction
+                                        );
+                                    },
+                                    this
+                                )
+                            );
+                        }
+                    },
+                    this
+                );
+            },
+            this
+        );
 
         return React.createElement(
-            'svg', {
+            'svg',
+            {
                 viewBox: '0 0 ' + width + ' ' + height,
                 className: classNames({
-                    'crossword__grid': true,
-                    'crossword__grid--focussed': !!this.props.focussedCell
-                })
+                    crossword__grid: true,
+                    'crossword__grid--focussed': !!this.props.focussedCell,
+                }),
             },
             React.createElement('rect', {
                 x: 0,
                 y: 0,
                 width: width,
                 height: height,
-                className: 'crossword__grid-background'
+                className: 'crossword__grid-background',
             }),
             cells,
             React.createElement(
-                'g', {
-                    className: 'crossword__grid__separators'
+                'g',
+                {
+                    className: 'crossword__grid__separators',
                 },
                 separators
             )
         );
-    }
+    },
 });
 
 export default Grid;

@@ -19,10 +19,20 @@ track.seen = false;
 var gaTracker = config.googleAnalytics.trackers.editorial;
 
 function sendToGA(label, customDimensions) {
-    var fieldsObject = assign({
-        nonInteraction: true // to avoid affecting bounce rate
-    }, (customDimensions || {}));
-    window.ga(gaTracker + '.send', 'event', 'element view', 'onpage item', label, fieldsObject);
+    var fieldsObject = assign(
+        {
+            nonInteraction: true, // to avoid affecting bounce rate
+        },
+        customDimensions || {}
+    );
+    window.ga(
+        gaTracker + '.send',
+        'event',
+        'element view',
+        'onpage item',
+        label,
+        fieldsObject
+    );
 }
 
 track.jumpedToComments = function() {
@@ -64,8 +74,10 @@ track.areCommentsVisible = function() {
         scrollTop = window.pageYOffset,
         viewport = bonzo.viewport().height;
 
-    if ((comments.top - ((viewport / 2)) < scrollTop) &&
-        ((comments.top + comments.height) - (viewport / 3) > scrollTop)) {
+    if (
+        comments.top - viewport / 2 < scrollTop &&
+        comments.top + comments.height - viewport / 3 > scrollTop
+    ) {
         return true;
     } else {
         return false;
@@ -74,10 +86,19 @@ track.areCommentsVisible = function() {
 
 export default {
     init: function() {
-        mediator.on('discussion:seen:comment-permalink', track.commentPermalink.bind(track));
-        mediator.on('discussion:seen:comments-anchor', track.jumpedToComments.bind(track));
-        mediator.on('discussion:seen:comments-scrolled-to', track.scrolledToComments.bind(track));
+        mediator.on(
+            'discussion:seen:comment-permalink',
+            track.commentPermalink.bind(track)
+        );
+        mediator.on(
+            'discussion:seen:comments-anchor',
+            track.jumpedToComments.bind(track)
+        );
+        mediator.on(
+            'discussion:seen:comments-scrolled-to',
+            track.scrolledToComments.bind(track)
+        );
 
         track.areCommentsSeen();
-    }
+    },
 }; // define

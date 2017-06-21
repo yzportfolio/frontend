@@ -21,10 +21,12 @@ function SpaceFiller() {
  */
 SpaceFiller.prototype.fillSpace = function(rules, writer, options) {
     var write = (options && options.domWriter) || fastdom.write;
-    return this.queue = this.queue.then(insertNextContent).catch(onError);
+    return (this.queue = this.queue.then(insertNextContent).catch(onError));
 
     function insertNextContent() {
-        return spacefinder.findSpace(rules, options).then(onSpacesFound, onNoSpacesFound);
+        return spacefinder
+            .findSpace(rules, options)
+            .then(onSpacesFound, onNoSpacesFound);
     }
 
     function onSpacesFound(paragraphs) {

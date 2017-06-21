@@ -9,7 +9,7 @@ var root = config.page.discussionApiUrl,
     Api = {
         root: root,
         clientHeader: config.page.discussionApiClientHeader,
-        d2Uid: config.page.discussionD2Uid
+        d2Uid: config.page.discussionD2Uid,
     };
 
 /**
@@ -23,15 +23,15 @@ Api.send = function(endpoint, method, data) {
 
     var request = ajax.ajax({
         url: Api.root + endpoint,
-        type: (method === 'get') ? 'jsonp' : 'json',
+        type: method === 'get' ? 'jsonp' : 'json',
         method: method,
         crossOrigin: true,
         data: data,
         headers: {
             'D2-X-UID': Api.d2Uid,
-            'GU-Client': Api.clientHeader
+            'GU-Client': Api.clientHeader,
         },
-        withCredentials: true
+        withCredentials: true,
     });
 
     return request;
@@ -43,7 +43,10 @@ Api.send = function(endpoint, method, data) {
  * @return {Reqwest} a promise
  */
 Api.postComment = function(discussionId, comment) {
-    var endpoint = '/discussion/' + discussionId + '/comment' +
+    var endpoint =
+        '/discussion/' +
+        discussionId +
+        '/comment' +
         (comment.replyTo ? '/' + comment.replyTo.commentId + '/reply' : '');
 
     return Api.send(endpoint, 'post', comment);

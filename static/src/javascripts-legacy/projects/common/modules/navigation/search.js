@@ -12,12 +12,14 @@ var Search = function() {
         container,
         self = this;
 
-    if (config.switches.googleSearch &&
+    if (
+        config.switches.googleSearch &&
         config.page.googleSearchUrl &&
         config.page.googleSearchId &&
-        toggle) {
-
-        gcsUrl = config.page.googleSearchUrl + '?cx=' + config.page.googleSearchId;
+        toggle
+    ) {
+        gcsUrl =
+            config.page.googleSearchUrl + '?cx=' + config.page.googleSearchId;
         resultSetSize = config.page.section === 'identity' ? 3 : 10;
 
         searchLoader = throttle(function() {
@@ -36,9 +38,12 @@ var Search = function() {
                              which is the outer autocomplete element, but
                              google stops the event bubbling earlier
                     */
-                    if (el && el.classList &&
+                    if (
+                        el &&
+                        el.classList &&
                         (el.classList.contains('js-search-popup') ||
-                            el.classList.contains('gsq_a'))) {
+                            el.classList.contains('gsq_a'))
+                    ) {
                         clickedPop = true;
                     }
 
@@ -57,7 +62,7 @@ var Search = function() {
                 if (toggle.classList.contains('is-active')) {
                     bean.on(document, 'click', maybeDismissSearchPopup);
                 }
-            })
+            });
 
             searchLoader();
             // Make sure search is always in the correct state
@@ -74,35 +79,40 @@ var Search = function() {
     };
 
     this.load = function() {
-        var s,
-            x;
+        var s, x;
 
         container = document.body.querySelector('.js-search-placeholder');
 
         // Set so Google know what to do
         window.__gcse = {
-            callback: self.focusSearchField
+            callback: self.focusSearchField,
         };
 
         // Unload any search placeholders elsewhere in the DOM
-        Array.prototype.forEach.call(document.querySelectorAll('.js-search-placeholder'), function(c) {
-            if (c !== container) {
-                fastdom.write(function() {
-                    c.innerHTML = '';
-                });
+        Array.prototype.forEach.call(
+            document.querySelectorAll('.js-search-placeholder'),
+            function(c) {
+                if (c !== container) {
+                    fastdom.write(function() {
+                        c.innerHTML = '';
+                    });
+                }
             }
-        });
+        );
 
         // Load the Google search monolith, if not already present in this context.
         // We have to re-run their script each time we do this.
         if (!container.innerHTML) {
             fastdom.write(function() {
-                container.innerHTML = '' +
+                container.innerHTML =
+                    '' +
                     '<div class="search-box" role="search">' +
                     '<gcse:searchbox></gcse:searchbox>' +
                     '</div>' +
                     '<div class="search-results" data-link-name="search">' +
-                    '<gcse:searchresults webSearchResultSetSize="' + resultSetSize + '" linkTarget="_self"></gcse:searchresults>' +
+                    '<gcse:searchresults webSearchResultSetSize="' +
+                    resultSetSize +
+                    '" linkTarget="_self"></gcse:searchresults>' +
                     '</div>';
             });
 
@@ -114,8 +124,8 @@ var Search = function() {
 
                     fastdom.write(function() {
                         $autoCompleteObject.css({
-                            'top': parseInt(searchFromTop, 10) + windowOffset,
-                            'z-index': '1030'
+                            top: parseInt(searchFromTop, 10) + windowOffset,
+                            'z-index': '1030',
                         });
                     });
                 });

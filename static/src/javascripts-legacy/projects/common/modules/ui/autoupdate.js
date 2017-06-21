@@ -20,14 +20,20 @@ import NotificationCounter from 'common/modules/ui/notification-counter';
 import youtube from 'common/modules/atoms/youtube';
 
 export default function(opts) {
-    var options = assign({
-        'toastOffsetTop': 12, // pixels from the top
-        'minUpdateDelay': (detect.isBreakpoint({
-            min: 'desktop'
-        }) ? 10 : 30) * 1000, // 10 or 30 seconds minimum, depending on breakpoint
-        'maxUpdateDelay': 20 * 60 * 1000, // 20 mins
-        'backoffMultiplier': 0.75 // increase or decrease the back off rate by modifying this
-    }, opts);
+    var options = assign(
+        {
+            toastOffsetTop: 12, // pixels from the top
+            minUpdateDelay:
+                (detect.isBreakpoint({
+                    min: 'desktop',
+                })
+                    ? 10
+                    : 30) * 1000, // 10 or 30 seconds minimum, depending on breakpoint
+            maxUpdateDelay: 20 * 60 * 1000, // 20 mins
+            backoffMultiplier: 0.75, // increase or decrease the back off rate by modifying this
+        },
+        opts
+    );
 
     // Cache selectors
     var $liveblogBody = $('.js-liveblog-body');
@@ -40,7 +46,6 @@ export default function(opts) {
     var latestBlockId = $liveblogBody.data('most-recent-block');
     var unreadBlocksNo = 0;
     var updateTimeoutId = undefined;
-
 
     var updateDelay = function(delay) {
         var newDelay;
@@ -59,7 +64,9 @@ export default function(opts) {
 
     var revealInjectedElements = function() {
         fastdom.write(function() {
-            $('.autoupdate--hidden', $liveblogBody).addClass('autoupdate--highlight').removeClass('autoupdate--hidden');
+            $('.autoupdate--hidden', $liveblogBody)
+                .addClass('autoupdate--highlight')
+                .removeClass('autoupdate--hidden');
             mediator.emit('modules:autoupdate:unread', 0);
         });
     };
@@ -67,12 +74,16 @@ export default function(opts) {
     var toastButtonRefresh = function() {
         fastdom.write(function() {
             if (unreadBlocksNo > 0) {
-                var updateText = (unreadBlocksNo > 1) ? ' new updates' : ' new update';
+                var updateText = unreadBlocksNo > 1
+                    ? ' new updates'
+                    : ' new update';
                 $toastButton.removeClass('toast__button--closed');
                 $(toastContainer).addClass('toast__container--open');
                 $toastText.html(unreadBlocksNo + updateText);
             } else {
-                $toastButton.removeClass('loading').addClass('toast__button--closed');
+                $toastButton
+                    .removeClass('loading')
+                    .addClass('toast__button--closed');
                 $(toastContainer).removeClass('toast__container--open');
             }
         });
@@ -108,21 +119,28 @@ export default function(opts) {
     };
 
     var checkForUpdates = function() {
-
         if (updateTimeoutId != undefined) {
             clearTimeout(updateTimeoutId);
         }
 
-        var shouldFetchBlocks = '&isLivePage=' + (isLivePage ? 'true' : 'false');
-        var latestBlockIdToUse = ((latestBlockId) ? latestBlockId : 'block-0');
+        var shouldFetchBlocks =
+            '&isLivePage=' + (isLivePage ? 'true' : 'false');
+        var latestBlockIdToUse = latestBlockId ? latestBlockId : 'block-0';
         var count = 0;
-        var endpoint = window.location.pathname + '.json?lastUpdate=' + latestBlockIdToUse + shouldFetchBlocks;
+        var endpoint =
+            window.location.pathname +
+            '.json?lastUpdate=' +
+            latestBlockIdToUse +
+            shouldFetchBlocks;
 
         // #? One day this should be in Promise.finally()
         var setUpdateDelay = function() {
             if (count == 0 || currentUpdateDelay > 0) {
                 updateDelay(currentUpdateDelay);
-                updateTimeoutId = setTimeout(checkForUpdates, currentUpdateDelay);
+                updateTimeoutId = setTimeout(
+                    checkForUpdates,
+                    currentUpdateDelay
+                );
             } else {
                 // might have been cached so check straight away
                 updateTimeoutId = setTimeout(checkForUpdates, 1);
@@ -131,46 +149,54 @@ export default function(opts) {
 
         return fetchJSON(endpoint, {
             mode: 'cors',
-        }).then(function(resp) {
-            count = resp.numNewBlocks;
+        })
+            .then(function(resp) {
+                count = resp.numNewBlocks;
 
-            if (count > 0) {
-                unreadBlocksNo += count;
+                if (count > 0) {
+                    unreadBlocksNo += count;
 
-                // updates notification bar with number of unread blocks
-                mediator.emit('modules:autoupdate:unread', unreadBlocksNo);
+                    // updates notification bar with number of unread blocks
+                    mediator.emit('modules:autoupdate:unread', unreadBlocksNo);
 
-                latestBlockId = resp.mostRecentBlockId;
+                    latestBlockId = resp.mostRecentBlockId;
 
-                if (isLivePage) {
-                    injectNewBlocks(resp.html);
-                    if (scrolledPastTopBlock()) {
-                        toastButtonRefresh();
+                    if (isLivePage) {
+                        injectNewBlocks(resp.html);
+                        if (scrolledPastTopBlock()) {
+                            toastButtonRefresh();
+                        } else {
+                            displayNewBlocks();
+                        }
                     } else {
-                        displayNewBlocks();
+                        toastButtonRefresh();
                     }
-                } else {
-                    toastButtonRefresh();
                 }
-            }
 
-            setUpdateDelay();
-        }).catch(function() {
-            setUpdateDelay();
-        });
+                setUpdateDelay();
+            })
+            .catch(function() {
+                setUpdateDelay();
+            });
     };
 
     var setUpListeners = function() {
         bean.on(document.body, 'click', '.toast__button', function() {
             if (isLivePage) {
                 fastdom.read(function() {
-                    scroller.scrollToElement(qwery('.blocks')[0], 300, 'easeOutQuad');
+                    scroller.scrollToElement(
+                        qwery('.blocks')[0],
+                        300,
+                        'easeOutQuad'
+                    );
 
-                    fastdom.write(function() {
-                        $toastButton.addClass('loading');
-                    }).then(function() {
-                        displayNewBlocks();
-                    });
+                    fastdom
+                        .write(function() {
+                            $toastButton.addClass('loading');
+                        })
+                        .then(function() {
+                            displayNewBlocks();
+                        });
                 });
             } else {
                 location.assign(window.location.pathname);
@@ -179,11 +205,13 @@ export default function(opts) {
 
         mediator.on('modules:toast__tofix:unfixed', function() {
             if (isLivePage && unreadBlocksNo > 0) {
-                fastdom.write(function() {
-                    $toastButton.addClass('loading');
-                }).then(function() {
-                    displayNewBlocks();
-                });
+                fastdom
+                    .write(function() {
+                        $toastButton.addClass('loading');
+                    })
+                    .then(function() {
+                        displayNewBlocks();
+                    });
             }
         });
 
@@ -204,7 +232,7 @@ export default function(opts) {
     new sticky.Sticky(toastContainer, {
         top: options.toastOffsetTop,
         emitMessage: true,
-        containInParent: false
+        containInParent: false,
     }).init();
 
     checkForUpdates();

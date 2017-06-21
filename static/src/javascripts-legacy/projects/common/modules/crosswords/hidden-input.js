@@ -5,36 +5,48 @@ import $ from 'lib/$';
 import scroller from 'lib/scroller';
 import detect from 'lib/detect';
 var HiddenInput = React.createClass({
-
     getInitialState: function() {
         return {
-            value: this.props.value
+            value: this.props.value,
         };
     },
 
     componentDidUpdate: function() {
-        if (detect.isBreakpoint({
-                max: 'mobile'
-            })) {
-            fastdom.read(function() {
-                var offsets = bonzo(React.findDOMNode(this.refs.input)).offset();
-                scroller.scrollTo(offsets.top - offsets.height * 1.5 - $('.crossword__sticky-clue').offset().height, 250, 'easeOutQuad');
-            }.bind(this));
+        if (
+            detect.isBreakpoint({
+                max: 'mobile',
+            })
+        ) {
+            fastdom.read(
+                function() {
+                    var offsets = bonzo(
+                        React.findDOMNode(this.refs.input)
+                    ).offset();
+                    scroller.scrollTo(
+                        offsets.top -
+                            offsets.height * 1.5 -
+                            $('.crossword__sticky-clue').offset().height,
+                        250,
+                        'easeOutQuad'
+                    );
+                }.bind(this)
+            );
         }
     },
 
     handleChange: function(event) {
         this.props.onChange(event.target.value.toUpperCase());
         this.setState({
-            value: ''
+            value: '',
         });
     },
 
     render: function() {
         return React.createElement(
-            'div', {
+            'div',
+            {
                 className: 'crossword__hidden-input-wrapper',
-                ref: 'wrapper'
+                ref: 'wrapper',
             },
             React.createElement('input', {
                 type: 'text',
@@ -49,10 +61,10 @@ var HiddenInput = React.createClass({
                 autoComplete: 'off',
                 spellCheck: 'false',
                 autoCorrect: 'off',
-                ref: 'input'
+                ref: 'input',
             })
         );
-    }
+    },
 });
 
 export default HiddenInput;

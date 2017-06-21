@@ -4,16 +4,16 @@ import mediator from 'lib/mediator';
 import Component from 'common/modules/component';
 import trail from 'bootstraps/enhanced/trail';
 var transcludeMostPopular = function() {
-        var mostViewed = new Component(),
-            container = qwery('.js-gallery-most-popular')[0];
+    var mostViewed = new Component(),
+        container = qwery('.js-gallery-most-popular')[0];
 
-        mostViewed.manipulationType = 'html';
-        mostViewed.endpoint = '/gallery/most-viewed.json';
-        mostViewed.ready = function() {
-            mediator.emit('page:new-content', container);
-        };
-        mostViewed.fetch(container, 'html');
-    },
+    mostViewed.manipulationType = 'html';
+    mostViewed.endpoint = '/gallery/most-viewed.json';
+    mostViewed.ready = function() {
+        mediator.emit('page:new-content', container);
+    };
+    mostViewed.fetch(container, 'html');
+},
     ready = function() {
         trail();
 
@@ -26,5 +26,5 @@ var transcludeMostPopular = function() {
     };
 
 export default {
-    init: ready
+    init: ready,
 };

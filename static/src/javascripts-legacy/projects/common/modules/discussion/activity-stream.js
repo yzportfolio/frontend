@@ -1,7 +1,13 @@
 import bonzo from 'bonzo';
 import bean from 'bean';
 import $ from 'lib/$';
-import {hasHistorySupport, constructQuery, getUrlVars, replaceQueryString, pushQueryString} from 'lib/url';
+import {
+    hasHistorySupport,
+    constructQuery,
+    getUrlVars,
+    replaceQueryString,
+    pushQueryString,
+} from 'lib/url';
 import component from 'common/modules/component';
 import discussionApi from 'common/modules/discussion/api';
 
@@ -9,13 +15,14 @@ function ActivityStream(opts) {
     this.setOptions(opts);
 }
 component.define(ActivityStream);
-ActivityStream.prototype.endpoint = '/discussion/profile/:userId/:streamType.json?page=:page';
+ActivityStream.prototype.endpoint =
+    '/discussion/profile/:userId/:streamType.json?page=:page';
 ActivityStream.prototype.componentClass = 'activity-stream';
 
 ActivityStream.prototype.defaultOptions = {
     page: 1,
     streamType: 'discussions',
-    userId: null
+    userId: null,
 };
 ActivityStream.prototype.ready = function() {
     this.removeState('loading');
@@ -52,7 +59,7 @@ ActivityStream.prototype.applyState = function(html, streamType) {
     this.setState('loading');
     $.create(html).each(function(el) {
         $el.html($(el).html()).attr({
-            'class': el.className
+            class: el.className,
         });
     });
     this.removeState('loading');
@@ -68,20 +75,28 @@ ActivityStream.prototype.applyState = function(html, streamType) {
 ActivityStream.prototype.updateHistory = function(resp) {
     var page = this.options.page;
     var pageParam = getUrlVars().page;
-    var streamType = this.options.streamType !== 'discussions' ? '/' + this.options.streamType : '';
-    var qs = '/user/id/' + this.options.userId + streamType + '?' + constructQuery({
-        page: page
-    });
+    var streamType = this.options.streamType !== 'discussions'
+        ? '/' + this.options.streamType
+        : '';
+    var qs =
+        '/user/id/' +
+        this.options.userId +
+        streamType +
+        '?' +
+        constructQuery({
+            page: page,
+        });
     var state = {
         resp: resp,
-        streamType: this.options.streamType
+        streamType: this.options.streamType,
     };
     var params = {
         querystring: qs,
-        state: state
+        state: state,
     };
 
-    if (typeof pageParam === 'undefined') { // If first load and without page param, add it and overwrite history
+    if (typeof pageParam === 'undefined') {
+        // If first load and without page param, add it and overwrite history
         replaceQueryString(params);
     } else {
         pushQueryString(params);
@@ -89,14 +104,19 @@ ActivityStream.prototype.updateHistory = function(resp) {
 };
 
 function pagination(activityStream) {
-    bean.on(activityStream.elem, 'click', '.js-activity-stream-page-change', function(e) {
-        var page = e.currentTarget.getAttribute('data-page');
-        e.preventDefault();
+    bean.on(
+        activityStream.elem,
+        'click',
+        '.js-activity-stream-page-change',
+        function(e) {
+            var page = e.currentTarget.getAttribute('data-page');
+            e.preventDefault();
 
-        activityStream.change({
-            page: page
-        });
-    });
+            activityStream.change({
+                page: page,
+            });
+        }
+    );
 }
 
 function selectTab(streamType) {
@@ -106,7 +126,9 @@ function selectTab(streamType) {
     $('.js-activity-stream-change').focus().blur();
 
     $('.tabs__tab--selected').removeClass('tabs__tab--selected');
-    bonzo($('a[data-stream-type=' + streamType + ']')).parent().addClass('tabs__tab--selected');
+    bonzo($('a[data-stream-type=' + streamType + ']'))
+        .parent()
+        .addClass('tabs__tab--selected');
 }
 
 export default ActivityStream;

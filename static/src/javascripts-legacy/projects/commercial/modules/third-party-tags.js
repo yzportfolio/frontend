@@ -5,9 +5,9 @@ import $ from 'lib/$';
 import config from 'lib/config';
 import fastdom from 'lib/fastdom-promise';
 import template from 'lodash/utilities/template';
-import {testCanBeRun} from 'common/modules/experiments/test-can-run-checks';
-import {getTestVariantId} from 'common/modules/experiments/utils';
-import {commercialFeatures} from 'commercial/modules/commercial-features';
+import { testCanBeRun } from 'common/modules/experiments/test-can-run-checks';
+import { getTestVariantId } from 'common/modules/experiments/utils';
+import { commercialFeatures } from 'commercial/modules/commercial-features';
 import audienceScienceGateway from 'commercial/modules/third-party-tags/audience-science-gateway';
 import audienceSciencePql from 'commercial/modules/third-party-tags/audience-science-pql';
 import imrWorldwide from 'commercial/modules/third-party-tags/imr-worldwide';
@@ -16,19 +16,18 @@ import remarketing from 'commercial/modules/third-party-tags/remarketing';
 import simpleReach from 'commercial/modules/third-party-tags/simple-reach';
 import tourismAustralia from 'commercial/modules/third-party-tags/tourism-australia';
 import krux from 'commercial/modules/third-party-tags/krux';
-import {init as initOutbrain} from 'commercial/modules/third-party-tags/outbrain';
+import { init as initOutbrain } from 'commercial/modules/third-party-tags/outbrain';
 import plista from 'commercial/modules/third-party-tags/plista';
 import PaidContentVsOutbrain2 from 'common/modules/experiments/tests/paid-content-vs-outbrain';
 import externalContentContainerStr from 'raw-loader!common/views/commercial/external-content.html';
 
 function loadExternalContentWidget() {
-
     var externalTpl = template(externalContentContainerStr);
 
     function findAnchor() {
-        var selector = !(config.page.seriesId || config.page.blogIds) ?
-            '.js-related, .js-outbrain-anchor' :
-            '.js-outbrain-anchor';
+        var selector = !(config.page.seriesId || config.page.blogIds)
+            ? '.js-related, .js-outbrain-anchor'
+            : '.js-outbrain-anchor';
         return Promise.resolve(document.querySelector(selector));
     }
 
@@ -36,15 +35,19 @@ function loadExternalContentWidget() {
         findAnchor()
             .then(function(anchorNode) {
                 return fastdom.write(function() {
-                    $(anchorNode).after(externalTpl({
-                        widgetType: widgetType
-                    }));
-                })
+                    $(anchorNode).after(
+                        externalTpl({
+                            widgetType: widgetType,
+                        })
+                    );
+                });
             })
             .then(init);
     }
 
-    var shouldServePlista = config.switches.plistaForOutbrainAu && config.page.edition.toLowerCase() === 'au';
+    var shouldServePlista =
+        config.switches.plistaForOutbrainAu &&
+        config.page.edition.toLowerCase() === 'au';
 
     if (shouldServePlista) {
         renderWidget('plista', plista.default.init);
@@ -54,7 +57,6 @@ function loadExternalContentWidget() {
 }
 
 function init() {
-
     if (!commercialFeatures.thirdPartyTags) {
         return Promise.resolve(false);
     }
@@ -70,8 +72,10 @@ function init() {
 }
 
 function isLuckyBastard() {
-    return testCanBeRun(PaidContentVsOutbrain2) &&
-        getTestVariantId(PaidContentVsOutbrain2.id) === 'paid-content';
+    return (
+        testCanBeRun(PaidContentVsOutbrain2) &&
+        getTestVariantId(PaidContentVsOutbrain2.id) === 'paid-content'
+    );
 }
 
 function loadOther() {
@@ -83,7 +87,7 @@ function loadOther() {
         remarketing,
         simpleReach,
         tourismAustralia,
-        krux
+        krux,
     ].filter(function(_) {
         return _.shouldRun;
     });
@@ -111,5 +115,5 @@ function insertScripts(services) {
 }
 
 export default {
-    init: init
+    init: init,
 };

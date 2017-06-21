@@ -6,13 +6,17 @@ export default new genericEmailTest({
     author: 'David Furey',
     audience: 1,
     audienceOffset: 0,
-    signupPage: 'info/ng-interactive/2017/mar/30/sign-up-for-the-bookmarks-email',
+    signupPage:
+        'info/ng-interactive/2017/mar/30/sign-up-for-the-bookmarks-email',
     canonicalListId: 3039,
-    testIds: [{
-        variantId: 'Control',
-        listId: 3867
-    }, {
-        variantId: 'Variant',
-        listId: 3866
-    }]
+    testIds: [
+        {
+            variantId: 'Control',
+            listId: 3867,
+        },
+        {
+            variantId: 'Variant',
+            listId: 3866,
+        },
+    ],
 });

@@ -1,6 +1,6 @@
 import some from 'lodash/collections/some';
-import {isInVariant} from 'common/modules/experiments/utils';
-import {abTestClashData} from 'common/modules/experiments/acquisition-test-selector';
+import { isInVariant } from 'common/modules/experiments/utils';
+import { abTestClashData } from 'common/modules/experiments/acquisition-test-selector';
 
 var emailTests = [];
 var contributionsTests = abTestClashData;
@@ -15,12 +15,17 @@ function userIsInAClashingAbTest(tests) {
 function _testABClash(f, clashingTests) {
     if (clashingTests.length > 0) {
         return some(clashingTests, function(test) {
-            return test.variants.filter(function(variant) {
-                var compliant = variant && variant.options && variant.options.isOutbrainCompliant;
-                return !compliant;
-            }).some(function(variant) {
-                return f(test, variant);
-            });
+            return test.variants
+                .filter(function(variant) {
+                    var compliant =
+                        variant &&
+                        variant.options &&
+                        variant.options.isOutbrainCompliant;
+                    return !compliant;
+                })
+                .some(function(variant) {
+                    return f(test, variant);
+                });
         });
     } else {
         return false;
@@ -31,5 +36,5 @@ export default {
     userIsInAClashingAbTest: userIsInAClashingAbTest,
     contributionsTests: contributionsTests,
     emailTests: emailTests,
-    _testABClash: _testABClash // exposed for unit testing
+    _testABClash: _testABClash, // exposed for unit testing
 };

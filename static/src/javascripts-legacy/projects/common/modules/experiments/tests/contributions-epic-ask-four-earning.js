@@ -8,7 +8,8 @@ export default contributionsUtilities.makeABTest({
     expiry: '2018-07-19',
 
     author: 'Jonathan Rankin',
-    description: 'This places the epic on all articles for all users, with a limit of 4 impressions in any given 30 days',
+    description:
+        'This places the epic on all articles for all users, with a limit of 4 impressions in any given 30 days',
     successMeasure: 'Conversion rate',
     idealOutcome: 'Acquires many Supporters',
 
@@ -16,16 +17,18 @@ export default contributionsUtilities.makeABTest({
     audience: 1,
     audienceOffset: 0,
 
-    variants: [{
-        id: 'control',
-        maxViews: {
-            days: 30,
-            count: 4,
-            minDaysBetweenViews: 0
-        },
+    variants: [
+        {
+            id: 'control',
+            maxViews: {
+                days: 30,
+                count: 4,
+                minDaysBetweenViews: 0,
+            },
 
-        useTailoredCopyForRegulars: true,
-        insertAtSelector: '.submeta',
-        successOnView: true
-    }]
+            useTailoredCopyForRegulars: true,
+            insertAtSelector: '.submeta',
+            successOnView: true,
+        },
+    ],
 });

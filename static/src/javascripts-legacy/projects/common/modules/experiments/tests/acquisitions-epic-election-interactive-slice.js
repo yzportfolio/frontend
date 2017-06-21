@@ -10,9 +10,11 @@ export default contributionsUtilities.makeABTest({
     expiry: '2017-07-03',
 
     author: 'Sam Desborough',
-    description: 'This places the epic (slice design) in the middle of UK election-related interactives',
+    description:
+        'This places the epic (slice design) in the middle of UK election-related interactives',
     successMeasure: 'Member acquisition and contributions',
-    idealOutcome: 'Our wonderful readers will support The Guardian in this time of need!',
+    idealOutcome:
+        'Our wonderful readers will support The Guardian in this time of need!',
 
     audienceCriteria: 'All',
     audience: 1,
@@ -21,30 +23,34 @@ export default contributionsUtilities.makeABTest({
     showForSensitive: true,
 
     pageCheck: function(page) {
-        return page.keywordIds &&
+        return (
+            page.keywordIds &&
             page.keywordIds.includes('general-election-2017') &&
-            page.contentType === 'Interactive';
+            page.contentType === 'Interactive'
+        );
     },
 
-    variants: [{
-        id: 'control',
-        isUnlimited: true,
+    variants: [
+        {
+            id: 'control',
+            isUnlimited: true,
 
-        insertAtSelector: '#js-interactive-epic',
-        successOnView: true,
+            insertAtSelector: '#js-interactive-epic',
+            successOnView: true,
 
-        test: function(render) {
-            var article = document.getElementById('article');
-            if (article) article.style['overflow-x'] = 'hidden';
-            render();
+            test: function(render) {
+                var article = document.getElementById('article');
+                if (article) article.style['overflow-x'] = 'hidden';
+                render();
+            },
+
+            template: function makeSliceTemplate(variant) {
+                return template(epicSlice, {
+                    membershipUrl: variant.options.membershipURL,
+                    contributionUrl: variant.options.contributeURL,
+                    componentName: variant.options.componentName,
+                });
+            },
         },
-
-        template: function makeSliceTemplate(variant) {
-            return template(epicSlice, {
-                membershipUrl: variant.options.membershipURL,
-                contributionUrl: variant.options.contributeURL,
-                componentName: variant.options.componentName,
-            });
-        }
-    }]
+    ],
 });

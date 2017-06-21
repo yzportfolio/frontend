@@ -8,14 +8,19 @@ export default function() {
     $('.js-crossword').each(function(element) {
         if (element.hasAttribute('data-crossword-data')) {
             (function() {
-                var crosswordData = JSON.parse(element.getAttribute('data-crossword-data'));
-                var crosswordComponent = React.render(React.createElement(Crossword, {
-                    data: crosswordData
-                }), element);
+                var crosswordData = JSON.parse(
+                    element.getAttribute('data-crossword-data')
+                );
+                var crosswordComponent = React.render(
+                    React.createElement(Crossword, {
+                        data: crosswordData,
+                    }),
+                    element
+                );
 
                 var entryId = window.location.hash.replace('#', '');
                 var entry = find(crosswordComponent.props.data.entries, {
-                    id: entryId
+                    id: entryId,
                 });
                 if (entry) {
                     crosswordComponent.focusFirstCellInClue(entry);
@@ -26,10 +31,11 @@ export default function() {
                     var newEntryId = idMatch && idMatch[0].replace('#', '');
 
                     var newEntry = find(crosswordComponent.props.data.entries, {
-                        id: newEntryId
+                        id: newEntryId,
                     });
                     var focussedEntry = crosswordComponent.clueInFocus();
-                    var isNewEntry = focussedEntry && focussedEntry.id !== newEntry.id;
+                    var isNewEntry =
+                        focussedEntry && focussedEntry.id !== newEntry.id;
                     // Only focus the first cell in the new clue if it's not already
                     // focussed. When focussing a cell in a new clue, we update the
                     // hash fragment afterwards, in which case we do not want to

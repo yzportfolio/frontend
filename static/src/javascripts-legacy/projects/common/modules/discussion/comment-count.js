@@ -15,7 +15,7 @@ var attributeName = 'data-discussion-id',
     countUrl = '/discussion/comment-counts.json?shortUrls=',
     templates = {
         content: commentCountContentTemplate,
-        contentImmersive: commentCountContentImmersiveTemplate
+        contentImmersive: commentCountContentImmersiveTemplate,
     },
     defaultTemplate = commentCountTemplate;
 
@@ -46,15 +46,20 @@ function renderCounts(counts, indexedElements) {
                 meta,
                 html;
 
-            if ($node.attr('data-discussion-closed') === 'true' && c.count === 0) {
+            if (
+                $node.attr('data-discussion-closed') === 'true' &&
+                c.count === 0
+            ) {
                 return; // Discussion is closed and had no comments, we don't want to show a comment count
             }
 
             format = $node.data('commentcount-format');
             html = template(templates[format] || defaultTemplate, {
                 url: url,
-                icon: svgs.inlineSvg('commentCount16icon', ['inline-tone-fill']),
-                count: formatters.integerCommas(c.count)
+                icon: svgs.inlineSvg('commentCount16icon', [
+                    'inline-tone-fill',
+                ]),
+                count: formatters.integerCommas(c.count),
             });
 
             meta = qwery('.js-item__meta', node);
@@ -103,5 +108,5 @@ export default {
     init: init,
     getCommentCounts: getCommentCounts,
     getContentIds: getContentIds,
-    getElementsIndexedById: getElementsIndexedById
+    getElementsIndexedById: getElementsIndexedById,
 };

@@ -1,26 +1,31 @@
 import bean from 'bean';
 import bonzo from 'bonzo';
 import $ from 'lib/$';
-import {getUrlVars} from 'lib/url';
+import { getUrlVars } from 'lib/url';
 import ActivityStream from 'common/modules/discussion/activity-stream';
 import mapValues from 'lodash/objects/mapValues';
 
 function getActivityStream(cb) {
-    var activityStream, dataOpts = {
-        userId: 'data-user-id',
-        streamType: 'data-stream-type'
-    };
-    $('.js-activity-stream').each(function(el) {
-        var opts = mapValues(dataOpts, function(key) {
-            return el.getAttribute(key);
-        });
+    var activityStream,
+        dataOpts = {
+            userId: 'data-user-id',
+            streamType: 'data-stream-type',
+        };
+    $('.js-activity-stream')
+        .each(function(el) {
+            var opts = mapValues(dataOpts, function(key) {
+                return el.getAttribute(key);
+            });
 
-        opts.page = getUrlVars().page || 1;
+            opts.page = getUrlVars().page || 1;
 
-        (activityStream = new ActivityStream(opts)).fetch(el).then(function() {
-            bonzo(el).removeClass('activity-stream--loading');
-        });
-    }).addClass('activity-stream--loading');
+            (activityStream = new ActivityStream(opts))
+                .fetch(el)
+                .then(function() {
+                    bonzo(el).removeClass('activity-stream--loading');
+                });
+        })
+        .addClass('activity-stream--loading');
     cb(activityStream);
     return activityStream;
 }
@@ -39,7 +44,7 @@ function setupActivityStreamChanger(activityStream) {
 
         activityStream.change({
             page: 1,
-            streamType: streamType
+            streamType: streamType,
         });
     });
 }
@@ -50,7 +55,9 @@ function setupActivityStreamSearch(activityStream) {
         e.preventDefault();
         selectTab($('a[data-stream-type="discussions"]'));
         activityStream.change({
-            streamType: q !== '' ? 'search/' + encodeURIComponent(q) : 'comments'
+            streamType: q !== ''
+                ? 'search/' + encodeURIComponent(q)
+                : 'comments',
         });
     });
 }
@@ -63,5 +70,5 @@ function init() {
 }
 
 export default {
-    init: init
+    init: init,
 };

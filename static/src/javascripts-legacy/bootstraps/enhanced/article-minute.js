@@ -8,5 +8,5 @@ var ready = function() {
 };
 
 export default {
-    init: ready
+    init: ready,
 };

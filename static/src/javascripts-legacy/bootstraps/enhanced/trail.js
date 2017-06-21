@@ -5,7 +5,7 @@ import qwery from 'qwery';
 import $ from 'lib/$';
 import config from 'lib/config';
 import contains from 'lodash/collections/contains';
-import {catchErrorsWithContext} from 'lib/robust';
+import { catchErrorsWithContext } from 'lib/robust';
 import proximityLoader from 'lib/proximity-loader';
 import commentAdverts from 'commercial/modules/comment-adverts';
 import DiscussionLoader from 'common/modules/discussion/loader';
@@ -40,7 +40,7 @@ function initRelated() {
     if (!(config.page.seriesId || config.page.blogIds)) {
         insertOrProximity('.js-related', function() {
             var opts = {
-                excludeTags: []
+                excludeTags: [],
             };
 
             // exclude ad features from non-ad feature content
@@ -48,9 +48,16 @@ function initRelated() {
                 opts.excludeTags.push('tone/advertisement-features');
             }
             // don't want to show professional network content on videos or interactives
-            if ('contentType' in config.page &&
-                contains(['video', 'interactive'], config.page.contentType.toLowerCase())) {
-                opts.excludeTags.push('guardian-professional/guardian-professional');
+            if (
+                'contentType' in config.page &&
+                contains(
+                    ['video', 'interactive'],
+                    config.page.contentType.toLowerCase()
+                )
+            ) {
+                opts.excludeTags.push(
+                    'guardian-professional/guardian-professional'
+                );
             }
             new Related(opts).renderRelatedComponent();
         });
@@ -59,7 +66,10 @@ function initRelated() {
 
 function initOnwardContent() {
     insertOrProximity('.js-onward', function() {
-        if ((config.page.seriesId || config.page.blogIds) && config.page.showRelatedContent) {
+        if (
+            (config.page.seriesId || config.page.blogIds) &&
+            config.page.showRelatedContent
+        ) {
             new Onward(qwery('.js-onward'));
         } else if (config.page.tones !== '') {
             $('.js-onward').each(function(c) {
@@ -99,6 +109,6 @@ export default function() {
         ['c-popular', initPopular],
         ['c-related', initRelated],
         ['c-onward', initOnwardContent],
-        ['c-comment-adverts', commentAdverts]
+        ['c-comment-adverts', commentAdverts],
     ]);
 }

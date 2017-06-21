@@ -1,16 +1,22 @@
-import {commercialFeatures} from 'commercial/modules/commercial-features';
+import { commercialFeatures } from 'commercial/modules/commercial-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import config from 'lib/config';
-import {getCookie} from 'lib/cookies';
+import { getCookie } from 'lib/cookies';
 
 function canBeDisplayed() {
-    var userHasNeverContributed = !getCookie('gu.contributions.contrib-timestamp');
-    var worksWellWithPageTemplate = (config.page.contentType === 'Article') && !config.page.isMinuteArticle; // may render badly on other types
+    var userHasNeverContributed = !getCookie(
+        'gu.contributions.contrib-timestamp'
+    );
+    var worksWellWithPageTemplate =
+        config.page.contentType === 'Article' && !config.page.isMinuteArticle; // may render badly on other types
     var isSensitive = config.page.isSensitive === true;
 
-    return userHasNeverContributed &&
+    return (
+        userHasNeverContributed &&
         commercialFeatures.canReasonablyAskForMoney &&
-        worksWellWithPageTemplate && !isSensitive;
+        worksWellWithPageTemplate &&
+        !isSensitive
+    );
 }
 
 export default contributionsUtilities.makeABTest({
@@ -21,9 +27,12 @@ export default contributionsUtilities.makeABTest({
     expiry: '2018-07-19',
 
     author: 'Guy Dawson',
-    description: 'Test to assess the effects of always asking readers to contribute via the Epic over a prolonged period.',
-    successMeasure: 'We are able to measure the positive and negative effects of this strategy.',
-    idealOutcome: 'There are no negative effects and this is the optimum strategy!',
+    description:
+        'Test to assess the effects of always asking readers to contribute via the Epic over a prolonged period.',
+    successMeasure:
+        'We are able to measure the positive and negative effects of this strategy.',
+    idealOutcome:
+        'There are no negative effects and this is the optimum strategy!',
 
     audienceCriteria: 'All',
     audience: 0.02,
@@ -36,11 +45,11 @@ export default contributionsUtilities.makeABTest({
         return true;
     },
 
-    variants: [{
+    variants: [
+        {
             id: 'control',
             test: function() {},
-            isUnlimited: true
-
+            isUnlimited: true,
         },
 
         {
@@ -49,7 +58,7 @@ export default contributionsUtilities.makeABTest({
                 if (canBeDisplayed()) render();
             },
             isUnlimited: true,
-            successOnView: true
-        }
-    ]
+            successOnView: true,
+        },
+    ],
 });

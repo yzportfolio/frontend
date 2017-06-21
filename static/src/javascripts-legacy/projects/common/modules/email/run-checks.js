@@ -2,8 +2,8 @@ import $ from 'lib/$';
 import page from 'lib/page';
 import config from 'lib/config';
 import detect from 'lib/detect';
-import {session as storage} from 'lib/storage';
-import {logError} from 'lib/robust';
+import { session as storage } from 'lib/storage';
+import { logError } from 'lib/robust';
 import every from 'lodash/collections/every';
 import map from 'lodash/collections/map';
 import contains from 'lodash/collections/contains';
@@ -16,9 +16,11 @@ var userListSubs = [];
 
 function pageHasBlanketBlacklist() {
     // Prevent the blanket emails from ever showing on certain keywords or sections
-    return page.keywordExists(['US elections 2016', 'Football']) ||
+    return (
+        page.keywordExists(['US elections 2016', 'Football']) ||
         config.page.section === 'film' ||
-        config.page.seriesId === 'world/series/guardian-morning-briefing';
+        config.page.seriesId === 'world/series/guardian-morning-briefing'
+    );
 }
 
 function userHasRemoved(id, formType) {
@@ -31,7 +33,12 @@ function userHasSeenThisSession() {
 }
 
 function buildUserSubscriptions(response) {
-    if (response && response.status !== 'error' && response.result && response.result.subscriptions) {
+    if (
+        response &&
+        response.status !== 'error' &&
+        response.result &&
+        response.result.subscriptions
+    ) {
         userListSubs = map(response.result.subscriptions, 'listId');
         userListSubsChecked = true;
     }
@@ -48,7 +55,10 @@ function allowedArticleStructure() {
 
     if ($articleBody.length) {
         var allArticleEls = $('> *', $articleBody);
-        return every([].slice.call(allArticleEls, allArticleEls.length - 2), isParagraph);
+        return every(
+            [].slice.call(allArticleEls, allArticleEls.length - 2),
+            isParagraph
+        );
     } else {
         return false;
     }
@@ -62,34 +72,43 @@ var canRunList = {
         return page.keywordExists(['Football']) && allowedArticleStructure();
     },
     labNotes: function() {
-        return config.page.section === 'science' && config.switches.emailSignupLabNotes;
+        return (
+            config.page.section === 'science' &&
+            config.switches.emailSignupLabNotes
+        );
     },
     euRef: function() {
-        return config.switches.emailSignupEuRef &&
+        return (
+            config.switches.emailSignupEuRef &&
             page.keywordExists(['EU referendum']) &&
-            allowedArticleStructure();
+            allowedArticleStructure()
+        );
     },
     usBriefing: function() {
-        return (config.page.section === 'us-news' && allowedArticleStructure()) ||
-            config.page.series === 'Guardian US briefing';
+        return (
+            (config.page.section === 'us-news' && allowedArticleStructure()) ||
+            config.page.series === 'Guardian US briefing'
+        );
     },
     theGuardianToday: function() {
-        return config.switches.emailInArticleGtoday &&
+        return (
+            config.switches.emailInArticleGtoday &&
             !pageHasBlanketBlacklist() &&
-            allowedArticleStructure();
+            allowedArticleStructure()
+        );
     },
     sleevenotes: function() {
-        return config.page.section === "music";
+        return config.page.section === 'music';
     },
     longReads: function() {
         return config.page.seriesId === 'news/series/the-long-read';
     },
     bookmarks: function() {
-        return config.page.section === "books";
+        return config.page.section === 'books';
     },
     greenLight: function() {
-        return config.page.section === "environment";
-    }
+        return config.page.section === 'environment';
+    },
 };
 
 // Public
@@ -106,14 +125,17 @@ function allEmailCanRun() {
     var browser = detect.getUserAgent.browser,
         version = detect.getUserAgent.version;
 
-    return !config.page.shouldHideAdverts &&
+    return (
+        !config.page.shouldHideAdverts &&
         !config.page.isSensitive &&
         !config.page.isFront &&
-        (config.page.contentId && config.page.contentId.indexOf("email-sign-up") === -1) &&
+        (config.page.contentId &&
+            config.page.contentId.indexOf('email-sign-up') === -1) &&
         config.switches.emailInArticle &&
         storage.isAvailable() &&
         !userHasSeenThisSession() &&
-        !(browser === 'MSIE' && contains(['7', '8', '9'], version + ''));
+        !(browser === 'MSIE' && contains(['7', '8', '9'], version + ''))
+    );
 }
 
 function getUserEmailSubscriptions() {
@@ -129,11 +151,12 @@ function getUserEmailSubscriptions() {
 }
 
 function listCanRun(listConfig) {
-    if (listConfig.listName &&
+    if (
+        listConfig.listName &&
         canRunList[listConfig.listName]() &&
         !contains(userListSubs, listConfig.listId) &&
-        !userHasRemoved(listConfig.listId, 'article')) {
-
+        !userHasRemoved(listConfig.listId, 'article')
+    ) {
         return listConfig;
     }
 }
@@ -143,5 +166,5 @@ export {
     getEmailShown,
     allEmailCanRun,
     getUserEmailSubscriptions,
-    listCanRun
+    listCanRun,
 };

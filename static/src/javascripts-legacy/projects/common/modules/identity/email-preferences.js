@@ -20,7 +20,7 @@ function reqwestEmailSubscriptionUpdate(buttonEl) {
             },
             success: function() {
                 updateButton(buttonEl);
-            }
+            },
         });
     });
 }
@@ -39,7 +39,7 @@ function reqwestUnsubscribeFromAll(buttonEl, subscribedButtons) {
                 updateSubscriptionButton(subscribedButtons[i]);
             }
             updateButton(buttonEl);
-        }
+        },
     });
 }
 
@@ -57,14 +57,18 @@ function unsubscribeFromAll(buttonEl) {
 
 function confirmUnsubscriptionFromAll(buttonEl) {
     fastdom.write(function() {
-        $(buttonEl).addClass('email-unsubscribe--confirm js-confirm-unsubscribe');
+        $(buttonEl).addClass(
+            'email-unsubscribe--confirm js-confirm-unsubscribe'
+        );
         $('.email-unsubscribe-all__label').toggleClass('hide');
     });
 }
 
 function resetUnsubscribeFromAll(buttonEl) {
     fastdom.write(function() {
-        $(buttonEl).removeClass('email-unsubscribe--confirm js-confirm-unsubscribe');
+        $(buttonEl).removeClass(
+            'email-unsubscribe--confirm js-confirm-unsubscribe'
+        );
         $('.js-unsubscribe--confirm').addClass('hide');
         $('.js-unsubscribe--basic').removeClass('hide');
     });
@@ -75,8 +79,8 @@ function renderErrorMessage(buttonEl) {
         clearErrorMessages();
         var errorMessage = $.create(
             '<div class="form__error">' +
-            'Sorry, an error has occurred, please refresh the page and try again' +
-            '</div>'
+                'Sorry, an error has occurred, please refresh the page and try again' +
+                '</div>'
         );
         $(errorMessage).insertAfter(buttonEl.parentNode);
     });
@@ -106,7 +110,9 @@ function updateSubscriptionButton(buttonEl) {
             $(buttonEl).removeClass('is-updating is-updating-subscriptions');
             buttonEl.value = 'unsubscribe-' + buttonVal;
             buttonEl.innerHTML = 'Unsubscribe';
-            $($.ancestor(buttonEl, 'email-subscription')).addClass('email-subscription--subscribed');
+            $($.ancestor(buttonEl, 'email-subscription')).addClass(
+                'email-subscription--subscribed'
+            );
             buttonEl.disabled = false;
         });
     } else {
@@ -114,7 +120,9 @@ function updateSubscriptionButton(buttonEl) {
             $(buttonEl).removeClass('is-updating is-updating-subscriptions');
             buttonEl.value = buttonVal.replace('unsubscribe-', '');
             buttonEl.innerHTML = 'Subscribe';
-            $($.ancestor(buttonEl, 'email-subscription')).removeClass('email-subscription--subscribed');
+            $($.ancestor(buttonEl, 'email-subscription')).removeClass(
+                'email-subscription--subscribed'
+            );
             buttonEl.disabled = false;
         });
     }
@@ -126,32 +134,43 @@ function updateButton(buttonEl) {
     } else {
         fastdom.write(function() {
             setTimeout(function() {
-                $(buttonEl).removeClass('is-updating is-updating-subscriptions');
+                $(buttonEl).removeClass(
+                    'is-updating is-updating-subscriptions'
+                );
                 buttonEl.disabled = false;
             }, 1000);
-
         });
     }
 }
 
 function generateFormQueryString(buttons) {
-    var csrfToken = ($('.form')[0].elements.csrfToken.value).toString();
+    var csrfToken = $('.form')[0].elements.csrfToken.value.toString();
     var htmlPreference = $('[name="htmlPreference"]:checked').val();
     var buttonString = '';
     for (var i = 0; i < buttons.length; i++) {
         var value = buttons[i].value;
         var unsubscribeMatches = value.match(/unsubscribe-(.*)/);
         if (unsubscribeMatches) {
-            var listIds = unsubscribeMatches[1].split(",");
+            var listIds = unsubscribeMatches[1].split(',');
             for (var j = 0; j < listIds.length; j++) {
-                buttonString += 'removeEmailSubscriptions[]=' + encodeURIComponent(listIds[j]) + '&';
+                buttonString +=
+                    'removeEmailSubscriptions[]=' +
+                    encodeURIComponent(listIds[j]) +
+                    '&';
             }
         } else {
-            buttonString += 'addEmailSubscriptions[]=' + encodeURIComponent(value) + '&';
+            buttonString +=
+                'addEmailSubscriptions[]=' + encodeURIComponent(value) + '&';
         }
     }
-    return 'csrfToken=' + encodeURIComponent(csrfToken) + '&' +
-        buttonString + 'htmlPreference=' + encodeURIComponent(htmlPreference);
+    return (
+        'csrfToken=' +
+        encodeURIComponent(csrfToken) +
+        '&' +
+        buttonString +
+        'htmlPreference=' +
+        encodeURIComponent(htmlPreference)
+    );
 }
 
 function enhanceEmailPreferences() {
@@ -163,5 +182,5 @@ function enhanceEmailPreferences() {
 export default {
     init: function() {
         enhanceEmailPreferences();
-    }
+    },
 };

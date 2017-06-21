@@ -3,9 +3,12 @@ import $ from 'lib/$';
 import component from 'common/modules/component';
 
 var MatchList = function(type, competition, date) {
-    this.endpoint += ['football', type, competition, date].filter(function(e) {
-        return e;
-    }).join('/') + '.json';
+    this.endpoint +=
+        ['football', type, competition, date]
+            .filter(function(e) {
+                return e;
+            })
+            .join('/') + '.json';
 };
 component.define(MatchList);
 
@@ -19,13 +22,16 @@ MatchList.prototype.prerender = function() {
     $('.date-divider', elem).remove();
     $(this.elem).addClass('table--small');
 
-    $('.football-matches__date', this.elem).replaceWith('<span class="item__live-indicator">Live</span>');
+    $('.football-matches__date', this.elem).replaceWith(
+        '<span class="item__live-indicator">Live</span>'
+    );
 };
 
 MatchList.prototype.autoupdate = function(elem) {
     var updated = $('.football-match', elem),
         self = this,
-        $match, $updated;
+        $match,
+        $updated;
 
     $('.football-match', this.elem).each(function(match, i) {
         $match = bonzo(match).removeClass('football-match--updated');
@@ -34,7 +40,9 @@ MatchList.prototype.autoupdate = function(elem) {
         ['score-home', 'score-away', 'match-status'].forEach(function(state) {
             state = 'data-' + state;
             if ($updated.attr(state) !== $match.attr(state)) {
-                $match.replaceWith($updated.addClass('football-match--updated'));
+                $match.replaceWith(
+                    $updated.addClass('football-match--updated')
+                );
                 self.prerender();
             }
         });

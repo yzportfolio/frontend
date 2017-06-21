@@ -16,7 +16,9 @@ function blankComponent(url) {
  * @return Component
  */
 function matchDayFor(competition, date) {
-    return blankComponent('/football/match-day/' + competition + '/' + date + '.json');
+    return blankComponent(
+        '/football/match-day/' + competition + '/' + date + '.json'
+    );
 }
 
 /**
@@ -40,5 +42,5 @@ function statsFor(url) {
 export default {
     matchDayFor: matchDayFor,
     tableFor: tableFor,
-    statsFor: statsFor
+    statsFor: statsFor,
 }; //define

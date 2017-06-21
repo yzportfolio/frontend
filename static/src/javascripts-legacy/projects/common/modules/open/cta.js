@@ -29,7 +29,7 @@ Cta.prototype.useBem = true;
 
 /** @type {Object.<string.*>} */
 Cta.prototype.defaultOptions = {
-    discussionKey: null
+    discussionKey: null,
 };
 
 /** @override */

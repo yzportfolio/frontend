@@ -16,11 +16,11 @@ var Ring = React.createClass({
      */
     getPosition: function(angle, i) {
         var diameter = 40;
-        var theta = (angle * Math.PI / 180) * i;
+        var theta = angle * Math.PI / 180 * i;
 
         return {
             left: diameter + round(diameter * Math.sin(theta)) + '%',
-            top: diameter + round(diameter * Math.cos(theta)) + '%'
+            top: diameter + round(diameter * Math.cos(theta)) + '%',
         };
     },
 
@@ -28,20 +28,29 @@ var Ring = React.createClass({
         var angle = 360 / this.props.letters.length;
 
         return React.createElement(
-            'div', {
-                className: 'crossword__anagram-helper-shuffler'
+            'div',
+            {
+                className: 'crossword__anagram-helper-shuffler',
             },
-            map(this.props.letters, (function(letter, i) {
-                return React.createElement(
-                    'div', {
-                        className: 'crossword__anagram-helper-shuffler__letter ' + (letter.entered ? 'entered' : ''),
-                        style: this.getPosition(angle, i),
-                        key: i
-                    }, letter.value
-                );
-            }), this)
+            map(
+                this.props.letters,
+                function(letter, i) {
+                    return React.createElement(
+                        'div',
+                        {
+                            className:
+                                'crossword__anagram-helper-shuffler__letter ' +
+                                    (letter.entered ? 'entered' : ''),
+                            style: this.getPosition(angle, i),
+                            key: i,
+                        },
+                        letter.value
+                    );
+                },
+                this
+            )
         );
-    }
+    },
 });
 
 export default Ring;

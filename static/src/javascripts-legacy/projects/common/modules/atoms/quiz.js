@@ -15,19 +15,26 @@ export default {
             if ($quizzes.length > 0) {
                 bean.on(document, 'click', toArray($quizzes), function(e) {
                     var quiz = e.currentTarget,
-                        total = $(':checked + .atom-quiz__answer__item--is-correct', quiz).length;
+                        total = $(
+                            ':checked + .atom-quiz__answer__item--is-correct',
+                            quiz
+                        ).length;
 
-                    if (quiz.checkValidity()) { // the form (quiz) is complete
+                    if (quiz.checkValidity()) {
+                        // the form (quiz) is complete
                         var $bucket__message = null;
                         do {
                             // try and find a .bucket__message for your total
-                            $bucket__message = $('.js-atom-quiz__bucket-message--' + total, quiz);
+                            $bucket__message = $(
+                                '.js-atom-quiz__bucket-message--' + total,
+                                quiz
+                            );
 
                             // if we find a message for your total show it, and exit
                             if ($bucket__message.length > 0) {
                                 fastdom.write(function() {
                                     $bucket__message.css({
-                                        'display': 'block'
+                                        display: 'block',
                                     });
                                 });
                                 break;
@@ -41,5 +48,5 @@ export default {
                 });
             }
         }
-    }
+    },
 };

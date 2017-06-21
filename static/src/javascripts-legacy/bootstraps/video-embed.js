@@ -28,7 +28,7 @@ function addTitleBar() {
     var data = {
         webTitle: config.page.webTitle,
         pageId: config.page.pageId,
-        icon: svgs.inlineSvg('marque36icon')
+        icon: svgs.inlineSvg('marque36icon'),
     };
     $('.vjs-control-bar').after(template(titlebarTmpl, data));
 }
@@ -37,7 +37,9 @@ function initEndSlate(player) {
     var endSlate = new Component(),
         endState = 'vjs-has-ended';
 
-    endSlate.endpoint = $('.js-gu-media--enhance').first().attr('data-end-slate');
+    endSlate.endpoint = $('.js-gu-media--enhance')
+        .first()
+        .attr('data-end-slate');
 
     endSlate.fetch(player.el(), 'html').then(function() {
         $('.end-slate-container .fc-item__action').each(function(e) {
@@ -55,7 +57,6 @@ function initEndSlate(player) {
 }
 
 function initPlayer() {
-
     videojs.plugin('fullscreener', fullscreener);
 
     bonzo(qwery('.js-gu-media--enhance')).each(function(el) {
@@ -69,17 +70,27 @@ function initPlayer() {
 
         bonzo(el).addClass('vjs');
 
-        player = createVideoPlayer(el, videojsOptions({
-            controls: true,
-            autoplay: !!window.location.hash && window.location.hash === '#autoplay',
-            preload: 'metadata', // preload='none' & autoplay breaks ad loading on chrome35
-            plugins: {
-                embed: {
-                    embeddable: config.switches.externalVideoEmbeds && config.page.embeddable,
-                    location: config.page.externalEmbedHost + '/embed/video/' + config.page.pageId
-                }
-            }
-        }));
+        player = createVideoPlayer(
+            el,
+            videojsOptions({
+                controls: true,
+                autoplay:
+                    !!window.location.hash &&
+                        window.location.hash === '#autoplay',
+                preload: 'metadata', // preload='none' & autoplay breaks ad loading on chrome35
+                plugins: {
+                    embed: {
+                        embeddable:
+                            config.switches.externalVideoEmbeds &&
+                                config.page.embeddable,
+                        location:
+                            config.page.externalEmbedHost +
+                                '/embed/video/' +
+                                config.page.pageId,
+                    },
+                },
+            })
+        );
 
         //Location of this is important
         events.handleInitialMediaError(player);
@@ -107,7 +118,6 @@ function initPlayer() {
                     events.initOphanTracking(player, mediaId);
                     events.bindContentEvents(player);
                 });
-
             }
 
             events.addContentEvents(player, mediaId, mediaType);
@@ -128,5 +138,5 @@ function initPlayer() {
 }
 
 export default {
-    init: initPlayer
+    init: initPlayer,
 };

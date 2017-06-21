@@ -1,4 +1,4 @@
-import {local as storage} from 'lib/storage';
+import { local as storage } from 'lib/storage';
 import map from 'lodash/collections/map';
 
 var localStorageKey = function(id) {
@@ -28,6 +28,6 @@ var loadGridState = function(id) {
 };
 
 export default {
-    'saveGridState': saveGridState,
-    'loadGridState': loadGridState
+    saveGridState: saveGridState,
+    loadGridState: loadGridState,
 };

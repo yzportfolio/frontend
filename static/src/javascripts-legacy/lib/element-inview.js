@@ -1,15 +1,19 @@
 import bean from 'bean';
 import debounce from 'lodash/functions/debounce';
 import assign from 'lodash/objects/assign';
-import {noop} from 'lib/noop';
+import { noop } from 'lib/noop';
 // Be sure to wrap your event functions with fastdom as this doesn't assume DOM manipulation
 function elementIsInView(el, offsets_) {
-    var offsets = assign({}, {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0
-    }, offsets_);
+    var offsets = assign(
+        {},
+        {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+        },
+        offsets_
+    );
 
     var rect = el.getBoundingClientRect();
     var viewportHeight = window.innerHeight;
@@ -26,30 +30,32 @@ function elementIsInView(el, offsets_) {
     return visibleVertically && visibleHorizontally;
 }
 
-
-
 function ElementInview(element, container, offsets) {
     var hasBeenSeen = false;
 
     var events = {
-        firstview: noop
+        firstview: noop,
     };
 
-    bean.on(container, 'scroll', debounce(function() {
-        var inView = elementIsInView(element, offsets);
+    bean.on(
+        container,
+        'scroll',
+        debounce(function() {
+            var inView = elementIsInView(element, offsets);
 
-        if (inView) {
-            if (!hasBeenSeen) {
-                hasBeenSeen = true;
-                events.firstview(element);
+            if (inView) {
+                if (!hasBeenSeen) {
+                    hasBeenSeen = true;
+                    events.firstview(element);
+                }
             }
-        }
-    }, 200));
+        }, 200)
+    );
 
     return {
         on: function(event, func) {
             events[event] = func;
-        }
+        },
     };
 }
 

@@ -1,4 +1,4 @@
-import {getCookie, addCookie} from 'lib/cookies';
+import { getCookie, addCookie } from 'lib/cookies';
 import Message from 'common/modules/ui/message';
 import mediator from 'lib/mediator';
 /**
@@ -17,9 +17,12 @@ function init() {
             euMessageCookie = getCookie(EU_COOKIE_MSG);
         if (!euMessageCookie || euMessageCookie != 'seen') {
             var link = 'https://www.theguardian.com/info/cookies',
-                txt = 'Welcome to the Guardian. This site uses  Read <a href="' + link + '" class="cookie-message__link">our policy</a>.',
+                txt =
+                    'Welcome to the Guardian. This site uses  Read <a href="' +
+                    link +
+                    '" class="cookie-message__link">our policy</a>.',
                 opts = {
-                    important: true
+                    important: true,
                 },
                 cookieLifeDays = 365,
                 msg = new Message('cookies', opts);
@@ -32,5 +35,5 @@ function init() {
 }
 
 export default {
-    init: init
+    init: init,
 };

@@ -4,11 +4,18 @@ import youtube from 'common/modules/atoms/youtube';
 
 function init(el, mediaType, section, shortUrl, series) {
     var component = new Component();
-    var endpoint = '/' + mediaType + '/section/' + section +
+    var endpoint =
+        '/' +
+        mediaType +
+        '/section/' +
+        section +
         (series ? '/' + series : '') +
-        '.json?shortUrl=' + shortUrl +
+        '.json?shortUrl=' +
+        shortUrl +
         // exclude professional network content from video pages
-        (mediaType === 'video' ? '&exclude-tag=guardian-professional/guardian-professional' : '');
+        (mediaType === 'video'
+            ? '&exclude-tag=guardian-professional/guardian-professional'
+            : '');
 
     component.endpoint = endpoint;
 
@@ -20,5 +27,5 @@ function init(el, mediaType, section, shortUrl, series) {
 }
 
 export default {
-    init: init
+    init: init,
 };

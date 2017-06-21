@@ -4,14 +4,19 @@ import config from 'lib/config';
 
 function updateCommentLink() {
     var commentItem = document.querySelector('.js-show-comment-activity');
-    var commentLink = commentItem && commentItem.querySelector('.js-add-comment-activity-link');
+    var commentLink =
+        commentItem &&
+        commentItem.querySelector('.js-add-comment-activity-link');
 
     if (commentItem && commentLink) {
         var user = id.getUserFromCookie();
 
         fastdom.write(function() {
             commentItem.classList.remove('u-h');
-            commentLink.setAttribute('href', 'https://profile.theguardian.com/user/id/' + user.id);
+            commentLink.setAttribute(
+                'href',
+                'https://profile.theguardian.com/user/id/' + user.id
+            );
         });
     }
 }
@@ -19,10 +24,16 @@ function updateCommentLink() {
 function showMyAccountIfNecessary() {
     if (id.isUserLoggedIn()) {
         var signIn = document.querySelector('.js-navigation-sign-in');
-        var accountDetails = document.querySelector('.js-navigation-account-details');
-        var accountActions = document.querySelector('.js-navigation-account-actions');
+        var accountDetails = document.querySelector(
+            '.js-navigation-account-details'
+        );
+        var accountActions = document.querySelector(
+            '.js-navigation-account-actions'
+        );
         var user = config.user;
-        var userNameEl = document.querySelector('.js-navigation-account-username');
+        var userNameEl = document.querySelector(
+            '.js-navigation-account-username'
+        );
 
         fastdom.write(function() {
             if (signIn) {

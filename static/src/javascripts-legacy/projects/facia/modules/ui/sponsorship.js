@@ -6,30 +6,38 @@ import map from 'lodash/collections/map';
 import isEqual from 'lodash/objects/isEqual';
 var keyPressHistory = [],
     cheatCode = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65],
-    tones = map([
-        'special-report',
-        'live',
-        'dead',
-        'feature',
-        'editorial',
-        'comment',
-        'podcast',
-        'media',
-        'analysis',
-        'review',
-        'letters',
-        'external',
-        'news'
-    ], function(tone) {
-        return 'tone-' + tone + '--item';
-    });
+    tones = map(
+        [
+            'special-report',
+            'live',
+            'dead',
+            'feature',
+            'editorial',
+            'comment',
+            'podcast',
+            'media',
+            'analysis',
+            'review',
+            'letters',
+            'external',
+            'news',
+        ],
+        function(tone) {
+            return 'tone-' + tone + '--item';
+        }
+    );
 
 function listenForCheatCode() {
     return new Promise(function(resolve) {
         var onKeyDown = function(event) {
             keyPressHistory.push(event.keyCode);
 
-            if (isEqual(cheatCode.slice(0, keyPressHistory.length), keyPressHistory)) {
+            if (
+                isEqual(
+                    cheatCode.slice(0, keyPressHistory.length),
+                    keyPressHistory
+                )
+            ) {
                 if (keyPressHistory.length === cheatCode.length) {
                     resolve();
                     bean.off(document, 'keydown', onKeyDown);

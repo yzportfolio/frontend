@@ -6,7 +6,7 @@ import qwery from 'qwery';
 import config from 'lib/config';
 import fetchJson from 'lib/fetch-json';
 import reportError from 'lib/report-error';
-import {local as storage} from 'lib/storage';
+import { local as storage } from 'lib/storage';
 import template from 'lodash/utilities/template';
 import mediator from 'lib/mediator';
 import relativeDates from 'common/modules/ui/relativedates';
@@ -17,12 +17,11 @@ import has from 'lodash/objects/has';
 import flatten from 'lodash/arrays/flatten';
 import pick from 'lodash/objects/pick';
 var supportedSections = {
-        'sport': 'sport',
-        'football': 'sport'
-    },
+    sport: 'sport',
+    football: 'sport',
+},
     breakingNewsURL = '/news-alert/alerts',
     page = config.page,
-
     // get the users breaking news alert history
     // {
     //     alertID: true, <- dismissed/visited
@@ -55,7 +54,7 @@ function userCanDismissAlerts() {
 
 function fetchBreakingNews() {
     return fetchJson(breakingNewsURL, {
-        mode: 'cors'
+        mode: 'cors',
     });
 }
 
@@ -80,26 +79,26 @@ function getRelevantAlerts(alerts) {
 
     return flatten([
         alerts
-        .filter(function(alert) {
-            return alert.href === 'global';
-        })
-        .map(function(alert) {
-            return alert.content;
-        }),
+            .filter(function(alert) {
+                return alert.href === 'global';
+            })
+            .map(function(alert) {
+                return alert.content;
+            }),
         alerts
-        .filter(function(alert) {
-            return alert.href === edition;
-        })
-        .map(function(alert) {
-            return alert.content;
-        }),
+            .filter(function(alert) {
+                return alert.href === edition;
+            })
+            .map(function(alert) {
+                return alert.content;
+            }),
         alerts
-        .filter(function(alert) {
-            return section && alert.href === section;
-        })
-        .map(function(alert) {
-            return alert.content;
-        })
+            .filter(function(alert) {
+                return section && alert.href === section;
+            })
+            .map(function(alert) {
+                return alert.content;
+            }),
     ]);
 }
 
@@ -132,7 +131,10 @@ function filterAlertsByDismissed(alerts) {
 function filterAlertsByAge(alerts) {
     return alerts.filter(function(alert) {
         var alertTime = alert.frontPublicationDate;
-        return alertTime && relativeDates.isWithinSeconds(new Date(alertTime), 1200); // 20 mins
+        return (
+            alertTime &&
+            relativeDates.isWithinSeconds(new Date(alertTime), 1200)
+        ); // 20 mins
     });
 }
 
@@ -186,12 +188,16 @@ function renderAlert(alert) {
 
     var $alert = bonzo.create(template(alertHtml, alert));
 
-    bean.on($('.js-breaking-news__item__close', $alert)[0], 'click', function() {
-        fastdom.write(function() {
-            $('[data-breaking-article-id]').hide();
-        });
-        markAlertAsDismissed(alert.id);
-    });
+    bean.on(
+        $('.js-breaking-news__item__close', $alert)[0],
+        'click',
+        function() {
+            fastdom.write(function() {
+                $('[data-breaking-article-id]').hide();
+            });
+            markAlertAsDismissed(alert.id);
+        }
+    );
 
     return $alert;
 }
@@ -216,7 +222,7 @@ function init() {
             .then(alert)
             .catch(function(ex) {
                 reportError(ex, {
-                    feature: 'breaking-news'
+                    feature: 'breaking-news',
                 });
             });
     } else {

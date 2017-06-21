@@ -1,7 +1,7 @@
-import {addEventListener} from 'lib/events';
+import { addEventListener } from 'lib/events';
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
-import {register} from 'commercial/modules/messenger';
+import { register } from 'commercial/modules/messenger';
 // An intersection observer will allow us to efficiently send slot
 // coordinates for only those that are in the viewport.
 var w = window;
@@ -12,13 +12,13 @@ var iframeCounter = 0;
 var observer, visibleIframeIds;
 
 register('scroll', onMessage, {
-    persist: true
+    persist: true,
 });
 
 export default {
     addScrollListener: addScrollListener,
     removeScrollListener: removeScrollListener,
-    reset: reset
+    reset: reset,
 };
 
 function reset(window_) {
@@ -40,7 +40,7 @@ function onMessage(respond, start, iframe) {
 function addScrollListener(iframe, respond) {
     if (iframeCounter === 0) {
         addEventListener(w, 'scroll', onScroll, {
-            passive: true
+            passive: true,
         });
         if (useIO) {
             observer = new w.IntersectionObserver(onIntersect);
@@ -53,7 +53,7 @@ function addScrollListener(iframe, respond) {
         // observing it, the onIntercept callback will be triggered if it
         // is already in the viewport
         visible: !useIO,
-        respond: respond
+        respond: respond,
     };
     iframeCounter += 1;
 
@@ -61,7 +61,8 @@ function addScrollListener(iframe, respond) {
         observer.observe(iframe);
     }
 
-    fastdom.read(function() {
+    fastdom
+        .read(function() {
             return iframe.getBoundingClientRect();
         })
         .then(function(domRect) {
@@ -98,11 +99,9 @@ function onScroll() {
             var iframeIds = Object.keys(iframes);
 
             if (useIO) {
-                visibleIframeIds
-                    .map(getDimensions)
-                    .forEach(function(data) {
-                        sendCoordinates(data[0], data[1]);
-                    });
+                visibleIframeIds.map(getDimensions).forEach(function(data) {
+                    sendCoordinates(data[0], data[1]);
+                });
             } else {
                 iframeIds
                     .map(getDimensions)
@@ -143,7 +142,7 @@ function domRectToRect(rect) {
         top: rect.top,
         bottom: rect.bottom,
         left: rect.left,
-        right: rect.right
+        right: rect.right,
     };
 }
 

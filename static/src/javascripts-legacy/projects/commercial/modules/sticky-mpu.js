@@ -2,7 +2,7 @@ import config from 'lib/config';
 import mediator from 'lib/mediator';
 import fastdom from 'lib/fastdom-promise';
 import sticky from 'common/modules/ui/sticky';
-import {register, unregister} from 'commercial/modules/messenger';
+import { register, unregister } from 'commercial/modules/messenger';
 
 var noSticky = document.documentElement.classList.contains('has-no-sticky');
 var stickyElement;
@@ -15,29 +15,44 @@ function stickyMpu(adSlot) {
 
     rightSlot = adSlot;
 
-    var referenceElement = document.querySelector(config.page.hasShowcaseMainElement ? '.media-primary' : '.content__article-body,.js-liveblog-body-content');
+    var referenceElement = document.querySelector(
+        config.page.hasShowcaseMainElement
+            ? '.media-primary'
+            : '.content__article-body,.js-liveblog-body-content'
+    );
     if (!referenceElement) {
         return;
     }
 
-    fastdom.read(function() {
-        return (referenceElement[config.page.hasShowcaseMainElement ? 'offsetHeight' : 'offsetTop']) + adSlot.offsetHeight;
-    }).then(function(newHeight) {
-        return fastdom.write(function() {
-            adSlot.parentNode.style.height = newHeight + 'px';
+    fastdom
+        .read(function() {
+            return (
+                referenceElement[
+                    config.page.hasShowcaseMainElement
+                        ? 'offsetHeight'
+                        : 'offsetTop'
+                ] + adSlot.offsetHeight
+            );
+        })
+        .then(function(newHeight) {
+            return fastdom.write(function() {
+                adSlot.parentNode.style.height = newHeight + 'px';
+            });
+        })
+        .then(function() {
+            if (noSticky) {
+                //if there is a sticky 'paid by' band move the sticky mpu down so it will be always visible
+                var options = config.page.isPaidContent
+                    ? {
+                          top: 43,
+                      }
+                    : {};
+                stickyElement = new sticky.Sticky(adSlot, options);
+                stickyElement.init();
+                register('resize', onResize);
+            }
+            mediator.emit('page:commercial:sticky-mpu');
         });
-    }).then(function() {
-        if (noSticky) {
-            //if there is a sticky 'paid by' band move the sticky mpu down so it will be always visible
-            var options = config.page.isPaidContent ? {
-                top: 43
-            } : {};
-            stickyElement = new sticky.Sticky(adSlot, options);
-            stickyElement.init();
-            register('resize', onResize);
-        }
-        mediator.emit('page:commercial:sticky-mpu');
-    });
 }
 
 function onResize(specs, _, iframe) {

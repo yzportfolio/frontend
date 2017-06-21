@@ -14,33 +14,31 @@ var register = [],
 function begin(name) {
     register.push({
         name: name,
-        status: 'unfinished'
+        status: 'unfinished',
     });
 }
 
 function end(name) {
     where(register, {
-            name: name
-        })
-        .forEach(function(module) {
-            module.status = 'completed';
-            module.endTime = Date.now() - startTime + 'ms';
-        });
+        name: name,
+    }).forEach(function(module) {
+        module.status = 'completed';
+        module.endTime = Date.now() - startTime + 'ms';
+    });
 }
 
 function error(name) {
     where(register, {
-            name: name
-        })
-        .forEach(function(module) {
-            module.status = 'failed';
-            module.endTime = Date.now() - startTime + 'ms';
-        });
+        name: name,
+    }).forEach(function(module) {
+        module.status = 'failed';
+        module.endTime = Date.now() - startTime + 'ms';
+    });
 }
 
 function sendEvent() {
     ophan.record({
-        register: register
+        register: register,
     });
 }
 
@@ -56,5 +54,5 @@ export default {
     initialise: initialise,
     begin: begin,
     end: end,
-    error: error
+    error: error,
 };

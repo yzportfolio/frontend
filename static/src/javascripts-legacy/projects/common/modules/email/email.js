@@ -7,7 +7,7 @@ import detect from 'lib/detect';
 import fetch from 'lib/fetch';
 import mediator from 'lib/mediator';
 import template from 'lodash/utilities/template';
-import {logError} from 'lib/robust';
+import { logError } from 'lib/robust';
 import googleAnalytics from 'common/modules/analytics/google';
 import contains from 'lodash/collections/contains';
 import svgs from 'common/views/svgs';
@@ -18,22 +18,31 @@ import userPrefs from 'common/modules/user-prefs';
 import uniq from 'lodash/arrays/uniq';
 
 var state = {
-    submitting: false
+    submitting: false,
 };
 
 var messages = {
     defaultSuccessHeadline: 'Thank you for subscribing',
-    defaultSuccessDesc: ''
+    defaultSuccessDesc: '',
 };
 
 var updateForm = {
     replaceContent: function(isSuccess, $form) {
         var formData = $form.data('formData'),
             submissionMessage = {
-                statusClass: (isSuccess) ? 'email-sub__message--success' : 'email-sub__message--failure',
-                submissionHeadline: (isSuccess) ? formData.customSuccessHeadline || messages.defaultSuccessHeadline : 'Something went wrong',
-                submissionMessage: (isSuccess) ? formData.customSuccessDesc || messages.defaultSuccessDesc : 'Please try again.',
-                submissionIcon: (isSuccess) ? svgs.inlineSvg('tick') : svgs.inlineSvg('crossIcon')
+                statusClass: isSuccess
+                    ? 'email-sub__message--success'
+                    : 'email-sub__message--failure',
+                submissionHeadline: isSuccess
+                    ? formData.customSuccessHeadline ||
+                          messages.defaultSuccessHeadline
+                    : 'Something went wrong',
+                submissionMessage: isSuccess
+                    ? formData.customSuccessDesc || messages.defaultSuccessDesc
+                    : 'Please try again.',
+                submissionIcon: isSuccess
+                    ? svgs.inlineSvg('tick')
+                    : svgs.inlineSvg('crossIcon'),
             },
             submissionHtml = template(successHtml, submissionMessage);
 
@@ -41,7 +50,7 @@ var updateForm = {
             $form.addClass('email-sub__form--is-hidden');
             $form.after(submissionHtml);
         });
-    }
+    },
 };
 
 function handleSubmit(isSuccess, $form) {
@@ -52,38 +61,76 @@ function handleSubmit(isSuccess, $form) {
 }
 
 var classes = {
-        wrapper: 'js-email-sub',
-        form: 'js-email-sub__form',
-        inlineLabel: 'js-email-sub__inline-label',
-        textInput: 'js-email-sub__text-input',
-        listIdHiddenInput: 'js-email-sub__listid-input'
-    },
+    wrapper: 'js-email-sub',
+    form: 'js-email-sub__form',
+    inlineLabel: 'js-email-sub__inline-label',
+    textInput: 'js-email-sub__text-input',
+    listIdHiddenInput: 'js-email-sub__listid-input',
+},
     removeAndRemember = function(e, data) {
         var iframe = data[0],
             analytics = data[1],
-            currentListPrefs = userPrefs.get('email-sign-up-' + analytics.formType) || [];
+            currentListPrefs =
+                userPrefs.get('email-sign-up-' + analytics.formType) || [];
 
         currentListPrefs.push(analytics.listId + '');
-        userPrefs.set('email-sign-up-' + analytics.formType, uniq(currentListPrefs));
+        userPrefs.set(
+            'email-sign-up-' + analytics.formType,
+            uniq(currentListPrefs)
+        );
 
         $(iframe).remove();
 
-        googleAnalytics.trackNonClickInteraction('rtrt | email form inline | ' + analytics.formType + ' | ' + analytics.listId + ' | ' + analytics.signedIn + ' | form hidden');
-
+        googleAnalytics.trackNonClickInteraction(
+            'rtrt | email form inline | ' +
+                analytics.formType +
+                ' | ' +
+                analytics.listId +
+                ' | ' +
+                analytics.signedIn +
+                ' | form hidden'
+        );
     },
     ui = {
         updateForm: function(thisRootEl, el, analytics, opts) {
             var formData = $(thisRootEl).data(),
-                formDisplayNameNormalText = (opts && opts.displayName && opts.displayName.normalText) || formData.formDisplayNameNormalText || false,
-                formDisplayNameAccentedText = (opts && opts.displayName && opts.displayName.accentedText) || formData.formDisplayNameAccentedText || false,
-                formTitle = (opts && opts.formTitle) || formData.formTitle || false,
-                formDescription = (opts && opts.formDescription) || formData.formDescription || false,
-                formCampaignCode = (opts && opts.formCampaignCode) || formData.formCampaignCode || '',
-                formSuccessHeadline = (opts && opts.formSuccessHeadline) || formData.formSuccessHeadline,
-                formSuccessDesc = (opts && opts.formSuccessDesc) || formData.formSuccessDesc,
-                removeComforter = (opts && opts.removeComforter) || formData.removeComforter || false,
-                formCloseButton = (opts && opts.formCloseButton) || formData.formCloseButton || false,
-                formSuccessEventName = (opts && opts.formSuccessEventName) || formData.formSuccessEventName || false;
+                formDisplayNameNormalText =
+                    (opts && opts.displayName && opts.displayName.normalText) ||
+                    formData.formDisplayNameNormalText ||
+                    false,
+                formDisplayNameAccentedText =
+                    (opts &&
+                        opts.displayName &&
+                        opts.displayName.accentedText) ||
+                    formData.formDisplayNameAccentedText ||
+                    false,
+                formTitle =
+                    (opts && opts.formTitle) || formData.formTitle || false,
+                formDescription =
+                    (opts && opts.formDescription) ||
+                    formData.formDescription ||
+                    false,
+                formCampaignCode =
+                    (opts && opts.formCampaignCode) ||
+                    formData.formCampaignCode ||
+                    '',
+                formSuccessHeadline =
+                    (opts && opts.formSuccessHeadline) ||
+                    formData.formSuccessHeadline,
+                formSuccessDesc =
+                    (opts && opts.formSuccessDesc) || formData.formSuccessDesc,
+                removeComforter =
+                    (opts && opts.removeComforter) ||
+                    formData.removeComforter ||
+                    false,
+                formCloseButton =
+                    (opts && opts.formCloseButton) ||
+                    formData.formCloseButton ||
+                    false,
+                formSuccessEventName =
+                    (opts && opts.formSuccessEventName) ||
+                    formData.formSuccessEventName ||
+                    false;
 
             Id.getUserFromApi(function(userFromId) {
                 ui.updateFormForLoggedIn(userFromId, el);
@@ -91,10 +138,14 @@ var classes = {
 
             fastdom.write(function() {
                 if (formDisplayNameNormalText) {
-                    $('.js-email-sub__display-name-normal-text', el).text(formDisplayNameNormalText);
+                    $('.js-email-sub__display-name-normal-text', el).text(
+                        formDisplayNameNormalText
+                    );
 
                     if (formDisplayNameAccentedText) {
-                        $('.js-email-sub__display-name-accented-text', el).text(formDisplayNameAccentedText);
+                        $('.js-email-sub__display-name-accented-text', el).text(
+                            formDisplayNameAccentedText
+                        );
                     }
                 } else if (formTitle) {
                     $('.js-email-sub__heading', el).text(formTitle);
@@ -110,13 +161,22 @@ var classes = {
 
                 if (formCloseButton) {
                     var closeButtonTemplate = {
-                            closeIcon: svgs.inlineSvg('closeCentralIcon')
-                        },
-                        closeButtonHtml = template(closeHtml, closeButtonTemplate);
+                        closeIcon: svgs.inlineSvg('closeCentralIcon'),
+                    },
+                        closeButtonHtml = template(
+                            closeHtml,
+                            closeButtonTemplate
+                        );
 
                     el.append(closeButtonHtml);
 
-                    bean.on(el[0], 'click', '.js-email-sub--close', removeAndRemember, [thisRootEl, analytics]);
+                    bean.on(
+                        el[0],
+                        'click',
+                        '.js-email-sub--close',
+                        removeAndRemember,
+                        [thisRootEl, analytics]
+                    );
                 }
             });
 
@@ -126,16 +186,21 @@ var classes = {
                 campaignCode: formCampaignCode,
                 referrer: window.location.href,
                 customSuccessHeadline: formSuccessHeadline,
-                customSuccessDesc: formSuccessDesc
+                customSuccessDesc: formSuccessDesc,
             });
-
         },
         updateFormForLoggedIn: function(userFromId, el) {
             if (userFromId && userFromId.primaryEmailAddress) {
                 fastdom.write(function() {
-                    $('.js-email-sub__inline-label', el).addClass('email-sub__inline-label--is-hidden');
-                    $('.js-email-sub__submit-button', el).addClass('email-sub__submit-button--solo');
-                    $('.js-email-sub__text-input', el).val(userFromId.primaryEmailAddress);
+                    $('.js-email-sub__inline-label', el).addClass(
+                        'email-sub__inline-label--is-hidden'
+                    );
+                    $('.js-email-sub__submit-button', el).addClass(
+                        'email-sub__submit-button--solo'
+                    );
+                    $('.js-email-sub__text-input', el).val(
+                        userFromId.primaryEmailAddress
+                    );
                 });
             }
         },
@@ -172,11 +237,13 @@ var classes = {
             return function() {
                 fastdom.write(function() {
                     iFrameEl.height = '';
-                    iFrameEl.height = iFrameEl.contentWindow.document.body.clientHeight + 'px';
+                    iFrameEl.height =
+                        iFrameEl.contentWindow.document.body.clientHeight +
+                        'px';
                     callback.call();
                 });
             };
-        }
+        },
     },
     formSubmission = {
         bindSubmit: function($form, analytics) {
@@ -192,8 +259,10 @@ var classes = {
              * @return {Boolean}
              */
             function validate(emailAddress) {
-                return typeof emailAddress === 'string' &&
-                    emailAddress.indexOf('@') > -1;
+                return (
+                    typeof emailAddress === 'string' &&
+                    emailAddress.indexOf('@') > -1
+                );
             }
 
             return function(event) {
@@ -205,12 +274,25 @@ var classes = {
 
                 if (!state.submitting && validate(emailAddress)) {
                     var formData = $form.data('formData'),
-                        data = 'email=' + encodeURIComponent(emailAddress) +
-                        '&listId=' + listId +
-                        '&campaignCode=' + formData.campaignCode +
-                        '&referrer=' + formData.referrer;
+                        data =
+                            'email=' +
+                            encodeURIComponent(emailAddress) +
+                            '&listId=' +
+                            listId +
+                            '&campaignCode=' +
+                            formData.campaignCode +
+                            '&referrer=' +
+                            formData.referrer;
 
-                    analyticsInfo = 'rtrt | email form inline | ' + analytics.formType + ' | ' + analytics.listId + ' | ' + analytics.signedIn + ' | ' + '%action%';
+                    analyticsInfo =
+                        'rtrt | email form inline | ' +
+                        analytics.formType +
+                        ' | ' +
+                        analytics.listId +
+                        ' | ' +
+                        analytics.signedIn +
+                        ' | ' +
+                        '%action%';
 
                     state.submitting = true;
 
@@ -218,32 +300,49 @@ var classes = {
                         if (formData.customSuccessEventName) {
                             mediator.emit(formData.customSuccessEventName);
                         }
-                        googleAnalytics.trackNonClickInteraction(analyticsInfo.replace('%action%', 'subscribe clicked'));
+                        googleAnalytics.trackNonClickInteraction(
+                            analyticsInfo.replace(
+                                '%action%',
+                                'subscribe clicked'
+                            )
+                        );
                         return fetch(config.page.ajaxUrl + url, {
-                                method: 'post',
-                                body: data,
-                                headers: {
-                                    'Accept': 'application/json'
-                                }
-                            })
+                            method: 'post',
+                            body: data,
+                            headers: {
+                                Accept: 'application/json',
+                            },
+                        })
                             .then(function(response) {
                                 if (!response.ok) {
-                                    throw new Error('Fetch error: ' + response.status + ' ' + response.statusText);
+                                    throw new Error(
+                                        'Fetch error: ' +
+                                            response.status +
+                                            ' ' +
+                                            response.statusText
+                                    );
                                 }
                             })
                             .then(function() {
-                                googleAnalytics.trackNonClickInteraction(analyticsInfo.replace('%action%', 'subscribe successful'));
+                                googleAnalytics.trackNonClickInteraction(
+                                    analyticsInfo.replace(
+                                        '%action%',
+                                        'subscribe successful'
+                                    )
+                                );
                             })
                             .then(handleSubmit(true, $form))
                             .catch(function(error) {
                                 logError('c-email', error);
-                                googleAnalytics.trackNonClickInteraction(analyticsInfo.replace('%action%', 'error'));
+                                googleAnalytics.trackNonClickInteraction(
+                                    analyticsInfo.replace('%action%', 'error')
+                                );
                                 handleSubmit(false, $form)();
                             });
                     });
                 }
             };
-        }
+        },
     },
     setup = function(rootEl, thisRootEl, isIframed) {
         $('.' + classes.inlineLabel, thisRootEl).each(function(el) {
@@ -251,7 +350,7 @@ var classes = {
                 textInputClass: '.js-email-sub__text-input',
                 labelClass: '.js-email-sub__label',
                 hiddenLabelClass: 'email-sub__label--is-hidden',
-                labelEnabledClass: 'email-sub__inline-label--enabled'
+                labelEnabledClass: 'email-sub__inline-label--enabled',
             });
         });
 
@@ -263,7 +362,9 @@ var classes = {
                 analytics = {
                     formType: $formEl.data('email-form-type'),
                     listId: $formEl.data('email-list-id'),
-                    signedIn: (Id.isUserLoggedIn()) ? 'user signed-in' : 'user not signed-in'
+                    signedIn: Id.isUserLoggedIn()
+                        ? 'user signed-in'
+                        : 'user not signed-in',
                 };
 
             formSubmission.bindSubmit($formEl, analytics);
@@ -275,9 +376,16 @@ var classes = {
             }
 
             // Ensure our form is the right height, both in iframe and outside
-            (isIframed) ? ui.setIframeHeight(rootEl, freezeHeight).call(): freezeHeight.call();
+            isIframed
+                ? ui.setIframeHeight(rootEl, freezeHeight).call()
+                : freezeHeight.call();
 
-            mediator.on('window:throttledResize', (isIframed) ? ui.setIframeHeight(rootEl, freezeHeightReset) : freezeHeightReset);
+            mediator.on(
+                'window:throttledResize',
+                isIframed
+                    ? ui.setIframeHeight(rootEl, freezeHeightReset)
+                    : freezeHeightReset
+            );
         });
     };
 
@@ -288,8 +396,12 @@ export default {
             version = detect.getUserAgent.version;
         // If we're in lte IE9, don't run the init and adjust the footer
         if (browser === 'MSIE' && contains(['7', '8', '9'], version + '')) {
-            $('.js-footer__secondary').addClass('l-footer__secondary--no-email');
-            $('.js-footer__email-container', '.js-footer__secondary').addClass('is-hidden');
+            $('.js-footer__secondary').addClass(
+                'l-footer__secondary--no-email'
+            );
+            $('.js-footer__email-container', '.js-footer__secondary').addClass(
+                'is-hidden'
+            );
         } else {
             // We're loading through the iframe
             if (rootEl && rootEl.tagName === 'IFRAME') {
@@ -298,10 +410,9 @@ export default {
                 bean.on(rootEl, 'load', function() {
                     setup(rootEl, rootEl.contentDocument.body, true);
                 });
-
             } else {
                 setup(rootEl, rootEl || document, false);
             }
         }
-    }
+    },
 };

@@ -8,7 +8,9 @@ export default {
         return img;
     },
     postJson: function(path, jsonString) {
-        var url = (config.page.beaconUrl || '').replace(/^\/\//, window.location.protocol + '//') + path;
+        var url =
+            (config.page.beaconUrl || '')
+                .replace(/^\/\//, window.location.protocol + '//') + path;
 
         fetch(url, {
             method: 'post',

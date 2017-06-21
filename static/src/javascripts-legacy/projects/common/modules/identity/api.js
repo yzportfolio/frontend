@@ -2,9 +2,9 @@
 import ajax from 'lib/ajax';
 import utilAtob from 'lib/atob';
 import config from 'lib/config';
-import {getCookie} from 'lib/cookies';
+import { getCookie } from 'lib/cookies';
 import mediator from 'lib/mediator';
-import {local as storage} from 'lib/storage';
+import { local as storage } from 'lib/storage';
 import asyncCallMerger from 'common/modules/asyncCallMerger';
 
 /**
@@ -53,7 +53,9 @@ Id.reset = function() {
 Id.getUserFromCookie = function() {
     if (userFromCookieCache === null) {
         var cookieData = getCookie(Id.cookieName),
-            userData = cookieData ? JSON.parse(Id.decodeBase64(cookieData.split('.')[0])) : null;
+            userData = cookieData
+                ? JSON.parse(Id.decodeBase64(cookieData.split('.')[0]))
+                : null;
         if (userData) {
             var displayName = decodeURIComponent(userData[2]);
             userFromCookieCache = {
@@ -62,7 +64,7 @@ Id.getUserFromCookie = function() {
                 displayName: displayName,
                 accountCreatedDate: userData[6],
                 emailVerified: userData[7],
-                rawResponse: cookieData
+                rawResponse: cookieData,
             };
         }
     }
@@ -95,27 +97,25 @@ Id.getUrl = function() {
  * Gets the currently logged in user data from the identity api
  * @param {function} callback
  */
-Id.getUserFromApi = asyncCallMerger.mergeCalls(
-    function(mergingCallback) {
-        if (Id.isUserLoggedIn()) {
-            ajax.ajax({
+Id.getUserFromApi = asyncCallMerger.mergeCalls(function(mergingCallback) {
+    if (Id.isUserLoggedIn()) {
+        ajax
+            .ajax({
                 url: Id.idApiRoot + '/user/me',
                 type: 'jsonp',
-                crossOrigin: true
-            }).then(
-                function(response) {
-                    if (response.status === 'ok') {
-                        mergingCallback(response.user);
-                    } else {
-                        mergingCallback(null);
-                    }
+                crossOrigin: true,
+            })
+            .then(function(response) {
+                if (response.status === 'ok') {
+                    mergingCallback(response.user);
+                } else {
+                    mergingCallback(null);
                 }
-            );
-        } else {
-            mergingCallback(null);
-        }
+            });
+    } else {
+        mergingCallback(null);
     }
-);
+});
 
 /**
  * Gets the currently logged in user data from the identity api and
@@ -127,8 +127,8 @@ Id.getUserFromApiWithRefreshedCookie = function() {
             url: Id.idApiRoot + endpoint,
             type: 'jsonp',
             data: {
-                refreshCookie: true
-            }
+                refreshCookie: true,
+            },
         });
 
     return request;
@@ -160,7 +160,13 @@ Id.redirectTo = function(url) {
  * @return {string}
  */
 Id.decodeBase64 = function(str) {
-    return decodeURIComponent(escape(utilAtob(str.replace(/-/g, '+').replace(/_/g, '/').replace(/,/g, '='))));
+    return decodeURIComponent(
+        escape(
+            utilAtob(
+                str.replace(/-/g, '+').replace(/_/g, '/').replace(/,/g, '=')
+            )
+        )
+    );
 };
 
 /**
@@ -170,7 +176,10 @@ Id.hasUserSignedOutInTheLast24Hours = function() {
     var cookieData = getCookie(Id.signOutCookieName);
 
     if (cookieData) {
-        return ((Math.round(new Date().getTime() / 1000)) < (parseInt(cookieData, 10) + 86400));
+        return (
+            Math.round(new Date().getTime() / 1000) <
+            parseInt(cookieData, 10) + 86400
+        );
     }
     return false;
 };
@@ -181,19 +190,28 @@ Id.hasUserSignedOutInTheLast24Hours = function() {
 Id.shouldAutoSigninInUser = function() {
     var signedInUser = !!getCookie(Id.cookieName),
         checkFacebook = !!storage.get(Id.fbCheckKey);
-    return !signedInUser && !checkFacebook && !this.hasUserSignedOutInTheLast24Hours();
+    return (
+        !signedInUser &&
+        !checkFacebook &&
+        !this.hasUserSignedOutInTheLast24Hours()
+    );
 };
 
 Id.setNextFbCheckTime = function(nextFbCheckDue) {
-    storage.set(Id.fbCheckKey, {}, {
-        expires: nextFbCheckDue
-    });
+    storage.set(
+        Id.fbCheckKey,
+        {},
+        {
+            expires: nextFbCheckDue,
+        }
+    );
 };
 
 Id.emailSignup = function(listId) {
-    var endpoint = '/useremails/' + Id.getUserFromCookie().id + '/subscriptions',
+    var endpoint =
+        '/useremails/' + Id.getUserFromCookie().id + '/subscriptions',
         data = {
-            'listId': listId
+            listId: listId,
         },
         request = ajax.ajax({
             url: Id.idApiRoot + endpoint,
@@ -201,8 +219,8 @@ Id.emailSignup = function(listId) {
             crossOrigin: true,
             data: {
                 body: JSON.stringify(data),
-                method: 'post'
-            }
+                method: 'post',
+            },
         });
 
     return request;
@@ -214,7 +232,7 @@ Id.getUserEmailSignUps = function() {
             request = ajax.ajax({
                 url: Id.idApiRoot + endpoint,
                 type: 'jsonp',
-                crossOrigin: true
+                crossOrigin: true,
             });
 
         return request;
@@ -230,8 +248,8 @@ Id.sendValidationEmail = function() {
             type: 'jsonp',
             crossOrigin: true,
             data: {
-                method: 'post'
-            }
+                method: 'post',
+            },
         });
 
     return request;
@@ -240,10 +258,10 @@ Id.sendValidationEmail = function() {
 Id.updateUsername = function(username) {
     var endpoint = '/user/me',
         data = {
-            'publicFields': {
-                'username': username,
-                'displayName': username
-            }
+            publicFields: {
+                username: username,
+                displayName: username,
+            },
         },
         request = ajax.ajax({
             url: Id.idApiRoot + endpoint,
@@ -254,8 +272,9 @@ Id.updateUsername = function(username) {
             data: JSON.stringify(data),
             withCredentials: true,
             headers: {
-                'X-GU-ID-Client-Access-Token': 'Bearer ' + config.page.idApiJsClientToken
-            }
+                'X-GU-ID-Client-Access-Token':
+                    'Bearer ' + config.page.idApiJsClientToken,
+            },
         });
 
     return request;

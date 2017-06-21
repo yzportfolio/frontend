@@ -22,20 +22,25 @@ var surveySimple = function(config) {
         arrowWhiteRight: arrowWhiteRight.markup,
         marque36icon: marque36icon.markup,
         crossIcon: crossIcon.markup,
-        paidContent: paidContent.markup
+        paidContent: paidContent.markup,
     });
 };
 
 surveySimple.prototype.attach = function() {
     if (!this.hasSeen()) {
-        return fastdom.write(function() {
-            $(document.body).append(this.bannerTmpl);
+        return fastdom.write(
+            function() {
+                $(document.body).append(this.bannerTmpl);
 
-            if (this.config.showCloseBtn) {
-                var closeBtn = document.querySelector('.js-survey-close');
-                closeBtn.addEventListener('click', this.handleClick.bind(this));
-            }
-        }.bind(this));
+                if (this.config.showCloseBtn) {
+                    var closeBtn = document.querySelector('.js-survey-close');
+                    closeBtn.addEventListener(
+                        'click',
+                        this.handleClick.bind(this)
+                    );
+                }
+            }.bind(this)
+        );
     } else {
         return Promise.resolve();
     }

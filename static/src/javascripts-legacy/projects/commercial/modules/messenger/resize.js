@@ -1,13 +1,18 @@
 import assign from 'lodash/objects/assign';
 import fastdom from 'lib/fastdom-promise';
-import {register} from 'commercial/modules/messenger';
+import { register } from 'commercial/modules/messenger';
 register('resize', function(specs, ret, iframe) {
     var adSlot = iframe && iframe.closest('.js-ad-slot');
     return resize(specs, iframe, adSlot);
 });
 
 function resize(specs, iframe, adSlot) {
-    if (!specs || !('height' in specs || 'width' in specs) || !iframe || !adSlot) {
+    if (
+        !specs ||
+        !('height' in specs || 'width' in specs) ||
+        !iframe ||
+        !adSlot
+    ) {
         return null;
     }
 

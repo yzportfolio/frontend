@@ -1,6 +1,5 @@
 import React from 'react/addons';
 var ClueInput = React.createClass({
-
     componentDidMount: function() {
         React.findDOMNode(this).focus();
     },
@@ -31,9 +30,9 @@ var ClueInput = React.createClass({
             maxLength: this.props.clue.length,
             value: this.props.value,
             onChange: this.onInputChange,
-            onKeyDown: this.onKeyDown
+            onKeyDown: this.onKeyDown,
         });
-    }
+    },
 });
 
 export default ClueInput;

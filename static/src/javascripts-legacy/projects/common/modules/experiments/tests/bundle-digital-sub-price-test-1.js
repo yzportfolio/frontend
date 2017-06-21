@@ -1,21 +1,29 @@
 import config from 'lib/config';
-import {getCookie} from 'lib/cookies';
-import {commercialFeatures} from 'commercial/modules/commercial-features';
+import { getCookie } from 'lib/cookies';
+import { commercialFeatures } from 'commercial/modules/commercial-features';
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 import template from 'lodash/utilities/template';
 import contributionsEpicSingleButton from 'raw-loader!common/views/contributions-epic-single-button.html';
 
 var buildTemplate = function(variant) {
     return template(contributionsEpicSingleButton, {
-        linkUrl1: config.page.membershipUrl + '/bundles?INTCMP=' + 'BUNDLE_PRICE_TEST_1M_E_' + config.page.edition.toUpperCase() + '_' + variant.id.toUpperCase(),
+        linkUrl1:
+            config.page.membershipUrl +
+                '/bundles?INTCMP=' +
+                'BUNDLE_PRICE_TEST_1M_E_' +
+                config.page.edition.toUpperCase() +
+                '_' +
+                variant.id.toUpperCase(),
         componentName: variant.componentName,
         title: 'Since you’re here…',
-        p1: '… we’ve got a small favour to ask. More people are reading the Guardian than ever, but far fewer are paying for it. Advertising revenues across the media are falling fast. And ' +
-            '<span class="contributions__highlight">unlike many news organisations, we haven’t put up a paywall – we want to keep our journalism as open as we can</span>' +
-            '. So you can see why we need to ask for your help. The Guardian’s independent, investigative journalism takes a lot of time, money and hard work to produce. But we do it because we believe our perspective matters – because it might well be your perspective, too.',
-        p2: 'If everyone who reads our reporting, who likes it, helps to support it, our future would be much more secure.',
+        p1:
+            '… we’ve got a small favour to ask. More people are reading the Guardian than ever, but far fewer are paying for it. Advertising revenues across the media are falling fast. And ' +
+                '<span class="contributions__highlight">unlike many news organisations, we haven’t put up a paywall – we want to keep our journalism as open as we can</span>' +
+                '. So you can see why we need to ask for your help. The Guardian’s independent, investigative journalism takes a lot of time, money and hard work to produce. But we do it because we believe our perspective matters – because it might well be your perspective, too.',
+        p2:
+            'If everyone who reads our reporting, who likes it, helps to support it, our future would be much more secure.',
         p3: '',
-        cta1: 'Support the Guardian'
+        cta1: 'Support the Guardian',
     });
 };
 
@@ -30,8 +38,10 @@ export default contributionsUtilities.makeABTest({
     description: 'Test digital subs price points via epic',
     successMeasure: '',
     idealOutcome: 'Find the price that works for most people',
-    hypothesis: 'One of our price points will be more desirable than the others',
-    audienceCriteria: 'Non-paying UK edition readers - mobile resolution and above',
+    hypothesis:
+        'One of our price points will be more desirable than the others',
+    audienceCriteria:
+        'Non-paying UK edition readers - mobile resolution and above',
     audience: 0.1,
     audienceOffset: 0,
     showForSensitive: false,
@@ -39,27 +49,33 @@ export default contributionsUtilities.makeABTest({
 
     overrideCanRun: false,
     canRun: function() {
-        return !getCookie('GU_DBPT1ME') &&
+        return (
+            !getCookie('GU_DBPT1ME') &&
             config.page.edition.toUpperCase() === 'UK' &&
             config.page.contentType === 'Article' &&
             !config.page.isMinuteArticle &&
             commercialFeatures.canReasonablyAskForMoney
+        );
     },
 
-    variants: [{
-        id: 'A',
-        template: buildTemplate,
-        insertBeforeSelector: '.submeta',
-        successOnView: true
-    }, {
-        id: 'B',
-        template: buildTemplate,
-        insertBeforeSelector: '.submeta',
-        successOnView: true
-    }, {
-        id: 'C',
-        template: buildTemplate,
-        insertBeforeSelector: '.submeta',
-        successOnView: true
-    }]
+    variants: [
+        {
+            id: 'A',
+            template: buildTemplate,
+            insertBeforeSelector: '.submeta',
+            successOnView: true,
+        },
+        {
+            id: 'B',
+            template: buildTemplate,
+            insertBeforeSelector: '.submeta',
+            successOnView: true,
+        },
+        {
+            id: 'C',
+            template: buildTemplate,
+            insertBeforeSelector: '.submeta',
+            successOnView: true,
+        },
+    ],
 });

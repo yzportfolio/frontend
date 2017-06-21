@@ -6,7 +6,7 @@ import config from 'lib/config';
 import fetchJson from 'lib/fetch-json';
 import mediator from 'lib/mediator';
 import reportError from 'lib/report-error';
-import {constructQuery} from 'lib/url';
+import { constructQuery } from 'lib/url';
 import Component from 'common/modules/component';
 import DiscussionApi from 'common/modules/discussion/api';
 import CommentBox from 'common/modules/discussion/comment-box';
@@ -15,11 +15,12 @@ import relativedates from 'common/modules/ui/relativedates';
 import userPrefs from 'common/modules/user-prefs';
 import svgs from 'common/views/svgs';
 
-
 var PREF_RELATIVE_TIMESTAMPS = 'discussion.enableRelativeTimestamps';
 var shouldMakeTimestampsRelative = function() {
     // Default to true
-    return userPrefs.get(PREF_RELATIVE_TIMESTAMPS) !== null ? userPrefs.get(PREF_RELATIVE_TIMESTAMPS) : true;
+    return userPrefs.get(PREF_RELATIVE_TIMESTAMPS) !== null
+        ? userPrefs.get(PREF_RELATIVE_TIMESTAMPS)
+        : true;
 };
 
 var Comments = function(options) {
@@ -44,7 +45,7 @@ Comments.prototype.classes = {
     commentStaff: 'd-comment--staff',
     commentBody: 'd-comment__body',
     commentTimestampJs: 'js-timestamp',
-    commentReport: 'js-report-comment'
+    commentReport: 'js-report-comment',
 };
 
 Comments.prototype.defaultOptions = {
@@ -52,7 +53,7 @@ Comments.prototype.defaultOptions = {
     showRepliesCount: 3,
     commentId: null,
     order: 'newest',
-    threading: 'collapsed'
+    threading: 'collapsed',
 };
 
 Comments.prototype.comments = null;
@@ -60,7 +61,6 @@ Comments.prototype.topLevelComments = null;
 Comments.prototype.user = null;
 
 Comments.prototype.ready = function() {
-
     this.topLevelComments = qwery(this.getClass('topLevelComment'), this.elem);
     this.comments = qwery(this.getClass('comment'), this.elem);
 
@@ -81,7 +81,9 @@ Comments.prototype.ready = function() {
     this.emit('ready');
 
     this.on('click', '.js-report-comment-close', function() {
-        document.querySelector('.js-report-comment-form').setAttribute('hidden', '');
+        document
+            .querySelector('.js-report-comment-form')
+            .setAttribute('hidden', '');
     });
 };
 
@@ -89,46 +91,49 @@ Comments.prototype.handlePickClick = function(e) {
     e.preventDefault();
     var commentId = e.target.getAttribute('data-comment-id'),
         $thisButton = $(e.target),
-        promise = $thisButton[0].getAttribute('data-comment-highlighted') === 'true' ? this.unPickComment.bind(this) : this.pickComment.bind(this);
+        promise = $thisButton[0].getAttribute('data-comment-highlighted') ===
+            'true'
+            ? this.unPickComment.bind(this)
+            : this.pickComment.bind(this);
 
-    promise(commentId, $thisButton)
-        .fail(function(resp) {
-            var responseText = resp.response.length > 0 ? JSON.parse(resp.response).message : resp.statusText;
-            $(e.target).text(responseText);
-        });
+    promise(commentId, $thisButton).fail(function(resp) {
+        var responseText = resp.response.length > 0
+            ? JSON.parse(resp.response).message
+            : resp.statusText;
+        $(e.target).text(responseText);
+    });
 };
 
 Comments.prototype.pickComment = function(commentId, $thisButton) {
     var self = this,
         comment = qwery('#comment-' + commentId, this.elem);
 
-    return DiscussionApi
-        .pickComment(commentId)
-        .then(function() {
-            $(self.getClass('commentPick'), comment).removeClass('u-h');
-            $thisButton.text('Unpick');
-            comment.setAttribute('data-comment-highlighted', true);
-        });
+    return DiscussionApi.pickComment(commentId).then(function() {
+        $(self.getClass('commentPick'), comment).removeClass('u-h');
+        $thisButton.text('Unpick');
+        comment.setAttribute('data-comment-highlighted', true);
+    });
 };
 
 Comments.prototype.unPickComment = function(commentId, $thisButton) {
     var self = this,
         comment = qwery('#comment-' + commentId);
 
-    return DiscussionApi
-        .unPickComment(commentId)
-        .then(function() {
-            $(self.getClass('commentPick'), comment).addClass('u-h');
-            $thisButton.text('Pick');
-            comment.setAttribute('data-comment-highlighted', false);
-        });
+    return DiscussionApi.unPickComment(commentId).then(function() {
+        $(self.getClass('commentPick'), comment).addClass('u-h');
+        $thisButton.text('Pick');
+        comment.setAttribute('data-comment-highlighted', false);
+    });
 };
 
 Comments.prototype.fetchComments = function(options) {
     options = options || {};
 
-    var url = '/discussion/' +
-        (options.comment ? 'comment-context/' + options.comment : this.options.discussionId) +
+    var url =
+        '/discussion/' +
+        (options.comment
+            ? 'comment-context/' + options.comment
+            : this.options.discussionId) +
         '.json';
 
     var orderBy = options.order || this.options.order;
@@ -140,7 +145,7 @@ Comments.prototype.fetchComments = function(options) {
         orderBy: orderBy,
         pageSize: options.pagesize || this.options.pagesize,
         displayThreaded: this.options.threading !== 'unthreaded',
-        commentsClosed: options.commentsClosed
+        commentsClosed: options.commentsClosed,
     };
 
     if (options.page) {
@@ -153,38 +158,43 @@ Comments.prototype.fetchComments = function(options) {
 
     var promise,
         ajaxParams = {
-            mode: 'cors'
+            mode: 'cors',
         };
 
     if (this.isAllPageSizeActive()) {
         promise = new WholeDiscussion({
-                discussionId: this.options.discussionId,
-                orderBy: queryParams.orderBy,
-                displayThreaded: queryParams.displayThreaded,
-                maxResponses: queryParams.maxResponses,
-                commentsClosed: queryParams.commentsClosed
-            })
+            discussionId: this.options.discussionId,
+            orderBy: queryParams.orderBy,
+            displayThreaded: queryParams.displayThreaded,
+            maxResponses: queryParams.maxResponses,
+            commentsClosed: queryParams.commentsClosed,
+        })
             .loadAllComments()
-            .catch(function() {
-                this.wholeDiscussionErrors = true;
-                queryParams.pageSize = 100;
-                return fetchJson(url + '?' + constructQuery(queryParams), ajaxParams);
-            }.bind(this));
+            .catch(
+                function() {
+                    this.wholeDiscussionErrors = true;
+                    queryParams.pageSize = 100;
+                    return fetchJson(
+                        url + '?' + constructQuery(queryParams),
+                        ajaxParams
+                    );
+                }.bind(this)
+            );
     } else {
         // It is possible that the user has chosen to view all comments,
         // but the WholeDiscussion module has failed. Fall back to 100 comments.
         if (queryParams.pageSize === 'All') {
             queryParams.pageSize = 100;
         }
-        promise = fetchJson(url + '?' + constructQuery(queryParams), ajaxParams);
+        promise = fetchJson(
+            url + '?' + constructQuery(queryParams),
+            ajaxParams
+        );
     }
     return promise.then(this.renderComments.bind(this));
 };
 
-
-
 Comments.prototype.renderComments = function(resp) {
-
     // The resp object received has a collection of rendered html fragments, ready for DOM insertion.
     // - commentsHtml - the main comments content.
     // - paginationHtml - the discussion's pagination based on user page size and number of comments.
@@ -218,59 +228,83 @@ Comments.prototype.showHiddenComments = function(e) {
 };
 
 Comments.prototype.addMoreRepliesButtons = function(comments) {
-
     comments = comments || this.topLevelComments;
-    comments.forEach(function(elem) {
-        var replies = parseInt(elem.getAttribute('data-comment-replies'), 10),
-            renderedReplies = qwery(this.getClass('reply'), elem);
+    comments.forEach(
+        function(elem) {
+            var replies = parseInt(
+                elem.getAttribute('data-comment-replies'),
+                10
+            ),
+                renderedReplies = qwery(this.getClass('reply'), elem);
 
-        if (renderedReplies.length < replies) {
-            var numHiddenReplies = replies - renderedReplies.length,
+            if (renderedReplies.length < replies) {
+                var numHiddenReplies = replies - renderedReplies.length,
+                    $btn = $.create(
+                        '<button class="u-button-reset button button--show-more button--small button--tone-news d-show-more-replies__button">' +
+                            svgs.inlineSvg('plus', ['icon']) +
+                            'Show ' +
+                            numHiddenReplies +
+                            ' more ' +
+                            (numHiddenReplies === 1 ? 'reply' : 'replies') +
+                            '</button>'
+                    )
+                        .attr({
+                            'data-link-name': 'Show more replies',
+                            'data-is-ajax': '',
+                            'data-comment-id': elem.getAttribute(
+                                'data-comment-id'
+                            ),
+                        })
+                        .data('source-comment', elem);
 
-                $btn = $.create(
-                    '<button class="u-button-reset button button--show-more button--small button--tone-news d-show-more-replies__button">' +
-                    svgs.inlineSvg('plus', ['icon']) +
-                    'Show ' + numHiddenReplies + ' more ' + (numHiddenReplies === 1 ? 'reply' : 'replies') +
-                    '</button>').attr({
-                    'data-link-name': 'Show more replies',
-                    'data-is-ajax': '',
-                    'data-comment-id': elem.getAttribute('data-comment-id')
-                }).data('source-comment', elem);
-
-            $.create('<li class="' + this.getClass('showReplies', true) + '"></li>')
-                .append($btn).appendTo($('.d-thread--responses', elem));
-
-        }
-    }.bind(this));
+                $.create(
+                    '<li class="' +
+                        this.getClass('showReplies', true) +
+                        '"></li>'
+                )
+                    .append($btn)
+                    .appendTo($('.d-thread--responses', elem));
+            }
+        }.bind(this)
+    );
 };
 
 Comments.prototype.getMoreReplies = function(event) {
     event.preventDefault();
 
-    var li = $.ancestor(event.currentTarget, this.getClass('showReplies').slice(1));
+    var li = $.ancestor(
+        event.currentTarget,
+        this.getClass('showReplies').slice(1)
+    );
     li.innerHTML = 'Loading…';
 
     var source = bonzo(event.target).data('source-comment');
     var commentId = event.currentTarget.getAttribute('data-comment-id');
 
-    fetchJson('/discussion/comment/' + commentId + '.json?displayThreaded=true', {
-            mode: 'cors'
-        }).then(function(resp) {
-            var comment = bonzo.create(resp.html),
-                replies = qwery(this.getClass('reply'), comment);
+    fetchJson(
+        '/discussion/comment/' + commentId + '.json?displayThreaded=true',
+        {
+            mode: 'cors',
+        }
+    )
+        .then(
+            function(resp) {
+                var comment = bonzo.create(resp.html),
+                    replies = qwery(this.getClass('reply'), comment);
 
-            replies = replies.slice(this.options.showRepliesCount);
-            bonzo(qwery('.d-thread--responses', source)).append(replies);
-            bonzo(li).addClass('u-h');
-            this.emit('untruncate-thread');
+                replies = replies.slice(this.options.showRepliesCount);
+                bonzo(qwery('.d-thread--responses', source)).append(replies);
+                bonzo(li).addClass('u-h');
+                this.emit('untruncate-thread');
 
-            if (shouldMakeTimestampsRelative()) {
-                this.relativeDates();
-            }
-        }.bind(this))
+                if (shouldMakeTimestampsRelative()) {
+                    this.relativeDates();
+                }
+            }.bind(this)
+        )
         .catch(function(ex) {
             reportError(ex, {
-                feature: 'comments-more-replies'
+                feature: 'comments-more-replies',
             });
         });
 };
@@ -285,25 +319,30 @@ Comments.prototype.isReadOnly = function() {
  * @param {Element=} parent (optional)
  */
 Comments.prototype.addComment = function(comment, focus, parent) {
-    var key, val, selector, elem,
+    var key,
+        val,
+        selector,
+        elem,
         attr,
         map = {
             username: 'd-comment__author',
             timestamp: 'js-timestamp',
             body: 'd-comment__body',
             report: 'd-comment__action--report',
-            avatar: 'd-comment__avatar'
+            avatar: 'd-comment__avatar',
         },
         values = {
             username: this.user.displayName,
             timestamp: 'Just now',
             body: '<p>' + comment.body.replace(/\n+/g, '</p><p>') + '</p>',
             report: {
-                href: 'http://discussion.theguardian.com/components/report-abuse/' + comment.id
+                href:
+                    'http://discussion.theguardian.com/components/report-abuse/' +
+                        comment.id,
             },
             avatar: {
-                src: this.user.avatar
-            }
+                src: this.user.avatar,
+            },
         },
         commentElem = bonzo.create(this.postedCommentEl)[0],
         $commentElem = bonzo(commentElem);
@@ -345,7 +384,8 @@ Comments.prototype.addComment = function(comment, focus, parent) {
 Comments.prototype.replyToComment = function(e) {
     e.preventDefault(); // stop the anchor link firing
 
-    var parentCommentEl, showRepliesElem,
+    var parentCommentEl,
+        showRepliesElem,
         replyLink = e.currentTarget,
         replyToId = replyLink.getAttribute('data-comment-id'),
         self = this;
@@ -362,8 +402,12 @@ Comments.prototype.replyToComment = function(e) {
         replyToAuthor = replyToComment.getAttribute('data-comment-author'),
         replyToAuthorId = replyToComment.getAttribute('data-comment-author-id'),
         $replyToComment = bonzo(replyToComment),
-        replyToBody = qwery(this.getClass('commentBody'), replyToComment)[0].innerHTML,
-        replyToTimestamp = qwery(this.getClass('commentTimestampJs'), replyToComment)[0].innerHTML,
+        replyToBody = qwery(this.getClass('commentBody'), replyToComment)[0]
+            .innerHTML,
+        replyToTimestamp = qwery(
+            this.getClass('commentTimestampJs'),
+            replyToComment
+        )[0].innerHTML,
         commentBox = new CommentBox({
             discussionId: this.options.discussionId,
             premod: this.user.privateFields.isPremoderated,
@@ -373,13 +417,17 @@ Comments.prototype.replyToComment = function(e) {
                 author: replyToAuthor,
                 authorId: replyToAuthorId,
                 body: replyToBody,
-                timestamp: replyToTimestamp
+                timestamp: replyToTimestamp,
             },
-            focus: true
+            focus: true,
         });
 
     // this is a bit toffee, but we don't have .parents() in bonzo
-    parentCommentEl = $replyToComment.hasClass(this.getClass('topLevelComment', true)) ? $replyToComment[0] : $replyToComment.parent().parent()[0];
+    parentCommentEl = $replyToComment.hasClass(
+        this.getClass('topLevelComment', true)
+    )
+        ? $replyToComment[0]
+        : $replyToComment.parent().parent()[0];
 
     // I don't like this, but UX says go
     showRepliesElem = qwery(this.getClass('showReplies'), parentCommentEl);
@@ -392,7 +440,9 @@ Comments.prototype.replyToComment = function(e) {
     commentBox.on('post:success', function(comment) {
         var responses = qwery('.d-thread--responses', parentCommentEl)[0];
         if (!responses) {
-            responses = bonzo.create('<ul class="d-thread d-thread--responses"></ul>')[0];
+            responses = bonzo.create(
+                '<ul class="d-thread d-thread--responses"></ul>'
+            )[0];
             bonzo(parentCommentEl).append(responses);
         }
         this.destroy();
@@ -406,26 +456,30 @@ Comments.prototype.reportComment = function(e) {
     var self = this,
         commentId = e.currentTarget.getAttribute('data-comment-id');
 
-    $('.js-report-comment-form').first().each(function(form) {
-        form.removeAttribute('hidden');
-        bean.one(form, 'submit', function(e) {
-            e.preventDefault();
-            var category = form.elements.category,
-                comment = form.elements.comment.value;
+    $('.js-report-comment-form')
+        .first()
+        .each(function(form) {
+            form.removeAttribute('hidden');
+            bean.one(form, 'submit', function(e) {
+                e.preventDefault();
+                var category = form.elements.category,
+                    comment = form.elements.comment.value;
 
-            if (category.value !== '0') {
-                DiscussionApi
-                    .reportComment(commentId, {
+                if (category.value !== '0') {
+                    DiscussionApi.reportComment(commentId, {
                         emailAddress: form.elements.email.value,
                         categoryId: category.value,
-                        reason: comment
-                    })
-                    .then(self.reportCommentSuccess.bind(self, form), self.reportCommentFailure.bind(self));
-            }
-        });
-    }).appendTo(
-        $('#comment-' + commentId + ' .js-report-comment-container').first()
-    );
+                        reason: comment,
+                    }).then(
+                        self.reportCommentSuccess.bind(self, form),
+                        self.reportCommentFailure.bind(self)
+                    );
+                }
+            });
+        })
+        .appendTo(
+            $('#comment-' + commentId + ' .js-report-comment-container').first()
+        );
 };
 
 Comments.prototype.reportCommentSuccess = function(form) {
@@ -433,8 +487,12 @@ Comments.prototype.reportCommentSuccess = function(form) {
 };
 
 Comments.prototype.reportCommentFailure = function() {
-    document.querySelector('.js-discussion__report-comment-error').removeAttribute('hidden');
-    document.querySelector('.d-report-comment__close').classList.add('d-report-comment__close--error');
+    document
+        .querySelector('.js-discussion__report-comment-error')
+        .removeAttribute('hidden');
+    document
+        .querySelector('.d-report-comment__close')
+        .classList.add('d-report-comment__close--error');
 };
 
 Comments.prototype.addUser = function(user) {
@@ -443,19 +501,26 @@ Comments.prototype.addUser = function(user) {
 
     // Determine user staff status
     if (this.user && this.user.badge) {
-        this.user.isStaff = this.user.badge.some(function(e) { // Returns true if any element in array satisfies function
+        this.user.isStaff = this.user.badge.some(function(e) {
+            // Returns true if any element in array satisfies function
             return e.name === 'Staff';
         });
     }
 
     if (!this.isReadOnly()) {
-
         if (this.user && this.user.privateFields.canPostComment) {
-
             $(this.getClass('commentReply')).attr('href', '#'); // remove sign-in link
 
-            this.on('click', this.getClass('commentReply'), this.replyToComment);
-            this.on('click', this.getClass('commentPick'), this.handlePickClick);
+            this.on(
+                'click',
+                this.getClass('commentReply'),
+                this.replyToComment
+            );
+            this.on(
+                'click',
+                this.getClass('commentPick'),
+                this.handlePickClick
+            );
         }
     }
 
@@ -473,16 +538,20 @@ Comments.prototype.relativeDates = function() {
 };
 
 Comments.prototype.isAllPageSizeActive = function() {
-    return config.switches.discussionAllPageSize &&
+    return (
+        config.switches.discussionAllPageSize &&
         this.options.pagesize === 'All' &&
-        !this.wholeDiscussionErrors;
+        !this.wholeDiscussionErrors
+    );
 };
 
 Comments.prototype.shouldShowPageSizeMessage = function() {
     // Similar to above, but tells the loader that the fallback size should be used.
-    return config.switches.discussionAllPageSize &&
+    return (
+        config.switches.discussionAllPageSize &&
         this.options.pagesize === 'All' &&
-        this.wholeDiscussionErrors;
+        this.wholeDiscussionErrors
+    );
 };
 
 export default Comments;

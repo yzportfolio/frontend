@@ -6,8 +6,8 @@ export default {
         var options = {
             day: 'numeric',
             month: 'long',
-            year: 'numeric'
+            year: 'numeric',
         };
-        return (new Date(timestamp)).toLocaleDateString('en-GB', options);
-    }
+        return new Date(timestamp).toLocaleDateString('en-GB', options);
+    },
 };

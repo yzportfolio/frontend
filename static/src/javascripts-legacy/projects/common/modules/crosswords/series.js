@@ -2,7 +2,6 @@ import config from 'lib/config';
 import proximityLoader from 'lib/proximity-loader';
 import Series from 'common/modules/onward/onward-content';
 export default function() {
-
     var el = document.getElementsByClassName('js-onward');
 
     if (el.length > 0) {

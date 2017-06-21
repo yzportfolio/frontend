@@ -35,7 +35,8 @@ Affix.prototype.calculateContainerPositioning = function() {
     // aleady called from inside a fastdom.write cb...
     this.$container.css('top', '0');
     fastdom.read(function() {
-        var containerTop = that.$markerTop.offset().top - that.$container.offset().top;
+        var containerTop =
+            that.$markerTop.offset().top - that.$container.offset().top;
         fastdom.write(function() {
             that.$container.css('top', containerTop + 'px');
         });
@@ -48,17 +49,15 @@ Affix.prototype.getPixels = function(top) {
 
 Affix.prototype.checkPosition = function() {
     var that = this;
-    var oldContainerStyling, topStyle,
-
+    var oldContainerStyling,
+        topStyle,
         scrollTop = this.$window.scrollTop(),
         markerTopTop = this.$markerTop.offset().top,
         markerBottomTop = this.$markerBottom.offset().top,
         elHeight = this.$element.dim().height,
-
         topCheck = scrollTop >= markerTopTop,
         bottomCheck = scrollTop + elHeight < markerBottomTop,
         viewportCheck = elHeight < bonzo.viewport().height,
-
         // This is true when the element is positioned below the top threshold and above the bottom threshold.
         affix = bottomCheck && topCheck && viewportCheck;
 
@@ -74,7 +73,8 @@ Affix.prototype.checkPosition = function() {
         } else {
             // Store the container top, which needs to be re-applied when affixed to bottom.
             oldContainerStyling = this.getPixels(this.$container.css('top'));
-            topStyle = markerBottomTop - markerTopTop - elHeight + oldContainerStyling;
+            topStyle =
+                markerBottomTop - markerTopTop - elHeight + oldContainerStyling;
             fastdom.write(function() {
                 that.$container.css('top', topStyle + 'px');
                 that.$container.addClass(Affix.CLASSY_BOTTOM);

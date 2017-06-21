@@ -1,6 +1,5 @@
 // From https://github.com/edg2s/range-get-client-rects/blob/master/rangefix.js
 var isBroken,
-
     isGetClientRectsBroken = function() {
         // Check if the bug is present in the native function
         // Constructs two lines of text and creates a range between them.
@@ -27,7 +26,6 @@ var isBroken,
         }
         return isBroken;
     },
-
     getClientRects = function(range) {
         if (!isGetClientRectsBroken()) {
             return range.getClientRects();
@@ -50,7 +48,10 @@ var isBroken,
             Array.prototype.push.apply(rects, partialRange.getClientRects());
 
             // The zero-based child index is the value of the offset corresponding to the nodes prior to endContainer.
-            endOffset = Array.prototype.indexOf.call(endContainer.parentNode.childNodes, endContainer);
+            endOffset = Array.prototype.indexOf.call(
+                endContainer.parentNode.childNodes,
+                endContainer
+            );
             endContainer = endContainer.parentNode;
         }
 
@@ -61,9 +62,10 @@ var isBroken,
         Array.prototype.push.apply(rects, partialRange.getClientRects());
         return rects;
     },
-
     getBoundingClientRect = function(range) {
-        var i, l, boundingRect,
+        var i,
+            l,
+            boundingRect,
             rects = getClientRects(range),
             nativeBoundingRect = range.getBoundingClientRect();
 
@@ -94,14 +96,16 @@ var isBroken,
                 left: rects[i].left,
                 top: rects[i].top,
                 right: rects[i].right,
-                bottom: rects[i].bottom
+                bottom: rects[i].bottom,
             };
 
             boundingRect.left = Math.min(boundingRect.left, rects[i].left);
             boundingRect.top = Math.min(boundingRect.top, rects[i].top);
             boundingRect.right = Math.max(boundingRect.right, rects[i].right);
-            boundingRect.bottom = Math.max(boundingRect.bottom, rects[i].bottom);
-
+            boundingRect.bottom = Math.max(
+                boundingRect.bottom,
+                rects[i].bottom
+            );
         }
         if (boundingRect) {
             boundingRect.width = boundingRect.right - boundingRect.left;
@@ -112,5 +116,5 @@ var isBroken,
 
 export default {
     getClientRects: getClientRects,
-    getBoundingClientRect: getBoundingClientRect
+    getBoundingClientRect: getBoundingClientRect,
 };

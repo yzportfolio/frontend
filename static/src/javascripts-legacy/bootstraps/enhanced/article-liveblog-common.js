@@ -3,7 +3,7 @@ import fence from 'fence';
 import $ from 'lib/$';
 import config from 'lib/config';
 import mediator from 'lib/mediator';
-import {catchErrorsWithContext} from 'lib/robust';
+import { catchErrorsWithContext } from 'lib/robust';
 import accessibility from 'common/modules/accessibility/helpers';
 import twitter from 'common/modules/article/twitter';
 import OpenCta from 'common/modules/open/cta';
@@ -14,7 +14,7 @@ import selectionSharing from 'common/modules/ui/selection-sharing';
 function initOpenCta() {
     if (config.switches.openCta && config.page.commentable) {
         var openCta = new OpenCta(mediator, {
-            discussionKey: config.page.shortUrlId || ''
+            discussionKey: config.page.shortUrlId || '',
         });
 
         $.create('<div class="open-cta"></div>').each(function(el) {
@@ -44,6 +44,6 @@ export default function() {
         ['trail-fence', initFence],
         ['trail-twitter', initTwitter],
         ['trail-sharing', selectionSharing.init],
-        ['trail-last-modified', lastModified]
+        ['trail-last-modified', lastModified],
     ]);
 }

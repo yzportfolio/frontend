@@ -22,6 +22,6 @@ function isOn(key) {
 var module = {
     KEY_PREFIX: KEY_PREFIX,
     saveState: saveState,
-    isOn: isOn
+    isOn: isOn,
 };
 export default module;

@@ -22,7 +22,7 @@ function getLiveblogEntryTimeData(el) {
         datetime: $timeEl.attr('datetime'),
         title: $timeEl.attr('title'),
         date: $timeEl.text(),
-        time: $('.block-time__absolute', el).text()
+        time: $('.block-time__absolute', el).text(),
     };
 }
 
@@ -71,7 +71,8 @@ export default contributionsUtilities.makeABTest({
     author: 'Joseph Smith',
     description: 'Test different variants of the Epic in the liveblog',
     successMeasure: 'Conversion rate',
-    idealOutcome: 'We establish which variant of the Epic to display in the liveblog; we acquire data for related work.',
+    idealOutcome:
+        'We establish which variant of the Epic to display in the liveblog; we acquire data for related work.',
 
     audienceCriteria: 'All',
     audience: 1,
@@ -83,56 +84,66 @@ export default contributionsUtilities.makeABTest({
         return page.contentType === 'LiveBlog';
     },
 
-    variants: [{
-        id: 'control',
-        isUnlimited: true,
+    variants: [
+        {
+            id: 'control',
+            isUnlimited: true,
 
-        insertAtSelector: insertEpicAfterSelector,
-        insertAfter: true,
-        insertMultiple: true,
-        successOnView: true,
+            insertAtSelector: insertEpicAfterSelector,
+            insertAfter: true,
+            insertMultiple: true,
+            successOnView: true,
 
-        template: function(variant) {
-            return template(liveblogEpicTemplateControl, {
-                copy: acquisitionsCopy.control,
-                membershipUrl: variant.options.membershipURL,
-                contributionUrl: variant.options.contributeURL,
-                componentName: variant.options.componentName
-            });
+            template: function(variant) {
+                return template(liveblogEpicTemplateControl, {
+                    copy: acquisitionsCopy.control,
+                    membershipUrl: variant.options.membershipURL,
+                    contributionUrl: variant.options.contributeURL,
+                    componentName: variant.options.componentName,
+                });
+            },
         },
-    }, {
-        id: 'old_design_subtle',
-        isUnlimited: true,
+        {
+            id: 'old_design_subtle',
+            isUnlimited: true,
 
-        insertAtSelector: insertEpicAfterSelector,
-        insertAfter: true,
-        insertMultiple: true,
-        successOnView: true,
+            insertAtSelector: insertEpicAfterSelector,
+            insertAfter: true,
+            insertMultiple: true,
+            successOnView: true,
 
-        template: function(variant) {
-            return template(liveblogEpicTemplateOldDesignSubtle, {
-                copy: acquisitionsCopy.liveblogSubtle(variant.options.membershipURL, variant.options.contributeURL),
-                componentName: variant.options.componentName
-            });
+            template: function(variant) {
+                return template(liveblogEpicTemplateOldDesignSubtle, {
+                    copy: acquisitionsCopy.liveblogSubtle(
+                        variant.options.membershipURL,
+                        variant.options.contributeURL
+                    ),
+                    componentName: variant.options.componentName,
+                });
+            },
+
+            onInsert: copyLiveblogEntryTimeDataToEpic,
         },
+        {
+            id: 'old_design_minimal',
+            isUnlimited: true,
 
-        onInsert: copyLiveblogEntryTimeDataToEpic
-    }, {
-        id: 'old_design_minimal',
-        isUnlimited: true,
+            insertAtSelector: insertEpicAfterSelector,
+            insertAfter: true,
+            insertMultiple: true,
+            successOnView: true,
 
-        insertAtSelector: insertEpicAfterSelector,
-        insertAfter: true,
-        insertMultiple: true,
-        successOnView: true,
+            template: function(variant) {
+                return template(liveblogEpicTemplateOldDesignMinimal, {
+                    copy: acquisitionsCopy.liveblogMinimal(
+                        variant.options.membershipURL,
+                        variant.options.contributeURL
+                    ),
+                    componentName: variant.options.componentName,
+                });
+            },
 
-        template: function(variant) {
-            return template(liveblogEpicTemplateOldDesignMinimal, {
-                copy: acquisitionsCopy.liveblogMinimal(variant.options.membershipURL, variant.options.contributeURL),
-                componentName: variant.options.componentName
-            });
+            onInsert: copyLiveblogEntryTimeDataToEpic,
         },
-
-        onInsert: copyLiveblogEntryTimeDataToEpic
-    }]
+    ],
 });

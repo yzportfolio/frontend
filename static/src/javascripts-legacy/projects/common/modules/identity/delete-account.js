@@ -13,7 +13,7 @@ function disableDeleteButton() {
 
 function showLoader() {
     fastdom.write(function() {
-        deleteLoaderElm && deleteLoaderElm.classList.remove("is-hidden");
+        deleteLoaderElm && deleteLoaderElm.classList.remove('is-hidden');
     });
 }
 
@@ -29,5 +29,5 @@ function setupLoadingAnimation() {
 export default {
     init: function() {
         setupLoadingAnimation();
-    }
+    },
 };

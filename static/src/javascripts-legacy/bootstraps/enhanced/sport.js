@@ -10,7 +10,8 @@ import ScoreBoard from 'common/modules/sport/score-board';
 import rhc from 'common/modules/ui/rhc';
 
 function cricket() {
-    var cricketScore, parentEl,
+    var cricketScore,
+        parentEl,
         matchDate = config.page.cricketMatchDate,
         team = config.page.cricketTeam;
 
@@ -18,13 +19,13 @@ function cricket() {
         cricketScore = new Component();
         parentEl = $('.js-cricket-score')[0];
 
-        cricketScore.endpoint = '/sport/cricket/match/' + matchDate + '/' + team + '.json';
+        cricketScore.endpoint =
+            '/sport/cricket/match/' + matchDate + '/' + team + '.json';
         cricketScore.fetch(parentEl, 'summary');
     }
 }
 
 function rugby() {
-
     var pageType = '';
 
     if (config.page.isLiveBlog) {
@@ -34,7 +35,6 @@ function rugby() {
     }
 
     if (config.page.rugbyMatch && pageType) {
-
         var $h = $('.js-score');
 
         var scoreBoard = new ScoreBoard({
@@ -42,7 +42,10 @@ function rugby() {
             parent: $h,
             autoupdated: config.page.isLive,
             responseDataKey: 'matchSummary',
-            endpoint: config.page.rugbyMatch + '.json?page=' + encodeURIComponent(config.page.pageId)
+            endpoint:
+                config.page.rugbyMatch +
+                    '.json?page=' +
+                    encodeURIComponent(config.page.pageId),
         });
 
         // Rugby score returns the match nav too, to optimise calls.
@@ -58,13 +61,17 @@ function rugby() {
             });
 
             var contentString = resp.scoreEvents;
-            if (detect.isBreakpoint({
-                    max: 'mobile'
-                })) {
-                var $scoreEventsMobile = $.create(template(resp.dropdown)({
-                    name: 'Score breakdown',
-                    content: contentString
-                }));
+            if (
+                detect.isBreakpoint({
+                    max: 'mobile',
+                })
+            ) {
+                var $scoreEventsMobile = $.create(
+                    template(resp.dropdown)({
+                        name: 'Score breakdown',
+                        content: contentString,
+                    })
+                );
                 if (config.page.isLiveBlog) {
                     $scoreEventsMobile.addClass('dropdown--key-events');
                 }
@@ -80,7 +87,11 @@ function rugby() {
             }
 
             $('.match-stats__container').remove();
-            $.create('<div class="match-stats__container">' + resp.matchStat + '</div>').each(function(container) {
+            $.create(
+                '<div class="match-stats__container">' +
+                    resp.matchStat +
+                    '</div>'
+            ).each(function(container) {
                 $('.js-chart', container).each(function(el) {
                     new Doughnut.TableDoughnut().render(el);
                 });
@@ -89,23 +100,26 @@ function rugby() {
                     name: 'Match stats',
                     importance: 3,
                     content: container,
-                    ready: true
+                    ready: true,
                 };
                 renderExtras(extras);
             });
 
             $('.js-football-table').remove();
-            $.create('<div class="js-football-table" data-link-name="football-table-embed">' + resp.groupTable + '</div>').each(function(container) {
+            $.create(
+                '<div class="js-football-table" data-link-name="football-table-embed">' +
+                    resp.groupTable +
+                    '</div>'
+            ).each(function(container) {
                 var extras = [];
                 extras[0] = {
                     name: 'Table',
                     importance: 3,
                     content: container,
-                    ready: true
+                    ready: true,
                 };
                 renderExtras(extras);
             });
-
         };
 
         scoreBoard.load();
@@ -117,48 +131,66 @@ function renderExtras(extras, dropdownTemplate) {
     extras = extras.filter(function(extra) {
         return extra;
     });
-    var ready = extras.filter(function(extra) {
-        return extra.ready === false;
-    }).length === 0;
+    var ready =
+        extras.filter(function(extra) {
+            return extra.ready === false;
+        }).length === 0;
 
     if (ready) {
-        page.belowArticleVisible(function() {
-            var b;
-            $('.js-after-article').append(
-                $.create('<div class="football-extras"></div>').each(function(extrasContainer) {
-                    extras.forEach(function(extra, i) {
-                        if (dropdownTemplate) {
-                            $.create(dropdownTemplate).each(function(dropdown) {
-                                if (config.page.isLiveBlog) {
-                                    $(dropdown).addClass('dropdown--key-events');
-                                }
-                                $('.dropdown__label', dropdown).append(extra.name);
-                                $('.dropdown__content', dropdown).append(extra.content);
-                                $('.dropdown__button', dropdown)
-                                    .attr('data-link-name', 'Show dropdown: ' + extra.name)
-                                    .each(function(el) {
-                                        if (i === 0) {
-                                            b = el;
+        page.belowArticleVisible(
+            function() {
+                var b;
+                $('.js-after-article').append(
+                    $.create(
+                        '<div class="football-extras"></div>'
+                    ).each(function(extrasContainer) {
+                        extras.forEach(function(extra, i) {
+                            if (dropdownTemplate) {
+                                $.create(dropdownTemplate)
+                                    .each(function(dropdown) {
+                                        if (config.page.isLiveBlog) {
+                                            $(dropdown).addClass(
+                                                'dropdown--key-events'
+                                            );
                                         }
-                                    });
-                            }).appendTo(extrasContainer);
-                        } else {
-                            extrasContainer.appendChild(extra.content);
-                        }
-                    });
-                })
-            );
+                                        $('.dropdown__label', dropdown).append(
+                                            extra.name
+                                        );
+                                        $(
+                                            '.dropdown__content',
+                                            dropdown
+                                        ).append(extra.content);
+                                        $('.dropdown__button', dropdown)
+                                            .attr(
+                                                'data-link-name',
+                                                'Show dropdown: ' + extra.name
+                                            )
+                                            .each(function(el) {
+                                                if (i === 0) {
+                                                    b = el;
+                                                }
+                                            });
+                                    })
+                                    .appendTo(extrasContainer);
+                            } else {
+                                extrasContainer.appendChild(extra.content);
+                            }
+                        });
+                    })
+                );
 
-            // unfortunately this is here as the buttons event is delegated
-            // so it needs to be in the dom
-            if (b) {
-                bean.fire(b, 'click');
+                // unfortunately this is here as the buttons event is delegated
+                // so it needs to be in the dom
+                if (b) {
+                    bean.fire(b, 'click');
+                }
+            },
+            function() {
+                extras.forEach(function(extra) {
+                    rhc.addComponent(extra.content, extra.importance);
+                });
             }
-        }, function() {
-            extras.forEach(function(extra) {
-                rhc.addComponent(extra.content, extra.importance);
-            });
-        });
+        );
     }
 }
 
@@ -168,5 +200,5 @@ function init() {
 }
 
 export default {
-    init: init
+    init: init,
 };

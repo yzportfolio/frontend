@@ -17,8 +17,14 @@ import ValidationEmail from 'common/modules/identity/validation-email';
 function CommentBox(options) {
     this.setOptions(options);
 
-    mediator.on('module:identity:validation-email:success', this.verificationEmailSuccess.bind(this));
-    mediator.on('module:identity:validation-email:fail', this.verificationEmailFail.bind(this));
+    mediator.on(
+        'module:identity:validation-email:success',
+        this.verificationEmailSuccess.bind(this)
+    );
+    mediator.on(
+        'module:identity:validation-email:fail',
+        this.verificationEmailFail.bind(this)
+    );
 }
 Component.define(CommentBox);
 
@@ -54,23 +60,37 @@ CommentBox.prototype.errorMessages = {
     /* Discussion API error codes - See DAPI exceptions and associated error messages  */
     EMPTY_COMMENT_BODY: 'Please write a comment.',
     COMMENT_TOO_LONG: 'Your comment must be fewer than 5000 characters long.',
-    USER_BANNED: 'Commenting has been disabled for this account (<a href="/community-faqs#321a">why?</a>).',
-    DISCUSSION_CLOSED: 'Sorry your comment can not be published as the discussion is now closed for comments.',
-    PARENT_COMMENT_MODERATED: 'Sorry the comment can not be published as the comment you replied to has been moderated since.',
-    COMMENT_RATE_LIMIT_EXCEEDED: 'You can only post one comment every minute. Please try again in a moment.',
-    INVALID_PROTOCOL: 'Sorry your comment can not be published as it was not sent over a secure channel. Please report us this issue using the technical issue link in the page footer.',
-    AUTH_COOKIE_INVALID: 'Sorry, your comment was not published as you are no longer signed in. Please sign in and try again.',
-    'READ-ONLY-MODE': 'Sorry your comment can not currently be published as commenting is undergoing maintenance but will be back shortly. Please try again in a moment.',
+    USER_BANNED:
+        'Commenting has been disabled for this account (<a href="/community-faqs#321a">why?</a>).',
+    DISCUSSION_CLOSED:
+        'Sorry your comment can not be published as the discussion is now closed for comments.',
+    PARENT_COMMENT_MODERATED:
+        'Sorry the comment can not be published as the comment you replied to has been moderated since.',
+    COMMENT_RATE_LIMIT_EXCEEDED:
+        'You can only post one comment every minute. Please try again in a moment.',
+    INVALID_PROTOCOL:
+        'Sorry your comment can not be published as it was not sent over a secure channel. Please report us this issue using the technical issue link in the page footer.',
+    AUTH_COOKIE_INVALID:
+        'Sorry, your comment was not published as you are no longer signed in. Please sign in and try again.',
+    'READ-ONLY-MODE':
+        'Sorry your comment can not currently be published as commenting is undergoing maintenance but will be back shortly. Please try again in a moment.',
     /* Custom error codes */
-    API_CORS_BLOCKED: /*CORS blocked by HTTP/1.0 proxy*/ 'Could not post due to your internet settings, which might be controlled by your provider. Please contact your administrator or disable any proxy servers or VPNs and try again.',
-    API_ERROR: 'Sorry, there was a problem posting your comment.  Please try another browser or network connection.  Reference code ',
-    EMAIL_VERIFIED: '<span class="d-comment-box__error-meta">Sent. Please check your email to verify ' +
-        ' your email address' + '. Once verified post your comment.</span>',
-    EMAIL_VERIFIED_FAIL: 'We are having technical difficulties. Please try again later or ' +
-        '<a href="/send/email" class="js-id-send-validation-email"><strong>resend the verification</strong></a>.',
-    EMAIL_NOT_VALIDATED: 'Please confirm your email address to comment.<br />' +
-        'If you can\'t find the email, we can <a href="_#" class="js-id-send-validation-email"><strong>resend the verification email</strong></a> to ' +
-        ' your email address' + '.'
+    /*CORS blocked by HTTP/1.0 proxy*/ API_CORS_BLOCKED:
+        'Could not post due to your internet settings, which might be controlled by your provider. Please contact your administrator or disable any proxy servers or VPNs and try again.',
+    API_ERROR:
+        'Sorry, there was a problem posting your comment.  Please try another browser or network connection.  Reference code ',
+    EMAIL_VERIFIED:
+        '<span class="d-comment-box__error-meta">Sent. Please check your email to verify ' +
+            ' your email address' +
+            '. Once verified post your comment.</span>',
+    EMAIL_VERIFIED_FAIL:
+        'We are having technical difficulties. Please try again later or ' +
+            '<a href="/send/email" class="js-id-send-validation-email"><strong>resend the verification</strong></a>.',
+    EMAIL_NOT_VALIDATED:
+        'Please confirm your email address to comment.<br />' +
+            'If you can\'t find the email, we can <a href="_#" class="js-id-send-validation-email"><strong>resend the verification email</strong></a> to ' +
+            ' your email address' +
+            '.',
 };
 
 /**
@@ -86,7 +106,7 @@ CommentBox.prototype.defaultOptions = {
     focus: false,
     state: 'top-level',
     replyTo: null,
-    priorToVerificationDate: new Date(1392719401337) // Tue Feb 18 2014 10:30:01 GMT
+    priorToVerificationDate: new Date(1392719401337), // Tue Feb 18 2014 10:30:01 GMT
 };
 
 /**
@@ -116,7 +136,9 @@ CommentBox.prototype.prerender = function() {
         avatar.setAttribute('data-userid', userData.id);
         UserAvatars.avatarify(avatar);
     } else {
-        var container = document.getElementsByClassName('d-comment-box__meta')[0];
+        var container = document.getElementsByClassName(
+            'd-comment-box__meta'
+        )[0];
         if (container) {
             container.parentNode.removeChild(container);
         }
@@ -125,16 +147,24 @@ CommentBox.prototype.prerender = function() {
     if (this.options.replyTo) {
         var replyToAuthor = this.getElem('reply-to-author');
         replyToAuthor.innerHTML = this.options.replyTo.author;
-        this.getElem('parent-comment-author').innerHTML = this.options.replyTo.author + ' @ ' + this.options.replyTo.timestamp + ' said:';
+        this.getElem('parent-comment-author').innerHTML =
+            this.options.replyTo.author +
+            ' @ ' +
+            this.options.replyTo.timestamp +
+            ' said:';
 
-        this.getElem('parent-comment-body').innerHTML = this.options.replyTo.body;
+        this.getElem(
+            'parent-comment-body'
+        ).innerHTML = this.options.replyTo.body;
 
         var setSpoutMargin = function() {
-            var spoutOffset = replyToAuthor.offsetLeft + (replyToAuthor.getBoundingClientRect().width / 2);
-            this.getElem('parent-comment-spout').style.marginLeft = spoutOffset + 'px';
+            var spoutOffset =
+                replyToAuthor.offsetLeft +
+                replyToAuthor.getBoundingClientRect().width / 2;
+            this.getElem('parent-comment-spout').style.marginLeft =
+                spoutOffset + 'px';
         };
         window.setTimeout(setSpoutMargin.bind(this), 0);
-
     }
 };
 
@@ -148,7 +178,9 @@ CommentBox.prototype.showOnboarding = function(e) {
         }
         this.postComment();
     } else {
-        this.getElem('onboarding-author').innerHTML = this.getUserData().displayName;
+        this.getElem(
+            'onboarding-author'
+        ).innerHTML = this.getUserData().displayName;
         this.setState('onboarding-visible');
         this.previewComment(this.onboardingPreviewSuccess);
         if (this.options.hasUsername) {
@@ -165,7 +197,9 @@ CommentBox.prototype.hideOnboarding = function(e) {
 /** @override */
 CommentBox.prototype.ready = function() {
     if (this.getDiscussionId() === null) {
-        throw new Error('CommentBox: You need to set the "data-discussion-key" on your element');
+        throw new Error(
+            'CommentBox: You need to set the "data-discussion-key" on your element'
+        );
     }
 
     var commentBody = this.getElem('body');
@@ -175,34 +209,85 @@ CommentBox.prototype.ready = function() {
     // TODO (jamesgorrie): Could definitely use the this.on and make the default context this
 
     if (this.options.newCommenter) {
-        bean.on(document.body, 'submit', [this.elem], this.showOnboarding.bind(this));
-        bean.on(document.body, 'click', this.getClass('onboarding-cancel'), this.hideOnboarding.bind(this));
+        bean.on(
+            document.body,
+            'submit',
+            [this.elem],
+            this.showOnboarding.bind(this)
+        );
+        bean.on(
+            document.body,
+            'click',
+            this.getClass('onboarding-cancel'),
+            this.hideOnboarding.bind(this)
+        );
     } else {
-        bean.on(document.body, 'submit', [this.elem], this.submitPostComment.bind(this));
+        bean.on(
+            document.body,
+            'submit',
+            [this.elem],
+            this.submitPostComment.bind(this)
+        );
     }
 
-    bean.on(document.body, 'change keyup', [commentBody], this.setFormState.bind(this));
+    bean.on(
+        document.body,
+        'change keyup',
+        [commentBody],
+        this.setFormState.bind(this)
+    );
     bean.on(commentBody, 'focus', this.setExpanded.bind(this)); // this isn't delegated as bean doesn't support it
 
     this.on('change', '.d-comment-box__body', this.resetPreviewComment);
-    this.on('click', this.getClass('preview'), this.previewComment.bind(this, this.previewCommentSuccess));
+    this.on(
+        'click',
+        this.getClass('preview'),
+        this.previewComment.bind(this, this.previewCommentSuccess)
+    );
     this.on('click', this.getClass('hide-preview'), this.resetPreviewComment);
 
     this.on('click', this.getClass('cancel'), this.cancelComment);
-    this.on('click', this.getClass('show-parent'), this.setState.bind(this, 'parent-visible', false));
-    this.on('click', this.getClass('hide-parent'), this.removeState.bind(this, 'parent-visible', false));
+    this.on(
+        'click',
+        this.getClass('show-parent'),
+        this.setState.bind(this, 'parent-visible', false)
+    );
+    this.on(
+        'click',
+        this.getClass('hide-parent'),
+        this.removeState.bind(this, 'parent-visible', false)
+    );
 
-    this.on('click', this.getClass('formatting-bold'), this.formatComment.bind(this, 'bold'));
-    this.on('click', this.getClass('formatting-italic'), this.formatComment.bind(this, 'italic'));
-    this.on('click', this.getClass('formatting-quote'), this.formatComment.bind(this, 'quote'));
-    this.on('click', this.getClass('formatting-link'), this.formatComment.bind(this, 'link'));
+    this.on(
+        'click',
+        this.getClass('formatting-bold'),
+        this.formatComment.bind(this, 'bold')
+    );
+    this.on(
+        'click',
+        this.getClass('formatting-italic'),
+        this.formatComment.bind(this, 'italic')
+    );
+    this.on(
+        'click',
+        this.getClass('formatting-quote'),
+        this.formatComment.bind(this, 'quote')
+    );
+    this.on(
+        'click',
+        this.getClass('formatting-link'),
+        this.formatComment.bind(this, 'link')
+    );
 
     this.setState(this.options.state);
 
     if (this.options.focus) {
-        window.setTimeout(function() {
-            this.getElem('body').focus();
-        }.bind(this), 0);
+        window.setTimeout(
+            function() {
+                this.getElem('body').focus();
+            }.bind(this),
+            0
+        );
     }
 };
 
@@ -233,7 +318,7 @@ CommentBox.prototype.invalidEmailError = function() {
 CommentBox.prototype.postComment = function() {
     var self = this,
         comment = {
-            body: this.elem.body.value
+            body: this.elem.body.value,
         };
 
     self.clearErrors();
@@ -242,9 +327,10 @@ CommentBox.prototype.postComment = function() {
         self.removeState('onboarding-visible');
         comment.body = self.urlify(comment.body);
         self.setFormState(true);
-        DiscussionApi
-            .postComment(self.getDiscussionId(), comment)
-            .then(self.postCommentSuccess.bind(self, comment), self.fail.bind(self));
+        DiscussionApi.postComment(self.getDiscussionId(), comment).then(
+            self.postCommentSuccess.bind(self, comment),
+            self.fail.bind(self)
+        );
     };
 
     var updateUsernameSuccess = function(resp) {
@@ -257,9 +343,13 @@ CommentBox.prototype.postComment = function() {
     var updateUsernameFailure = function(errorResponse) {
         var usernameField = self.getElem('onboarding-username-input');
         self.setState('onboarding-visible');
-        usernameField.classList.add('d-comment-box__onboarding-username-error-border');
+        usernameField.classList.add(
+            'd-comment-box__onboarding-username-error-border'
+        );
         var errorMessage = self.getElem('onboarding-username-error-message');
-        errorMessage.innerHTML = JSON.parse(errorResponse.responseText).errors[0].description;
+        errorMessage.innerHTML = JSON.parse(
+            errorResponse.responseText
+        ).errors[0].description;
         errorMessage.classList.remove('is-hidden');
     };
 
@@ -269,8 +359,15 @@ CommentBox.prototype.postComment = function() {
         }
 
         if (comment.body.length > self.options.maxLength) {
-            self.error('COMMENT_TOO_LONG', '<b>Comments must be shorter than ' + self.options.maxLength + ' characters.</b>' +
-                'Yours is currently ' + (comment.body.length - self.options.maxLength) + ' character(s) too long.');
+            self.error(
+                'COMMENT_TOO_LONG',
+                '<b>Comments must be shorter than ' +
+                    self.options.maxLength +
+                    ' characters.</b>' +
+                    'Yours is currently ' +
+                    (comment.body.length - self.options.maxLength) +
+                    ' character(s) too long.'
+            );
         }
 
         if (self.options.replyTo) {
@@ -279,7 +376,9 @@ CommentBox.prototype.postComment = function() {
 
         if (self.errors.length === 0) {
             if (self.options.newCommenter && !self.options.hasUsername) {
-                IdentityApi.updateUsername(self.getElem('onboarding-username-input').value).then(updateUsernameSuccess, updateUsernameFailure);
+                IdentityApi.updateUsername(
+                    self.getElem('onboarding-username-input').value
+                ).then(updateUsernameSuccess, updateUsernameFailure);
             } else {
                 postCommentToDAPI();
             }
@@ -290,7 +389,9 @@ CommentBox.prototype.postComment = function() {
         // Cookie could be stale so lets refresh and check from the api
         var createdDate = new Date(self.getUserData().accountCreatedDate);
         if (createdDate > self.options.priorToVerificationDate) {
-            IdentityApi.getUserFromApiWithRefreshedCookie().then(function(response) {
+            IdentityApi.getUserFromApiWithRefreshedCookie().then(function(
+                response
+            ) {
                 if (response.user.statusFields.userEmailValidated === true) {
                     validEmailCommentSubmission();
                 } else {
@@ -311,15 +412,18 @@ CommentBox.prototype.postComment = function() {
  * @param {string} message Overrides the default message
  */
 CommentBox.prototype.error = function(type, message) {
-
     message = message || this.errorMessages[type];
 
     this.setState('invalid');
     var error = bonzo.create(
-        '<div class="d-discussion__error ' + this.getClass('error', true) + '">' +
-        '<i class="i i-alert"></i>' +
-        '<span class="d-discussion__error-text">' + message + '</span>' +
-        '</div>'
+        '<div class="d-discussion__error ' +
+            this.getClass('error', true) +
+            '">' +
+            '<i class="i i-alert"></i>' +
+            '<span class="d-discussion__error-text">' +
+            message +
+            '</span>' +
+            '</div>'
     )[0];
     this.getElem('messages').appendChild(error);
     this.errors.push(type);
@@ -388,7 +492,10 @@ CommentBox.prototype.previewCommentSuccess = function(comment, resp) {
  * @return {string}
  */
 CommentBox.prototype.getDiscussionId = function() {
-    return this.options.discussionId || this.elem.getAttribute('data-discussion-key').replace('discussion', '');
+    return (
+        this.options.discussionId ||
+        this.elem.getAttribute('data-discussion-key').replace('discussion', '')
+    );
 };
 
 /**
@@ -443,7 +550,7 @@ CommentBox.prototype.verificationEmailFail = function() {
 CommentBox.prototype.previewComment = function(callback) {
     var self = this,
         comment = {
-            body: this.getElem('body').value
+            body: this.getElem('body').value,
         };
 
     self.clearErrors();
@@ -454,14 +561,22 @@ CommentBox.prototype.previewComment = function(callback) {
     }
 
     if (comment.body.length > self.options.maxLength) {
-        self.error('COMMENT_TOO_LONG', '<b>Comments must be shorter than ' + self.options.maxLength + ' characters.</b>' +
-            'Yours is currently ' + (comment.body.length - self.options.maxLength) + ' characters too long.');
+        self.error(
+            'COMMENT_TOO_LONG',
+            '<b>Comments must be shorter than ' +
+                self.options.maxLength +
+                ' characters.</b>' +
+                'Yours is currently ' +
+                (comment.body.length - self.options.maxLength) +
+                ' characters too long.'
+        );
     }
 
     if (self.errors.length === 0) {
-        DiscussionApi
-            .previewComment(comment)
-            .then(callback.bind(self, comment), self.fail.bind(self));
+        DiscussionApi.previewComment(comment).then(
+            callback.bind(self, comment),
+            self.fail.bind(self)
+        );
     }
 };
 
@@ -479,8 +594,6 @@ CommentBox.prototype.cancelComment = function() {
     }
 };
 
-
-
 CommentBox.prototype.resetPreviewComment = function() {
     this.removeState('preview-visible');
     this.getElem('preview-body').innerHTML = '';
@@ -491,20 +604,27 @@ CommentBox.prototype.resetPreviewComment = function() {
  * @param {String=} formatStyle
  */
 CommentBox.prototype.formatComment = function(formatStyle) {
-
     var commentBody = this.getElem('body');
     var cursorPositionStart = commentBody.selectionStart;
-    var selectedText = commentBody.value.substring(commentBody.selectionStart, commentBody.selectionEnd);
+    var selectedText = commentBody.value.substring(
+        commentBody.selectionStart,
+        commentBody.selectionEnd
+    );
 
     var selectNewText = function(newText) {
-        commentBody.setSelectionRange(cursorPositionStart, cursorPositionStart + newText.length);
+        commentBody.setSelectionRange(
+            cursorPositionStart,
+            cursorPositionStart + newText.length
+        );
     };
 
     var formatSelection = function(startTag, endTag) {
         var newText = startTag + selectedText + endTag;
 
-        commentBody.value = commentBody.value.substring(0, commentBody.selectionStart) +
-            newText + commentBody.value.substring(commentBody.selectionEnd);
+        commentBody.value =
+            commentBody.value.substring(0, commentBody.selectionStart) +
+            newText +
+            commentBody.value.substring(commentBody.selectionEnd);
 
         selectNewText(newText);
     };
@@ -522,8 +642,10 @@ CommentBox.prototype.formatComment = function(formatStyle) {
         }
         var newText = '<a href="' + href + '">' + selectedText + '</a>';
 
-        commentBody.value = commentBody.value.substring(0, commentBody.selectionStart) +
-            newText + commentBody.value.substring(commentBody.selectionEnd);
+        commentBody.value =
+            commentBody.value.substring(0, commentBody.selectionStart) +
+            newText +
+            commentBody.value.substring(commentBody.selectionEnd);
     };
 
     switch (formatStyle) {
@@ -542,7 +664,6 @@ CommentBox.prototype.formatComment = function(formatStyle) {
     }
 };
 
-
 // When the user updates the username the changes are visible only when the page is refreshed. This method
 // temporarily updates HTML client-side so that user has instant feedback before the page is refreshed.
 CommentBox.prototype.refreshUsernameHtml = function() {
@@ -551,7 +672,8 @@ CommentBox.prototype.refreshUsernameHtml = function() {
     var menuHeaderUsername = $('.js-profile-info')[0];
     var discussionHeaderUsername = $('._author_tywwu_16')[0];
     menuHeaderUsername && (menuHeaderUsername.innerHTML = displayName);
-    discussionHeaderUsername && (discussionHeaderUsername.innerHTML = displayName);
+    discussionHeaderUsername &&
+        (discussionHeaderUsername.innerHTML = displayName);
 };
 
 export default CommentBox; // define

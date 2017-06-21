@@ -149,7 +149,9 @@ Component.prototype.fetch = function(parent, key) {
  * @return Promise
  */
 Component.prototype._fetch = function() {
-    var endpoint = (typeof this.endpoint === 'function') ? this.endpoint() : this.endpoint,
+    var endpoint = typeof this.endpoint === 'function'
+        ? this.endpoint()
+        : this.endpoint,
         self = this,
         opt;
 
@@ -159,7 +161,7 @@ Component.prototype._fetch = function() {
 
     return fetchJSON(endpoint, {
         mode: 'cors',
-        body: this.fetchData
+        body: this.fetchData,
     }).then(function(resp) {
         self.fetched(resp);
         return resp;
@@ -195,7 +197,8 @@ Component.prototype._autoupdate = function() {
     };
 
     function update() {
-        self._fetch()
+        self
+            ._fetch()
             .then(function(resp) {
                 self.autoupdate(bonzo.create(resp[self.responseDataKey])[0]);
 
@@ -301,7 +304,9 @@ Component.prototype.getElem = function(elemName) {
  * @return {string}
  */
 Component.prototype.getClass = function(elemName, sansDot) {
-    var className = this.useBem ? this.componentClass + '__' + elemName : this.classes[elemName];
+    var className = this.useBem
+        ? this.componentClass + '__' + elemName
+        : this.classes[elemName];
 
     return (sansDot ? '' : '.') + className;
 };
@@ -312,7 +317,9 @@ Component.prototype.getClass = function(elemName, sansDot) {
  */
 Component.prototype.setState = function(state, elemName) {
     var elem = elemName ? this.getElem(elemName) : this.elem;
-    bonzo(elem).addClass(this.componentClass + (elemName ? '__' + elemName : '') + '--' + state);
+    bonzo(elem).addClass(
+        this.componentClass + (elemName ? '__' + elemName : '') + '--' + state
+    );
 };
 
 /**
@@ -322,7 +329,9 @@ Component.prototype.setState = function(state, elemName) {
  */
 Component.prototype.removeState = function(state, elemName) {
     var elem = elemName ? this.getElem(elemName) : this.elem;
-    return bonzo(elem).removeClass(this.componentClass + (elemName ? '__' + elemName : '') + '--' + state);
+    return bonzo(elem).removeClass(
+        this.componentClass + (elemName ? '__' + elemName : '') + '--' + state
+    );
 };
 
 /**
@@ -331,7 +340,9 @@ Component.prototype.removeState = function(state, elemName) {
  */
 Component.prototype.toggleState = function(state, elemName) {
     var elem = elemName ? this.getElem(elemName) : this.elem;
-    bonzo(elem).toggleClass(this.componentClass + (elemName ? '__' + elemName : '') + '--' + state);
+    bonzo(elem).toggleClass(
+        this.componentClass + (elemName ? '__' + elemName : '') + '--' + state
+    );
 };
 
 /**
@@ -341,14 +352,20 @@ Component.prototype.toggleState = function(state, elemName) {
  */
 Component.prototype.hasState = function(state, elemName) {
     var elem = elemName ? this.getElem(elemName) : this.elem;
-    return bonzo(elem).hasClass(this.componentClass + (elemName ? '__' + elemName : '') + '--' + state);
+    return bonzo(elem).hasClass(
+        this.componentClass + (elemName ? '__' + elemName : '') + '--' + state
+    );
 };
 
 /**
  * @param {Object} options
  */
 Component.prototype.setOptions = function(options) {
-    this.options = assign(clone(this.defaultOptions), this.options || {}, options);
+    this.options = assign(
+        clone(this.defaultOptions),
+        this.options || {},
+        options
+    );
 };
 
 /**

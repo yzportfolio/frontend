@@ -10,48 +10,58 @@ import performanceAPI from 'lib/window-performance';
 
 var supportsPushState,
     getUserAgent,
-    pageVisibility = document.visibilityState ||
-    document.webkitVisibilityState ||
-    document.mozVisibilityState ||
-    document.msVisibilityState ||
-    'visible',
+    pageVisibility =
+        document.visibilityState ||
+        document.webkitVisibilityState ||
+        document.mozVisibilityState ||
+        document.msVisibilityState ||
+        'visible',
     // Ordered lists of breakpoints
     // These should match those defined in:
     //   stylesheets/_vars.scss
     //   common/app/layout/Breakpoint.scala
-    breakpoints = [{
-        name: 'mobile',
-        isTweakpoint: false,
-        width: 0
-    }, {
-        name: 'mobileMedium',
-        isTweakpoint: true,
-        width: 375
-    }, {
-        name: 'mobileLandscape',
-        isTweakpoint: true,
-        width: 480
-    }, {
-        name: 'phablet',
-        isTweakpoint: true,
-        width: 660
-    }, {
-        name: 'tablet',
-        isTweakpoint: false,
-        width: 740
-    }, {
-        name: 'desktop',
-        isTweakpoint: false,
-        width: 980
-    }, {
-        name: 'leftCol',
-        isTweakpoint: true,
-        width: 1140
-    }, {
-        name: 'wide',
-        isTweakpoint: false,
-        width: 1300
-    }],
+    breakpoints = [
+        {
+            name: 'mobile',
+            isTweakpoint: false,
+            width: 0,
+        },
+        {
+            name: 'mobileMedium',
+            isTweakpoint: true,
+            width: 375,
+        },
+        {
+            name: 'mobileLandscape',
+            isTweakpoint: true,
+            width: 480,
+        },
+        {
+            name: 'phablet',
+            isTweakpoint: true,
+            width: 660,
+        },
+        {
+            name: 'tablet',
+            isTweakpoint: false,
+            width: 740,
+        },
+        {
+            name: 'desktop',
+            isTweakpoint: false,
+            width: 980,
+        },
+        {
+            name: 'leftCol',
+            isTweakpoint: true,
+            width: 1140,
+        },
+        {
+            name: 'wide',
+            isTweakpoint: false,
+            width: 1300,
+        },
+    ],
     detect;
 
 var breakpointNames = breakpoints.map(getBreakpointName);
@@ -71,17 +81,22 @@ function init(win) {
 }
 
 function initMediaQueryListeners(win) {
-    breakpoints
-        .forEach(function(bp, index, bps) {
-            // We create mutually exclusive (min-width) and (max-width) media queries
-            // to facilitate the breakpoint/tweakpoint logic.
-            bp.mql = index < bps.length - 1 ?
-                win.matchMedia('(min-width:' + bp.width + 'px) and (max-width:' + (bps[index + 1].width - 1) + 'px)') :
-                win.matchMedia('(min-width:' + bp.width + 'px)');
-            bp.listener = onMatchingBreakpoint.bind(bp);
-            bp.mql.addListener(bp.listener);
-            bp.listener(bp.mql);
-        });
+    breakpoints.forEach(function(bp, index, bps) {
+        // We create mutually exclusive (min-width) and (max-width) media queries
+        // to facilitate the breakpoint/tweakpoint logic.
+        bp.mql = index < bps.length - 1
+            ? win.matchMedia(
+                  '(min-width:' +
+                      bp.width +
+                      'px) and (max-width:' +
+                      (bps[index + 1].width - 1) +
+                      'px)'
+              )
+            : win.matchMedia('(min-width:' + bp.width + 'px)');
+        bp.listener = onMatchingBreakpoint.bind(bp);
+        bp.mql.addListener(bp.listener);
+        bp.listener(bp.mql);
+    });
 }
 
 function onMatchingBreakpoint(mql) {
@@ -114,7 +129,10 @@ function updateBreakpoints() {
     // but relies on (1) the resize event, (2) layout and (3) hidden generated content
     // on a pseudo-element
     var bodyStyle = window.getComputedStyle(document.body, '::after');
-    var breakpointName = bodyStyle.content.substring(1, bodyStyle.content.length - 1);
+    var breakpointName = bodyStyle.content.substring(
+        1,
+        bodyStyle.content.length - 1
+    );
     var breakpointIndex = breakpointNames.indexOf(breakpointName);
     updateBreakpoint(breakpoints[breakpointIndex]);
 }
@@ -141,7 +159,10 @@ function hasCrossedBreakpoint(includeTweakpoint) {
 
 function isReload() {
     if ('navigation' in performanceAPI) {
-        return performanceAPI.navigation.type === performanceAPI.navigation.TYPE_RELOAD;
+        return (
+            performanceAPI.navigation.type ===
+            performanceAPI.navigation.TYPE_RELOAD
+        );
     } else {
         // We have no way of knowing if it was a reload on unsupported browsers.
         // I figure we could only possibly want to treat it as false in that case.
@@ -183,7 +204,9 @@ function isGuardianReferral() {
 }
 
 function socialContext() {
-    var override = /socialContext=(facebook|twitter)/.exec(window.location.hash);
+    var override = /socialContext=(facebook|twitter)/.exec(
+        window.location.hash
+    );
 
     if (override !== null) {
         return override[1];
@@ -199,7 +222,10 @@ function socialContext() {
 getUserAgent = (function() {
     var ua = navigator.userAgent,
         tem,
-        M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+        M =
+            ua.match(
+                /(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i
+            ) || [];
     if (/trident/i.test(M[1])) {
         tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
         return 'IE ' + (tem[1] || '');
@@ -217,12 +243,15 @@ getUserAgent = (function() {
     }
     return {
         browser: M[0],
-        version: M[1]
+        version: M[1],
     };
 })();
 
 function hasTouchScreen() {
-    return ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch;
+    return (
+        'ontouchstart' in window ||
+        (window.DocumentTouch && document instanceof DocumentTouch)
+    );
 }
 
 function hasPushStateSupport() {
@@ -233,7 +262,9 @@ function hasPushStateSupport() {
         supportsPushState = true;
         // Android stock browser lies about its HistoryAPI support.
         if (window.navigator.userAgent.match(/Android/i)) {
-            supportsPushState = !!window.navigator.userAgent.match(/(Chrome|Firefox)/i);
+            supportsPushState = !!window.navigator.userAgent.match(
+                /(Chrome|Firefox)/i
+            );
         }
     }
     return supportsPushState;
@@ -246,17 +277,25 @@ function getVideoFormatSupport() {
 
     try {
         if (elem.canPlayType) {
-            types.mp4 = elem.canPlayType('video/mp4; codecs="avc1.42E01E"').replace(/^no$/, '');
-            types.ogg = elem.canPlayType('video/ogg; codecs="theora"').replace(/^no$/, '');
-            types.webm = elem.canPlayType('video/webm; codecs="vp8, vorbis"').replace(/^no$/, '');
+            types.mp4 = elem
+                .canPlayType('video/mp4; codecs="avc1.42E01E"')
+                .replace(/^no$/, '');
+            types.ogg = elem
+                .canPlayType('video/ogg; codecs="theora"')
+                .replace(/^no$/, '');
+            types.webm = elem
+                .canPlayType('video/webm; codecs="vp8, vorbis"')
+                .replace(/^no$/, '');
         }
-    } catch (e) { /**/ }
+    } catch (e) {
+        /**/
+    }
 
     return types;
 }
 
 function getOrientation() {
-    return (window.innerHeight > window.innerWidth) ? 'portrait' : 'landscape';
+    return window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
 }
 
 function getViewport() {
@@ -267,7 +306,7 @@ function getViewport() {
 
     return {
         width: w.innerWidth || e.clientWidth || g.clientWidth,
-        height: w.innerHeight || e.clientHeight || g.clientHeight
+        height: w.innerHeight || e.clientHeight || g.clientHeight,
     };
 }
 
@@ -289,8 +328,12 @@ function getBreakpoint(includeTweakpoint) {
  */
 function isBreakpoint(criteria) {
     var indexMin = criteria.min ? breakpointNames.indexOf(criteria.min) : 0;
-    var indexMax = criteria.max ? breakpointNames.indexOf(criteria.max) : breakpointNames.length - 1;
-    var indexCur = breakpointNames.indexOf(currentTweakpoint || currentBreakpoint);
+    var indexMax = criteria.max
+        ? breakpointNames.indexOf(criteria.max)
+        : breakpointNames.length - 1;
+    var indexCur = breakpointNames.indexOf(
+        currentTweakpoint || currentBreakpoint
+    );
     return indexMin <= indexCur && indexCur <= indexMax;
 }
 
@@ -308,7 +351,7 @@ function initPageVisibility() {
                 pageshow: v,
                 blur: h,
                 focusout: h,
-                pagehide: h
+                pagehide: h,
             };
 
         evt = evt || window.event;
@@ -324,15 +367,17 @@ function initPageVisibility() {
     // Standards:
     if (hidden in document) {
         document.addEventListener('visibilitychange', onchange);
-    } else if (('mozHidden') in document) {
+    } else if ('mozHidden' in document) {
         document.addEventListener('mozvisibilitychange', onchange);
-    } else if (('webkitHidden') in document) {
+    } else if ('webkitHidden' in document) {
         document.addEventListener('webkitvisibilitychange', onchange);
-    } else if (('msHidden') in document) {
+    } else if ('msHidden' in document) {
         document.addEventListener('msvisibilitychange', onchange);
-    } else if ('onfocusin' in document) { // IE 9 and lower:
+    } else if ('onfocusin' in document) {
+        // IE 9 and lower:
         document.onfocusin = document.onfocusout = onchange;
-    } else { // All others:
+    } else {
+        // All others:
         window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onchange;
     }
 }
@@ -390,6 +435,6 @@ detect = {
     isEnhanced: isEnhanced,
     adblockInUse: adblockInUse,
     getReferrer: getReferrer,
-    init: init
+    init: init,
 };
 export default detect;

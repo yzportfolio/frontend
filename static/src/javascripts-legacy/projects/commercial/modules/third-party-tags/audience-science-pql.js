@@ -1,5 +1,5 @@
 import config from 'lib/config';
-import {constructQuery} from 'lib/url';
+import { constructQuery } from 'lib/url';
 
 var gatewayUrl = '//pq-direct.revsci.net/pql';
 var sectionPlacements = {
@@ -9,16 +9,18 @@ var sectionPlacements = {
     technology: ['9a9VRE', 'TL3gqK', 'MTLELH'],
     fashion: ['TQV1_5', 'J0tykU', 'kLC9nW', 'MTLELH'],
     news: ['eMdl6Y', 'mMYVrM', 'MTLELH'],
-    'default': ['FLh9mM', 'c7Zrhu', 'Y1C40a', 'LtKGsC', 'MTLELH']
+    default: ['FLh9mM', 'c7Zrhu', 'Y1C40a', 'LtKGsC', 'MTLELH'],
 };
-var section = sectionPlacements[config.page.section] ? config.page.section : 'default';
+var section = sectionPlacements[config.page.section]
+    ? config.page.section
+    : 'default';
 var audienceSciencePqlUrl = getUrl();
 
 function getUrl() {
     var placements = sectionPlacements[section];
     var query = constructQuery({
         placementIdList: placements.join(','),
-        cb: new Date().getTime()
+        cb: new Date().getTime(),
     });
     return gatewayUrl + '?' + query;
 }
@@ -62,11 +64,14 @@ function removeKey(key) {
 }
 
 export default {
-    shouldRun: config.page.edition === 'UK' && config.switches.audienceScienceGateway,
+    shouldRun:
+        config.page.edition === 'UK' && config.switches.audienceScienceGateway,
     url: audienceSciencePqlUrl,
     reset: function() {
-        section = sectionPlacements[config.page.section] ? config.page.section : 'default';
+        section = sectionPlacements[config.page.section]
+            ? config.page.section
+            : 'default';
     },
     onLoad: onLoad,
-    getSegments: getSegments
+    getSegments: getSegments,
 };

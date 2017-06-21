@@ -5,62 +5,79 @@ import isEmpty from 'lodash/objects/isEmpty';
 
 export default function() {
     var placeholder = document.getElementById('preferences-history-tags'),
-
         initialiseSummaryTagsSettings = function() {
             var SummaryTagsList = React.createClass({
                 getInitialState: function() {
                     return {
-                        popular: history.getPopularFiltered()
+                        popular: history.getPopularFiltered(),
                     };
                 },
                 handleRemove: function(tag) {
                     history.deleteFromSummary(tag);
                     this.setState({
                         popular: history.getPopularFiltered({
-                            flush: true
-                        })
+                            flush: true,
+                        }),
                     });
                     history.showInMegaNav();
                 },
                 render: function() {
                     var self = this,
-                        tags = reduce(this.state.popular, function(obj, tag) {
-                            obj[tag[0]] = React.DOM.span({
-                                    className: 'button button--small button--tag button--secondary'
-                                },
-                                React.DOM.button({
-                                    onClick: self.handleRemove.bind(self, tag[0]),
-                                    'data-link-name': 'remove | ' + tag[1]
-                                }, 'X'),
-                                React.DOM.a({
-                                    href: '/' + tag[0]
-                                }, tag[1])
-                            );
-                            return obj;
-                        }, {}),
+                        tags = reduce(
+                            this.state.popular,
+                            function(obj, tag) {
+                                obj[tag[0]] = React.DOM.span(
+                                    {
+                                        className:
+                                            'button button--small button--tag button--secondary',
+                                    },
+                                    React.DOM.button(
+                                        {
+                                            onClick: self.handleRemove.bind(
+                                                self,
+                                                tag[0]
+                                            ),
+                                            'data-link-name':
+                                                'remove | ' + tag[1],
+                                        },
+                                        'X'
+                                    ),
+                                    React.DOM.a(
+                                        {
+                                            href: '/' + tag[0],
+                                        },
+                                        tag[1]
+                                    )
+                                );
+                                return obj;
+                            },
+                            {}
+                        ),
                         helperText;
 
                     if (isEmpty(tags)) {
-                        helperText = '(You don\'t have any recently visited topics.)';
+                        helperText =
+                            "(You don't have any recently visited topics.)";
                     } else {
-                        helperText = 'Remove individual topics by clicking \'X\' or switch off the functionality below. We respect your privacy and your shortcuts will never be made public.';
+                        helperText =
+                            "Remove individual topics by clicking 'X' or switch off the functionality below. We respect your privacy and your shortcuts will never be made public.";
                     }
                     tags.helperText = React.DOM.p(null, helperText);
                     return React.DOM.div(null, tags);
-                }
+                },
             });
 
             var SummaryTagsSettings = React.createClass({
                 getInitialState: function() {
                     return {
-                        enabled: history.showInMegaNavEnabled()
+                        enabled: history.showInMegaNavEnabled(),
                     };
                 },
                 handleToggle: function() {
                     var isEnabled = !this.state.enabled;
 
                     this.setState({
-                        enabled: isEnabled
+                        enabled: isEnabled,
                     });
                     history.showInMegaNavEnable(isEnabled);
                 },
@@ -68,18 +85,30 @@ export default function() {
                     var self = this,
                         toggleAction = this.state.enabled ? 'OFF' : 'ON';
 
-                    return React.DOM.div({
-                        'data-link-name': 'suggested links'
-                    }, [
-                        React.DOM.p(null, 'These are based on the topics you visit most. You can access them at any time by opening the "all sections” menu.'),
-                        this.state.enabled ? React.createElement(SummaryTagsList) : null,
-                        React.DOM.button({
-                            onClick: self.handleToggle,
-                            className: 'button button--medium button--primary',
-                            'data-link-name': toggleAction
-                        }, 'Switch recently visited links ' + toggleAction)
-                    ]);
-                }
+                    return React.DOM.div(
+                        {
+                            'data-link-name': 'suggested links',
+                        },
+                        [
+                            React.DOM.p(
+                                null,
+                                'These are based on the topics you visit most. You can access them at any time by opening the "all sections” menu.'
+                            ),
+                            this.state.enabled
+                                ? React.createElement(SummaryTagsList)
+                                : null,
+                            React.DOM.button(
+                                {
+                                    onClick: self.handleToggle,
+                                    className:
+                                        'button button--medium button--primary',
+                                    'data-link-name': toggleAction,
+                                },
+                                'Switch recently visited links ' + toggleAction
+                            ),
+                        ]
+                    );
+                },
             });
 
             React.render(React.createElement(SummaryTagsSettings), placeholder);

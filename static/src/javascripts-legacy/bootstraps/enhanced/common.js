@@ -5,17 +5,17 @@ import bonzo from 'bonzo';
 import qwery from 'qwery';
 import $ from 'lib/$';
 import config from 'lib/config';
-import {cleanUp, addSessionCookie} from 'lib/cookies';
+import { cleanUp, addSessionCookie } from 'lib/cookies';
 import mediator from 'lib/mediator';
-import {getUrlVars} from 'lib/url';
-import {catchErrorsWithContext} from 'lib/robust';
-import {remove as removeFromStorage} from 'lib/storage';
+import { getUrlVars } from 'lib/url';
+import { catchErrorsWithContext } from 'lib/robust';
+import { remove as removeFromStorage } from 'lib/storage';
 import Foresee from 'common/modules/analytics/foresee-survey';
 import mediaListener from 'common/modules/analytics/media-listener';
 import interactionTracking from 'common/modules/analytics/interaction-tracking';
 import register from 'common/modules/analytics/register';
 import ScrollDepth from 'common/modules/analytics/scrollDepth';
-import {requestUserSegmentsFromId} from 'commercial/modules/user-ad-targeting';
+import { requestUserSegmentsFromId } from 'commercial/modules/user-ad-targeting';
 import donotUseAdblock from 'common/modules/commercial/donot-use-adblock';
 import * as userFeatures from 'commercial/modules/user-features';
 import CommentCount from 'common/modules/discussion/comment-count';
@@ -26,13 +26,13 @@ import Search from 'common/modules/navigation/search';
 import membership from 'common/modules/navigation/membership';
 import history from 'common/modules/onward/history';
 import techFeedback from 'common/modules/onward/tech-feedback';
-import {initAccessibilityPreferences} from 'common/modules/ui/accessibility-prefs';
+import { initAccessibilityPreferences } from 'common/modules/ui/accessibility-prefs';
 import Clickstream from 'common/modules/ui/clickstream';
 import Dropdowns from 'common/modules/ui/dropdowns';
 import fauxBlockLink from 'common/modules/ui/faux-block-link';
 import cookiesBanner from 'common/modules/ui/cookiesBanner';
 import RelativeDates from 'common/modules/ui/relativedates';
-import {init as initCustomSmartAppBanner} from 'common/modules/ui/smartAppBanner';
+import { init as initCustomSmartAppBanner } from 'common/modules/ui/smartAppBanner';
 import Tabs from 'common/modules/ui/tabs';
 import Toggles from 'common/modules/ui/toggles';
 import breakingNews from 'common/modules/onward/breaking-news';
@@ -41,7 +41,7 @@ import hiddenShareToggle from 'common/modules/social/hidden-share-toggle';
 import membershipEngagementBanner from 'common/modules/commercial/membership-engagement-banner';
 import email from 'common/modules/email/email';
 import emailArticle from 'common/modules/email/email-article';
-import {init as identity} from 'bootstraps/enhanced/identity-common';
+import { init as identity } from 'bootstraps/enhanced/identity-common';
 import forEach from 'lodash/collections/forEach';
 import ophan from 'ophan/ng';
 var modules = {
@@ -53,7 +53,7 @@ var modules = {
         if (header) {
             if (config.switches.idProfileNavigation) {
                 profile = new Profile({
-                    url: config.page.idUrl
+                    url: config.page.idUrl,
                 });
                 profile.init();
             }
@@ -68,7 +68,10 @@ var modules = {
 
     showTabs: function() {
         var tabs = new Tabs();
-        ['modules:popular:loaded', 'modules:geomostpopular:ready'].forEach(function(event) {
+        [
+            'modules:popular:loaded',
+            'modules:geomostpopular:ready',
+        ].forEach(function(event) {
             mediator.on(event, function(el) {
                 tabs.init(el);
             });
@@ -89,7 +92,7 @@ var modules = {
 
     initClickstream: function() {
         new Clickstream({
-            filter: ['a', 'button']
+            filter: ['a', 'button'],
         });
     },
 
@@ -104,14 +107,24 @@ var modules = {
                 mediator.on('scrolldepth:data', ophan.record);
 
                 new ScrollDepth({
-                    isContent: /Article|LiveBlog/.test(config.page.contentType)
+                    isContent: /Article|LiveBlog/.test(config.page.contentType),
                 });
             }
         }
     },
 
     cleanupCookies: function() {
-        cleanUp(['mmcore.pd', 'mmcore.srv', 'mmid', 'GU_ABFACIA', 'GU_FACIA', 'GU_ALPHA', 'GU_ME', 'at', 'gu_adfree_user']);
+        cleanUp([
+            'mmcore.pd',
+            'mmcore.srv',
+            'mmid',
+            'GU_ABFACIA',
+            'GU_FACIA',
+            'GU_ALPHA',
+            'GU_ME',
+            'at',
+            'gu_adfree_user',
+        ]);
     },
 
     cleanupLocalStorage: function() {
@@ -120,7 +133,7 @@ var modules = {
             'gu.contributor',
             'gu.cachedRecommendations',
             'gu.recommendationsEnabled',
-            'gu.abb3.exempt'
+            'gu.abb3.exempt',
         ];
         forEach(deprecatedKeys, removeFromStorage);
     },
@@ -149,7 +162,11 @@ var modules = {
 
     windowEventListeners: function() {
         ['orientationchange'].forEach(function(event) {
-            bean.on(window, event, mediator.emit.bind(mediator, 'window:' + event));
+            bean.on(
+                window,
+                event,
+                mediator.emit.bind(mediator, 'window:' + event)
+            );
         });
     },
 
@@ -185,12 +202,17 @@ var modules = {
     initOpenOverlayOnClick: function() {
         var offset;
 
-        bean.on(document.body, 'click', '[data-open-overlay-on-click]', function(e) {
-            var elId = bonzo(e.currentTarget).data('open-overlay-on-click');
-            offset = document.body.scrollTop;
-            bonzo(document.body).addClass('has-overlay');
-            $('#' + elId).addClass('overlay--open').appendTo(document.body);
-        });
+        bean.on(
+            document.body,
+            'click',
+            '[data-open-overlay-on-click]',
+            function(e) {
+                var elId = bonzo(e.currentTarget).data('open-overlay-on-click');
+                offset = document.body.scrollTop;
+                bonzo(document.body).addClass('has-overlay');
+                $('#' + elId).addClass('overlay--open').appendTo(document.body);
+            }
+        );
 
         bean.on(document.body, 'click', '.js-overlay-close', function(e) {
             var overlay = $.ancestor(e.target, 'overlay');
@@ -208,7 +230,11 @@ var modules = {
     },
 
     loadBreakingNews: function() {
-        if (config.switches.breakingNews && config.page.section !== 'identity' && !config.page.isHosted) {
+        if (
+            config.switches.breakingNews &&
+            config.page.section !== 'identity' &&
+            !config.page.isHosted
+        ) {
             breakingNews().catch(function() {
                 // breaking news may not load if local storage is unavailable - this is fine
             });
@@ -242,17 +268,22 @@ var modules = {
         }
 
         // Initalise email forms in iframes
-        forEach(document.getElementsByClassName('js-email-sub__iframe'), function(el) {
-            email.init(el);
-        });
+        forEach(
+            document.getElementsByClassName('js-email-sub__iframe'),
+            function(el) {
+                email.init(el);
+            }
+        );
 
         // Listen for interactive load event and initalise forms
         bean.on(window, 'interactive-loaded', function() {
-            forEach(qwery('.guInteractive .js-email-sub__iframe'), function(el) {
+            forEach(qwery('.guInteractive .js-email-sub__iframe'), function(
+                el
+            ) {
                 email.init(el);
             });
         });
-    }
+    },
 };
 export default {
     init: function() {
@@ -291,10 +322,13 @@ export default {
             ['c-accessibility-prefs', initAccessibilityPreferences],
             ['c-pinterest', modules.initPinterest],
             ['c-hidden-share-toggle', hiddenShareToggle],
-            ['c-show-membership-engagement-banner', modules.membershipEngagementBanner],
+            [
+                'c-show-membership-engagement-banner',
+                modules.membershipEngagementBanner,
+            ],
             ['c-email', modules.initEmail],
             ['c-user-features', userFeatures.refresh.bind(userFeatures)], // wat???
-            ['c-membership', membership]
+            ['c-membership', membership],
         ]);
-    }
+    },
 };

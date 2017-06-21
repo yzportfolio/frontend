@@ -40,7 +40,10 @@ Message.prototype.show = function(message) {
     }
 
     // don't let messages unknowingly overwrite each other
-    if ((!siteMessage.hasClass('is-hidden') && !this.important) || this.hasSeen()) {
+    if (
+        (!siteMessage.hasClass('is-hidden') && !this.important) ||
+        this.hasSeen()
+    ) {
         // if we're not showing a banner message, display it in the footer
         if (this.pinOnHide) {
             this.$footerMessage.removeClass('is-hidden');
@@ -70,16 +73,26 @@ Message.prototype.show = function(message) {
         siteMessage.attr('data-link-name', this.siteMessageLinkName);
     }
     if (this.siteMessageCloseBtn) {
-        $('.site-message__close-btn', '.js-site-message').attr('data-link-name', this.siteMessageCloseBtn);
+        $('.site-message__close-btn', '.js-site-message').attr(
+            'data-link-name',
+            this.siteMessageCloseBtn
+        );
     }
 
-    siteMessage.addClass('site-message--' + this.type).addClass('site-message--' + this.id);
+    siteMessage
+        .addClass('site-message--' + this.type)
+        .addClass('site-message--' + this.id);
     siteMessage.removeClass('is-hidden');
     if (this.permanent) {
         siteMessage.addClass('site-message--permanent');
         $('.site-message__close').addClass('is-hidden');
     } else {
-        bean.on(document, 'click', '.js-site-message-close', this.acknowledge.bind(this));
+        bean.on(
+            document,
+            'click',
+            '.js-site-message-close',
+            this.acknowledge.bind(this)
+        );
     }
 
     if (this.customJs) {
@@ -133,9 +146,13 @@ Message.prototype.updateMessageOnWidth = function() {
         wideDataAttr = 'site-message-wide';
 
     if (this.widthBasedMessage && this.$siteMessage.length) {
-        this.updateMessageFromData((detect.isBreakpoint({
-            max: 'tablet'
-        })) ? narrowDataAttr : wideDataAttr);
+        this.updateMessageFromData(
+            detect.isBreakpoint({
+                max: 'tablet',
+            })
+                ? narrowDataAttr
+                : wideDataAttr
+        );
     }
 };
 

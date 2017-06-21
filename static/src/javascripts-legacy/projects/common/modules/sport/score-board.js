@@ -15,9 +15,13 @@ function ScoreBoard(context) {
     this.pageType = context.pageType;
     this.parent = context.parent;
 
-    this.placeholder = bonzo.create(template(scoreContainerHtml, {
-        loadingState: this.pageType !== 'report' ? ' score__loading--live' : ''
-    }))[0];
+    this.placeholder = bonzo.create(
+        template(scoreContainerHtml, {
+            loadingState: this.pageType !== 'report'
+                ? ' score__loading--live'
+                : '',
+        })
+    )[0];
 
     if (this.pageType === 'report') {
         context.parent.after(this.placeholder);
@@ -30,8 +34,10 @@ function ScoreBoard(context) {
     this.autoupdated = context.autoupdated;
     this.responseDataKey = context.responseDataKey;
     this.updateEvery = detect.isBreakpoint({
-        min: 'desktop'
-    }) ? 30 : 60;
+        min: 'desktop',
+    })
+        ? 30
+        : 60;
 }
 
 component.define(ScoreBoard);

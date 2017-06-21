@@ -9,18 +9,20 @@ import btnTmpl from 'raw-loader!facia/views/button-toggle.html';
 
 export default function(container) {
     var _$container = bonzo(container),
-        _$button = bonzo(bonzo.create(
-            template(btnTmpl, {
-                text: 'Hide',
-                dataLink: 'Show',
-                icon: svgs.inlineSvg('arrowicon')
-            })
-        )),
+        _$button = bonzo(
+            bonzo.create(
+                template(btnTmpl, {
+                    text: 'Hide',
+                    dataLink: 'Show',
+                    icon: svgs.inlineSvg('arrowicon'),
+                })
+            )
+        ),
         buttonText = $('.fc-container__toggle__text', _$button[0]),
         _prefName = 'container-states',
         _toggleText = {
             hidden: 'Show',
-            displayed: 'Hide'
+            displayed: 'Hide',
         },
         _state = 'displayed',
         _updatePref = function(id, state) {
@@ -53,9 +55,14 @@ export default function(container) {
 
         fastdom.write(function() {
             // add/remove rolled class
-            _$container[_state === 'displayed' ? 'removeClass' : 'addClass']('fc-container--rolled-up');
+            _$container[_state === 'displayed' ? 'removeClass' : 'addClass'](
+                'fc-container--rolled-up'
+            );
             // data-link-name is inverted, as happens before clickstream
-            _$button.attr('data-link-name', _toggleText[_state === 'displayed' ? 'hidden' : 'displayed']);
+            _$button.attr(
+                'data-link-name',
+                _toggleText[_state === 'displayed' ? 'hidden' : 'displayed']
+            );
             buttonText.text(_toggleText[_state]);
         });
     }
@@ -75,7 +82,7 @@ export default function(container) {
 
         mediator.on('module:clickstream:click', function(clickSpec) {
             if (clickSpec.target === _$button[0]) {
-                setState((_state === 'displayed') ? 'hidden' : 'displayed');
+                setState(_state === 'displayed' ? 'hidden' : 'displayed');
                 _updatePref(id, _state);
             }
         });

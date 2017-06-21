@@ -1,7 +1,5 @@
 import contributionsUtilities from 'common/modules/commercial/contributions-utilities';
 
-
-
 export default contributionsUtilities.makeABTest({
     id: 'AcquisitionsEpicAlwaysAskElection',
     campaignId: 'epic_always_ask_election',
@@ -10,7 +8,8 @@ export default contributionsUtilities.makeABTest({
     expiry: '2018-07-19',
 
     author: 'Jonathan Rankin',
-    description: 'This will guarantee that the epic is always displayed on election stories',
+    description:
+        'This will guarantee that the epic is always displayed on election stories',
     successMeasure: 'Conversion rate',
     idealOutcome: 'We can always show the epic on election articles',
     audienceCriteria: 'All',
@@ -19,9 +18,11 @@ export default contributionsUtilities.makeABTest({
     audienceOffset: 0,
     useTargetingTool: true,
 
-    variants: [{
-        id: 'control',
-        isUnlimited: true,
-        useTailoredCopyForRegulars: true
-    }]
+    variants: [
+        {
+            id: 'control',
+            isUnlimited: true,
+            useTailoredCopyForRegulars: true,
+        },
+    ],
 });

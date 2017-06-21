@@ -9,7 +9,10 @@ function ScrollDepth(options) {
     bindAll(this, 'assertScrolling', 'hasDataChanged');
 
     if (this.opts.isContent) {
-        this.opts.contentEl = this.contentEl || document.getElementById('article') || document.getElementById('live-blog');
+        this.opts.contentEl =
+            this.contentEl ||
+            document.getElementById('article') ||
+            document.getElementById('live-blog');
     }
 
     this.init();
@@ -18,18 +21,18 @@ function ScrollDepth(options) {
 ScrollDepth.prototype.opts = {
     changeThreshold: 10,
     isContent: false,
-    pageEl: document.body
+    pageEl: document.body,
 };
 
 ScrollDepth.prototype.data = {
     page: {
         start: new Date().getTime(),
         depth: 0,
-        duration: 0
+        duration: 0,
     },
     content: {
-        depth: 0
-    }
+        depth: 0,
+    },
 };
 
 ScrollDepth.prototype.timeSince = function(time) {
@@ -38,22 +41,25 @@ ScrollDepth.prototype.timeSince = function(time) {
 
 ScrollDepth.prototype.getPercentageInViewPort = function(el) {
     var rect = el.getBoundingClientRect(),
-        height = (window.innerHeight || document.body.clientHeight);
+        height = window.innerHeight || document.body.clientHeight;
 
     if (rect.bottom < 0 || rect.bottom < height) {
         return 100;
     } else if (rect.top > height) {
         return 0;
     } else if (rect.top > 0) {
-        return (100 / (rect.height || 1)) * (height - rect.top);
+        return 100 / (rect.height || 1) * (height - rect.top);
     } else {
-        return (100 / (rect.height || 1)) * (Math.abs(rect.top) + height);
+        return 100 / (rect.height || 1) * (Math.abs(rect.top) + height);
     }
 };
 
 ScrollDepth.prototype.isInViewport = function(el) {
     var rect = el.getBoundingClientRect();
-    return rect.top < (window.innerHeight || document.body.clientHeight) && rect.left < (window.innerWidth || document.body.clientWidth);
+    return (
+        rect.top < (window.innerHeight || document.body.clientHeight) &&
+        rect.left < (window.innerWidth || document.body.clientWidth)
+    );
 };
 
 ScrollDepth.prototype.setData = function(type) {
@@ -63,7 +69,7 @@ ScrollDepth.prototype.setData = function(type) {
         return false;
     }
     currentDepth = this.getPercentageInViewPort(el);
-    if ((currentDepth - this.data[type].depth) > this.opts.changeThreshold) {
+    if (currentDepth - this.data[type].depth > this.opts.changeThreshold) {
         this.data[type].depth = currentDepth;
         if (typeof this.data[type].duration === 'number') {
             this.data[type].duration = this.timeSince(this.data[type].start);
@@ -76,7 +82,7 @@ ScrollDepth.prototype.setData = function(type) {
 
 ScrollDepth.prototype.hasDataChanged = function() {
     var page = this.setData('page'),
-        content = (this.opts.isContent) ? this.setData('content') : false;
+        content = this.opts.isContent ? this.setData('content') : false;
     if (page || content) {
         this.log();
     }

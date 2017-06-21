@@ -5,8 +5,10 @@ import fetchJSON from 'lib/fetch-json';
  * @param {string} whosCalling (url)
  */
 var MatchInfo = function(match, whosCalling) {
-    this.endpoint += (match.id ? match.id : [match.date].concat(match.teams).join('/')) +
-        '.json?page=' + encodeURIComponent(whosCalling);
+    this.endpoint +=
+        (match.id ? match.id : [match.date].concat(match.teams).join('/')) +
+        '.json?page=' +
+        encodeURIComponent(whosCalling);
 };
 
 /**

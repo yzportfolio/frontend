@@ -13,25 +13,24 @@ function buildEventId(event, videoId) {
 }
 
 function initYoutubeEvents(videoId) {
-
     var gaTracker = config.googleAnalytics.trackers.editorial;
 
     var events = {
         metricMap: {
-            'play': 'metric1',
-            'skip': 'metric2',
+            play: 'metric1',
+            skip: 'metric2',
             '25': 'metric3',
             '50': 'metric4',
             '75': 'metric5',
-            'end': 'metric6'
+            end: 'metric6',
         },
         baseEventObject: {
             eventCategory: 'media',
             eventAction: eventAction(),
             eventLabel: videoId,
             dimension19: videoId,
-            dimension20: 'gu-video-youtube'
-        }
+            dimension20: 'gu-video-youtube',
+        },
     };
 
     var eventsList = ['play', '25', '50', '75', 'end'];
@@ -40,9 +39,18 @@ function initYoutubeEvents(videoId) {
         mediator.once(buildEventId(event, videoId), function(id) {
             var mediaEvent = MediaEvent(videoId, 'video', event);
             ophanRecord(mediaEvent);
-            window.ga(gaTracker + '.send', 'event',
-                gaHelper.buildGoogleAnalyticsEvent(mediaEvent, events.metricMap, id,
-                    'gu-video-youtube', eventAction, event.mediaId));
+            window.ga(
+                gaTracker + '.send',
+                'event',
+                gaHelper.buildGoogleAnalyticsEvent(
+                    mediaEvent,
+                    events.metricMap,
+                    id,
+                    'gu-video-youtube',
+                    eventAction,
+                    event.mediaId
+                )
+            );
         });
     });
 
@@ -50,8 +58,8 @@ function initYoutubeEvents(videoId) {
         var eventObject = {
             video: {
                 id: 'gu-video-youtube-' + event.mediaId,
-                eventType: 'video:content:' + event.eventType
-            }
+                eventType: 'video:content:' + event.eventType,
+            },
         };
         ophan.record(eventObject);
     }
@@ -69,7 +77,7 @@ function MediaEvent(mediaId, mediaType, eventType) {
     return {
         mediaId: mediaId,
         mediaType: mediaType,
-        eventType: eventType
+        eventType: eventType,
     };
 }
 
@@ -83,5 +91,5 @@ function track(event, id) {
 
 export default {
     track: track,
-    init: init
+    init: init,
 };

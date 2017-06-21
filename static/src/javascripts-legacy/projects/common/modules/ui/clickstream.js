@@ -3,7 +3,6 @@ import mediator from 'lib/mediator';
 import merge from 'lodash/objects/merge';
 
 var Clickstream = function(opts) {
-
     opts = opts || {};
 
     // Allow a fake window.location to be passed in for testing
@@ -12,12 +11,11 @@ var Clickstream = function(opts) {
     var filters = opts.filter || [],
         filterSource = function(element) {
             return filters.filter(function(f) {
-                return (f === element);
+                return f === element;
             });
         },
         compareHosts = function(url) {
-            var urlHost,
-                host;
+            var urlHost, host;
 
             url = url || '';
             urlHost = url.match(/:\/\/(.[^\/]+)/);
@@ -37,7 +35,6 @@ var Clickstream = function(opts) {
             return !urlHost || urlHost === host;
         },
         getClickSpec = function(spec, forceValid) {
-
             // element was removed from the DOM
             if (!spec.el) {
                 return false;
@@ -56,29 +53,46 @@ var Clickstream = function(opts) {
                 delete spec.el;
 
                 if (spec.validTarget && el.getAttribute('data-link-test')) {
-                    spec.tag = el.getAttribute('data-link-test') + ' | ' + spec.tag;
+                    spec.tag =
+                        el.getAttribute('data-link-test') + ' | ' + spec.tag;
                 }
                 return spec;
             }
 
-            var customEventProperties = JSON.parse(el.getAttribute('data-custom-event-properties') || '{}');
-            spec.customEventProperties = merge(customEventProperties, spec.customEventProperties);
+            var customEventProperties = JSON.parse(
+                el.getAttribute('data-custom-event-properties') || '{}'
+            );
+            spec.customEventProperties = merge(
+                customEventProperties,
+                spec.customEventProperties
+            );
 
             if (!spec.validTarget) {
-                spec.validTarget = filterSource(elName).length > 0 || !!forceValid;
+                spec.validTarget =
+                    filterSource(elName).length > 0 || !!forceValid;
                 if (spec.validTarget) {
                     spec.target = el;
                     href = el.getAttribute('href');
-                    spec.samePage = href && href.indexOf('#') === 0 || elName === 'button' || el.hasAttribute('data-is-ajax');
+                    spec.samePage =
+                        (href && href.indexOf('#') === 0) ||
+                        elName === 'button' ||
+                        el.hasAttribute('data-is-ajax');
 
                     spec.sameHost = spec.samePage || compareHosts(href);
                 }
             }
 
             // Pick up the nearest data-link-context
-            if (!spec.linkContext && el.getAttribute('data-link-context-path')) {
-                spec.linkContextPath = el.getAttribute('data-link-context-path');
-                spec.linkContextName = el.getAttribute('data-link-context-name');
+            if (
+                !spec.linkContext &&
+                el.getAttribute('data-link-context-path')
+            ) {
+                spec.linkContextPath = el.getAttribute(
+                    'data-link-context-path'
+                );
+                spec.linkContextName = el.getAttribute(
+                    'data-link-context-name'
+                );
             }
 
             // Recurse
@@ -91,7 +105,7 @@ var Clickstream = function(opts) {
         bean.add(document.body, 'click', function(event) {
             var clickSpec = {
                 el: event.target,
-                tag: []
+                tag: [],
             };
 
             clickSpec.target = event.target;
@@ -101,7 +115,7 @@ var Clickstream = function(opts) {
     }
 
     return {
-        getClickSpec: getClickSpec
+        getClickSpec: getClickSpec,
     };
 };
 

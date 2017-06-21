@@ -5,8 +5,8 @@
 import fastdom from 'fastdom';
 import $ from 'lib/$';
 import template from 'lodash/utilities/template';
-import {local as storage} from 'lib/storage';
-import {getPath} from 'lib/url';
+import { local as storage } from 'lib/storage';
+import { getPath } from 'lib/url';
 import viewTag from 'raw-loader!common/views/history/tag.html';
 import viewMegaNav from 'raw-loader!common/views/history/mega-nav.html';
 import isObject from 'lodash/objects/isObject';
@@ -21,11 +21,7 @@ import isArray from 'lodash/objects/isArray';
 import pick from 'lodash/objects/pick';
 import mapValues from 'lodash/objects/mapValues';
 
-var editions = [
-        'uk',
-        'us',
-        'au'
-    ],
+var editions = ['uk', 'us', 'au'],
     editionalised = [
         'business',
         'commentisfree',
@@ -34,45 +30,51 @@ var editions = [
         'media',
         'money',
         'sport',
-        'technology'
+        'technology',
     ],
-    pageMeta = [{
-        tid: 'section',
-        tname: 'sectionName'
-    }, {
-        tid: 'keywordIds',
-        tname: 'keywords'
-    }, {
-        tid: 'seriesId',
-        tname: 'series'
-    }, {
-        tid: 'authorIds',
-        tname: 'author'
-    }],
-    buckets = [{
-        type: 'content',
-        indexInRecord: 1
-    }, {
-        type: 'front',
-        indexInRecord: 2
-    }],
+    pageMeta = [
+        {
+            tid: 'section',
+            tname: 'sectionName',
+        },
+        {
+            tid: 'keywordIds',
+            tname: 'keywords',
+        },
+        {
+            tid: 'seriesId',
+            tname: 'series',
+        },
+        {
+            tid: 'authorIds',
+            tname: 'author',
+        },
+    ],
+    buckets = [
+        {
+            type: 'content',
+            indexInRecord: 1,
+        },
+        {
+            type: 'front',
+            indexInRecord: 2,
+        },
+    ],
     summaryPeriodDays = 90,
     forgetUniquesAfter = 10,
     historySize = 50,
-
     storageKeyHistory = 'gu.history',
     storageKeySummary = 'gu.history.summary',
-
     today = Math.floor(Date.now() / 86400000), // 1 day in ms
     historyCache,
     summaryCache,
     popularFilteredCache,
     topNavItemsCache,
-
     inMegaNav = false,
-
-    isEditionalisedRx = new RegExp('^(' + editions.join('|') + ')\/(' + editionalised.join('|') + ')$'),
-    stripEditionRx = new RegExp('^(' + editions.join('|') + ')\/');
+    isEditionalisedRx = new RegExp(
+        '^(' + editions.join('|') + ')/(' + editionalised.join('|') + ')$'
+    ),
+    stripEditionRx = new RegExp('^(' + editions.join('|') + ')/');
 
 function saveHistory(history) {
     historyCache = history;
@@ -93,11 +95,15 @@ function getSummary() {
     if (!summaryCache) {
         summaryCache = storage.get(storageKeySummary);
 
-        if (!isObject(summaryCache) || !isObject(summaryCache.tags) || !isNumber(summaryCache.periodEnd)) {
+        if (
+            !isObject(summaryCache) ||
+            !isObject(summaryCache.tags) ||
+            !isNumber(summaryCache.periodEnd)
+        ) {
             summaryCache = {
                 periodEnd: today,
                 tags: {},
-                showInMegaNav: true
+                showInMegaNav: true,
             };
         }
     }
@@ -106,9 +112,13 @@ function getSummary() {
 
 function seriesSummary() {
     function views(item) {
-        return reduce(item, function(acc, record) {
-            return acc + record[1];
-        }, 0);
+        return reduce(
+            item,
+            function(acc, record) {
+                return acc + record[1];
+            },
+            0
+        );
     }
 
     var seriesTags = pick(getSummary().tags, function(v, k) {
@@ -123,9 +133,13 @@ function seriesSummary() {
 }
 
 function mostViewedSeries() {
-    return reduce(seriesSummary(), function(best, views, tag, summary) {
-        return views > (summary[best] || 0) ? tag : best;
-    }, '');
+    return reduce(
+        seriesSummary(),
+        function(best, views, tag, summary) {
+            return views > (summary[best] || 0) ? tag : best;
+        },
+        ''
+    );
 }
 
 function deleteFromSummary(tag) {
@@ -136,9 +150,11 @@ function deleteFromSummary(tag) {
 }
 
 function isRevisit(pageId) {
-    return (find(getHistory(), function(page) {
-        return (page[0] === pageId);
-    }) || [])[1] > 1;
+    return (
+        (find(getHistory(), function(page) {
+            return page[0] === pageId;
+        }) || [])[1] > 1
+    );
 }
 
 function pruneSummary(summary, mockToday) {
@@ -151,20 +167,30 @@ function pruneSummary(summary, mockToday) {
         forEach(summary.tags, function(record, tid) {
             var result = buckets.map(function(bucket) {
                 if (record[bucket.indexInRecord]) {
-                    var visits = record[bucket.indexInRecord].map(function(day) {
-                        var newAge = day[0] + updateBy;
-                        return newAge < summaryPeriodDays && newAge >= 0 ? [newAge, day[1]] : false;
-                    }).filter(Boolean);
+                    var visits = record[bucket.indexInRecord]
+                        .map(function(day) {
+                            var newAge = day[0] + updateBy;
+                            return newAge < summaryPeriodDays && newAge >= 0
+                                ? [newAge, day[1]]
+                                : false;
+                        })
+                        .filter(Boolean);
 
-                    return (visits.length > 1 || (visits.length === 1 && visits[0][0] < forgetUniquesAfter)) ? visits : [];
+                    return visits.length > 1 ||
+                        (visits.length === 1 &&
+                            visits[0][0] < forgetUniquesAfter)
+                        ? visits
+                        : [];
                 }
 
                 return [];
             });
 
-            if (result.some(function(r) {
+            if (
+                result.some(function(r) {
                     return r.length;
-                })) {
+                })
+            ) {
                 summary.tags[tid] = [record[0]].concat(result);
             } else {
                 delete summary.tags[tid];
@@ -178,28 +204,47 @@ function pruneSummary(summary, mockToday) {
 function getPopular(opts) {
     var tags = getSummary().tags,
         tids = keys(tags),
-        op = assign({
-            number: 100,
-            weights: {},
-            thresholds: {}
-        }, opts);
+        op = assign(
+            {
+                number: 100,
+                weights: {},
+                thresholds: {},
+            },
+            opts
+        );
 
-    tids = op.whitelist ? tids.filter(function(tid) {
-        return op.whitelist.indexOf(tid) > -1;
-    }) : tids;
-    tids = op.blacklist ? tids.filter(function(tid) {
-        return op.blacklist.indexOf(tid) === -1;
-    }) : tids;
+    tids = op.whitelist
+        ? tids.filter(function(tid) {
+              return op.whitelist.indexOf(tid) > -1;
+          })
+        : tids;
+    tids = op.blacklist
+        ? tids.filter(function(tid) {
+              return op.blacklist.indexOf(tid) === -1;
+          })
+        : tids;
 
-    return tids.map(function(tid) {
+    return tids
+        .map(function(tid) {
             var record = tags[tid],
-                rank = reduce(buckets, function(rank, bucket) {
-                    return rank + tally(record[bucket.indexInRecord], op.weights[bucket.type], op.thresholds[bucket.type]);
-                }, 0);
+                rank = reduce(
+                    buckets,
+                    function(rank, bucket) {
+                        return (
+                            rank +
+                            tally(
+                                record[bucket.indexInRecord],
+                                op.weights[bucket.type],
+                                op.thresholds[bucket.type]
+                            )
+                        );
+                    },
+                    0
+                );
 
             return {
                 idAndName: [tid, record[0]],
-                rank: rank
+                rank: rank,
             };
         })
         .filter(Boolean)
@@ -228,18 +273,20 @@ function getContributors() {
 function getPopularFiltered(opts) {
     var flush = opts && opts.flush;
 
-    popularFilteredCache = (!flush && popularFilteredCache) || getPopular({
-        blacklist: getTopNavItems(),
-        number: 10,
-        weights: {
-            'content': 1,
-            'front': 5
-        },
-        thresholds: {
-            'content': 5,
-            'front': 1
-        }
-    });
+    popularFilteredCache =
+        (!flush && popularFilteredCache) ||
+        getPopular({
+            blacklist: getTopNavItems(),
+            number: 10,
+            weights: {
+                content: 1,
+                front: 5,
+            },
+            thresholds: {
+                content: 5,
+                front: 1,
+            },
+        });
 
     return popularFilteredCache;
 }
@@ -251,13 +298,20 @@ function tally(visits, weight, minimum) {
     weight = weight || 1;
     minimum = minimum || 1;
 
-    result = reduce(visits, function(tally, day) {
-        var dayOffset = day[0],
-            dayVisits = day[1];
+    result = reduce(
+        visits,
+        function(tally, day) {
+            var dayOffset = day[0],
+                dayVisits = day[1];
 
-        totalVisits += dayVisits;
-        return tally + weight * (9 + dayVisits) * (summaryPeriodDays - dayOffset);
-    }, 0);
+            totalVisits += dayVisits;
+            return (
+                tally +
+                weight * (9 + dayVisits) * (summaryPeriodDays - dayOffset)
+            );
+        },
+        0
+    );
 
     return totalVisits < minimum ? 0 : result;
 }
@@ -293,14 +347,13 @@ function logHistory(pageConfig) {
         foundCount = 0;
 
     if (!pageConfig.isFront) {
-        history = getHistory()
-            .filter(function(item) {
-                var isArr = isArray(item),
-                    found = isArr && (item[0] === pageId);
+        history = getHistory().filter(function(item) {
+            var isArr = isArray(item),
+                found = isArr && item[0] === pageId;
 
-                foundCount = found ? item[1] : foundCount;
-                return isArr && !found;
-            });
+            foundCount = found ? item[1] : foundCount;
+            return isArr && !found;
+        });
 
         history.unshift([pageId, foundCount + 1]);
         saveHistory(history.slice(0, historySize));
@@ -353,9 +406,11 @@ function logSummary(pageConfig, mockToday) {
 }
 
 function getTopNavItems() {
-    topNavItemsCache = topNavItemsCache || $('.js-navigation-header .js-top-navigation a').map(function(item) {
-        return collapsePath(getPath($(item).attr('href')));
-    });
+    topNavItemsCache =
+        topNavItemsCache ||
+        $('.js-navigation-header .js-top-navigation a').map(function(item) {
+            return collapsePath(getPath($(item).attr('href')));
+        });
 
     return topNavItemsCache;
 }
@@ -379,7 +434,7 @@ function showInMegaNav() {
 
     if (tags.length) {
         tagsHTML = template(viewMegaNav, {
-            tags: tags.map(tagHtml).join('')
+            tags: tags.map(tagHtml).join(''),
         });
         fastdom.write(function() {
             getMegaNav().prepend(tagsHTML);
@@ -419,7 +474,7 @@ function tagHtml(tag, index) {
     return template(viewTag, {
         id: tag[0],
         name: tag[1],
-        index: index + 1
+        index: index + 1,
     });
 }
 
@@ -442,6 +497,6 @@ export default {
         getSummary: getSummary,
         getHistory: getHistory,
         pruneSummary: pruneSummary,
-        seriesSummary: seriesSummary
-    }
+        seriesSummary: seriesSummary,
+    },
 };

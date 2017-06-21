@@ -12,11 +12,13 @@ function upgradeEvent(el) {
 
     if (matches) {
         fetchJson(href + '/card', {
-                mode: 'cors'
-            }).then(function(resp) {
+            mode: 'cors',
+        })
+            .then(function(resp) {
                 if (resp.html) {
                     fastdom.write(function() {
-                        $(el).html(resp.html)
+                        $(el)
+                            .html(resp.html)
                             .removeClass(ELEMENT_INITIAL_CLASS)
                             .addClass(ELEMENT_UPGRADED_CLASS);
                     });
@@ -24,7 +26,7 @@ function upgradeEvent(el) {
             })
             .catch(function(ex) {
                 reportError(ex, {
-                    feature: 'membership-events'
+                    feature: 'membership-events',
                 });
             });
     }
@@ -36,5 +38,5 @@ function upgradeEvents() {
 
 export default {
     upgradeEvent: upgradeEvent,
-    upgradeEvents: upgradeEvents
+    upgradeEvents: upgradeEvents,
 };

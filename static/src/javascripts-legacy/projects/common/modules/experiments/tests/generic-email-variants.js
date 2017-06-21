@@ -10,11 +10,13 @@ export default function(props) {
     this.audienceOffset = props.audienceOffset;
     this.audience = props.audience;
 
-    this.description = 'Using the wonderful frontend AB testing framework to AB test emails, since the AB ' +
+    this.description =
+        'Using the wonderful frontend AB testing framework to AB test emails, since the AB ' +
         'function in ExactTarget re-randomises all recipients on each send, and we need users to receive their ' +
         'variant for several weeks. This test will ensure users are added to the corresponding email list ' +
         '(listId) in ExactTarget';
-    this.successMeasure = 'We can trial different email formats to fairly compare their CTO rates';
+    this.successMeasure =
+        'We can trial different email formats to fairly compare their CTO rates';
     this.audienceCriteria = 'All users who see an email signup box';
     this.dataLinkNames = '';
     this.idealOutcome = '';
@@ -23,7 +25,10 @@ export default function(props) {
     var CANONICAL_LIST_ID = props.canonicalListId;
 
     this.canRun = function() {
-        return (SIGNUP_URL && (config.page.contentId === SIGNUP_URL)) || config.page.pageId === '/email-newsletters';
+        return (
+            (SIGNUP_URL && config.page.contentId === SIGNUP_URL) ||
+            config.page.pageId === '/email-newsletters'
+        );
     };
 
     this.variants = props.testIds.map(function(variant) {
@@ -35,13 +40,16 @@ export default function(props) {
                 } else {
                     updateNewslettersPage(variant.listId);
                 }
-            }
+            },
         };
     });
 
     function enhanceWebView(emailListId) {
         var emailForm = $('.js-email-sub__iframe')[0];
-        emailForm.setAttribute('src', 'https://www.theguardian.com/email/form/plaintone/' + emailListId);
+        emailForm.setAttribute(
+            'src',
+            'https://www.theguardian.com/email/form/plaintone/' + emailListId
+        );
     }
 
     function updateNewslettersPage(emailListId) {

@@ -1,11 +1,8 @@
 import mediator from 'lib/mediator';
 
-
 var originalPageTitle = document.title;
 
-function NotificationCounter() {
-
-}
+function NotificationCounter() {}
 
 NotificationCounter.prototype.init = function() {
     var self = this;

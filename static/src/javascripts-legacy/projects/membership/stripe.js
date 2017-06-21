@@ -10,7 +10,7 @@ var checkoutHandler = StripeCheckout.configure({
     locale: 'auto',
     name: 'The Guardian',
     allowRememberMe: false,
-    image: 'https://d24w1tjgih0o9s.cloudfront.net/gu.png'
+    image: 'https://d24w1tjgih0o9s.cloudfront.net/gu.png',
 });
 
 /* Renders the card details
@@ -30,7 +30,7 @@ function display(parent, card) {
     /*  show/hide
      *   once we've sent the token, we don't want to change the state of the dots until we redisplay
      * */
-    var loading = function() {
+    var loading = (function() {
         var HIDDEN = 'is-hidden';
         var $elems = [$button, $number, $type, $last4];
         var sent = false;
@@ -58,9 +58,9 @@ function display(parent, card) {
         return {
             send: send,
             showDots: showDots,
-            hideDots: hideDots
+            hideDots: hideDots,
         };
-    }();
+    })();
 
     //Decode and display card
     var oldCardType = $type.data('type');
@@ -81,14 +81,16 @@ function display(parent, card) {
         loading.hideDots();
     });
 
-
     /*
      * Closes over the event handler for the Change Card button
      */
     function handler() {
-
         var product = $parent.data('product');
-        var endpoint = config.page.userAttributesApiUrl + '/me/' + product + '-update-card';
+        var endpoint =
+            config.page.userAttributesApiUrl +
+            '/me/' +
+            product +
+            '-update-card';
         var email = $button.data('email');
         return function(e) {
             e.preventDefault();
@@ -101,7 +103,7 @@ function display(parent, card) {
                 token: update(endpoint),
                 closed: function() {
                     fastdom.write(loading.hideDots);
-                }
+                },
             });
             /*
              Nonstandard javascript alert:
@@ -115,7 +117,6 @@ function display(parent, card) {
             window.addEventListener('popstate', function() {
                 checkoutHandler.close();
             });
-
         };
     }
 
@@ -131,23 +132,28 @@ function display(parent, card) {
                 credentials: 'include',
                 method: 'post',
                 headers: {
-                    'Csrf-Token': 'nocheck'
+                    'Csrf-Token': 'nocheck',
                 },
                 body: {
-                    stripeToken: token.id
+                    stripeToken: token.id,
                 },
-            }).then(function(resp) {
-                return resp.json();
-            }).then(function(json) {
-                var card = json;
-                display($parent, card);
-            }).catch(function() {
-                $parent.text('We have not been able to update your card details at this time.');
-            });
+            })
+                .then(function(resp) {
+                    return resp.json();
+                })
+                .then(function(json) {
+                    var card = json;
+                    display($parent, card);
+                })
+                .catch(function() {
+                    $parent.text(
+                        'We have not been able to update your card details at this time.'
+                    );
+                });
         };
     }
 }
 
 export default {
-    display: display
+    display: display,
 };

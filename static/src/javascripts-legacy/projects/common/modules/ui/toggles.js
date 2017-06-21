@@ -3,7 +3,6 @@ import mediator from 'lib/mediator';
 import contains from 'lodash/collections/contains';
 
 var Toggles = function(parent) {
-
     var self = this,
         controls,
         doNotReset = ['popup--search'],
@@ -11,17 +10,25 @@ var Toggles = function(parent) {
         isSignedIn = (function() {
             var nav = document.querySelector('.js-profile-nav');
             return nav && nav.classList.contains('is-signed-in');
-        }()),
+        })(),
         component = parent || document.body;
 
     this.init = function() {
-        controls = Array.prototype.slice.call(component.querySelectorAll('[data-toggle]'));
+        controls = Array.prototype.slice.call(
+            component.querySelectorAll('[data-toggle]')
+        );
 
         controls.forEach(function(control) {
             if (!control.classList.contains(readyClass)) {
                 var target = self.getTarget(component, control);
 
-                if (target && !(!isSignedIn && control.getAttribute('data-toggle-signed-in') === 'true')) {
+                if (
+                    target &&
+                    !(
+                        !isSignedIn &&
+                        control.getAttribute('data-toggle-signed-in') === 'true'
+                    )
+                ) {
                     control.toggleTarget = target;
                     control.classList.add(readyClass);
                     bean.add(control, 'click', function(e) {
@@ -34,9 +41,14 @@ var Toggles = function(parent) {
     };
 
     this.reset = function(omitEl) {
-        controls.filter(function(control) {
-            return !(omitEl === control || contains(doNotReset, control.getAttribute('data-toggle')));
-        }).map(self.close);
+        controls
+            .filter(function(control) {
+                return !(
+                    omitEl === control ||
+                    contains(doNotReset, control.getAttribute('data-toggle'))
+                );
+            })
+            .map(self.close);
     };
 
     mediator.on('module:clickstream:click', function(clickSpec) {

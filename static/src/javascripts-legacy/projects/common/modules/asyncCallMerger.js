@@ -9,9 +9,7 @@
  * @return {?Date} the current date
  */
 function mergeCalls(targetFunction) {
-    var callbacks,
-        status,
-        callbackArguments;
+    var callbacks, status, callbackArguments;
 
     function targetCallbackHandler() {
         callbackArguments = arguments;
@@ -48,5 +46,5 @@ function mergeCalls(targetFunction) {
 }
 
 export default {
-    mergeCalls: mergeCalls
+    mergeCalls: mergeCalls,
 };

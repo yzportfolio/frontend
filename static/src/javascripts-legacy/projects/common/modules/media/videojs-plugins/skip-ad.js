@@ -9,21 +9,26 @@ function skipAd(mediaType, skipTimeout) {
     var events = {
         update: function() {
             var adsManager = this.ima.getAdsManager(),
-                currentTime = adsManager.getCurrentAd().getDuration() - adsManager.getRemainingTime(),
+                currentTime =
+                    adsManager.getCurrentAd().getDuration() -
+                    adsManager.getRemainingTime(),
                 skipTime = parseInt((skipTimeout - currentTime).toFixed(), 10);
 
             if (skipTime > 0) {
                 $('.js-skip-remaining-time', this.el()).text(skipTime);
             } else {
                 window.clearInterval(intervalId);
-                $('.js-ads-skip', this.el())
-                    .html(
-                        '<button class="js-ads-skip-button vjs-ads-skip__button" data-link-name="Skip video advert">' +
+                $('.js-ads-skip', this.el()).html(
+                    '<button class="js-ads-skip-button vjs-ads-skip__button" data-link-name="Skip video advert">' +
                         '<i class="i i-play-icon-grey skip-icon"></i>' +
                         '<i class="i i-play-icon-gold skip-icon"></i>Skip advert' +
                         '</button>'
-                    );
-                bean.on(qwery('.js-ads-skip-button')[0], 'click', events.skip.bind(this));
+                );
+                bean.on(
+                    qwery('.js-ads-skip-button')[0],
+                    'click',
+                    events.skip.bind(this)
+                );
             }
         },
         skip: function() {
@@ -37,21 +42,23 @@ function skipAd(mediaType, skipTimeout) {
             this.ima.getAdsManager().stop();
         },
         init: function() {
-            var adDuration = this.ima.getAdsManager().getCurrentAd().getDuration();
+            var adDuration = this.ima
+                .getAdsManager()
+                .getCurrentAd()
+                .getDuration();
 
             var skipButton = template(adsSkipOverlayTemplate, {
                 adDuration: adDuration,
-                skipTimeout: skipTimeout
+                skipTimeout: skipTimeout,
             });
 
             $(this.el()).append(skipButton);
             intervalId = setInterval(events.update.bind(this), 500);
-
         },
         end: function() {
             $('.js-ads-skip', this.el()).hide();
             window.clearInterval(intervalId);
-        }
+        },
     };
 
     this.one(mediaType + ':preroll:play', events.init.bind(this));

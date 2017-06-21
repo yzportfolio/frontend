@@ -30,22 +30,32 @@ var Crossword = React.createClass({
         this.clueMap = helpers.buildClueMap(this.props.data.entries);
 
         return {
-            grid: helpers.buildGrid(dimensions.rows, dimensions.cols, this.props.data.entries, persistence.loadGridState(this.props.data.id)),
+            grid: helpers.buildGrid(
+                dimensions.rows,
+                dimensions.cols,
+                this.props.data.entries,
+                persistence.loadGridState(this.props.data.id)
+            ),
             cellInFocus: null,
             directionOfEntry: null,
-            showAnagramHelper: false
+            showAnagramHelper: false,
         };
     },
 
     componentDidMount: function() {
         // Sticky clue
-        var $stickyClueWrapper = $(React.findDOMNode(this.refs.stickyClueWrapper));
+        var $stickyClueWrapper = $(
+            React.findDOMNode(this.refs.stickyClueWrapper)
+        );
         var $grid = $(React.findDOMNode(this.refs.grid));
         var $game = $(React.findDOMNode(this.refs.game));
         var isIOS = detect.isIOS();
 
         mediator.on('window:resize', debounce(this.setGridHeight, 200));
-        mediator.on('window:orientationchange', debounce(this.setGridHeight, 200));
+        mediator.on(
+            'window:orientationchange',
+            debounce(this.setGridHeight, 200)
+        );
         this.setGridHeight();
 
         mediator.on('window:throttledScroll', function() {
@@ -56,14 +66,20 @@ var Crossword = React.createClass({
 
             fastdom.write(function() {
                 // Clear previous state
-                $stickyClueWrapper.css('top', '').css('bottom', '').removeClass('is-fixed');
+                $stickyClueWrapper
+                    .css('top', '')
+                    .css('bottom', '')
+                    .removeClass('is-fixed');
 
                 var scrollYPastGame = scrollY - gameOffset.top;
 
                 if (scrollYPastGame >= 0) {
                     var gridOffsetBottom = gridOffset.top + gridOffset.height;
 
-                    if (scrollY > gridOffsetBottom - stickyClueWrapperOffset.height) {
+                    if (
+                        scrollY >
+                        gridOffsetBottom - stickyClueWrapperOffset.height
+                    ) {
                         $stickyClueWrapper.css('top', 'auto').css('bottom', 0);
                     } else {
                         // iOS doesn't support sticky things when the keyboard
@@ -82,7 +98,10 @@ var Crossword = React.createClass({
 
     componentDidUpdate: function(prevProps, prevState) {
         // return focus to active cell after exiting anagram helper
-        if (!this.state.showAnagramHelper && (this.state.showAnagramHelper !== prevState.showAnagramHelper)) {
+        if (
+            !this.state.showAnagramHelper &&
+            this.state.showAnagramHelper !== prevState.showAnagramHelper
+        ) {
             this.focusCurrentCell();
         }
     },
@@ -98,7 +117,10 @@ var Crossword = React.createClass({
                 this.focusNextClue();
             }
         } else if (!event.metaKey && !event.ctrlKey && !event.altKey) {
-            if (event.keyCode === keycodes.backspace || event.keyCode === keycodes.delete) {
+            if (
+                event.keyCode === keycodes.backspace ||
+                event.keyCode === keycodes.delete
+            ) {
                 event.preventDefault();
                 if (this.cellIsEmpty(cell.x, cell.y)) {
                     this.focusPrevious();
@@ -130,7 +152,9 @@ var Crossword = React.createClass({
         var newDirection;
 
         var isInsideFocussedClue = function isInsideFocussedClue() {
-            return focussedClue ? helpers.entryHasCell(focussedClue, x, y) : false;
+            return focussedClue
+                ? helpers.entryHasCell(focussedClue, x, y)
+                : false;
         };
 
         if (cellInFocus && cellInFocus.x === x && cellInFocus.y === y) {
@@ -150,11 +174,15 @@ var Crossword = React.createClass({
         } else {
             this.state.cellInFocus = {
                 x: x,
-                y: y
+                y: y,
             };
 
             var isStartOfClue = function isStartOfClue(sourceClue) {
-                return sourceClue && sourceClue.position.x === x && sourceClue.position.y === y;
+                return (
+                    sourceClue &&
+                    sourceClue.position.x === x &&
+                    sourceClue.position.y === y
+                );
             };
 
             /**
@@ -199,7 +227,7 @@ var Crossword = React.createClass({
             grid: helpers.mapGrid(this.state.grid, function(cell) {
                 cell.value = '';
                 return cell;
-            })
+            }),
         });
 
         this.save();
@@ -208,17 +236,28 @@ var Crossword = React.createClass({
     onClearSingle: function() {
         // Merge arrays of cells from all highlighted clues
         //const cellsInFocus = _.flatten(_.map(this.allHighlightedClues(), helpers.cellsForEntry, this));
-        var cellsInFocus = helpers.getClearableCellsForClue(this.state.grid, this.clueMap, this.props.data.entries, this.clueInFocus());
+        var cellsInFocus = helpers.getClearableCellsForClue(
+            this.state.grid,
+            this.clueMap,
+            this.props.data.entries,
+            this.clueInFocus()
+        );
 
         this.setState({
-            grid: helpers.mapGrid(this.state.grid, function(cell, gridX, gridY) {
-                if (some(cellsInFocus, function(c) {
+            grid: helpers.mapGrid(this.state.grid, function(
+                cell,
+                gridX,
+                gridY
+            ) {
+                if (
+                    some(cellsInFocus, function(c) {
                         return c.x === gridX && c.y === gridY;
-                    })) {
+                    })
+                ) {
                     cell.value = '';
                 }
                 return cell;
-            })
+            }),
         });
 
         this.save();
@@ -227,13 +266,16 @@ var Crossword = React.createClass({
     onToggleAnagramHelper: function() {
         // only show anagram helper if a clue is active
         if (!this.state.showAnagramHelper) {
-            return this.clueInFocus() && this.setState({
-                showAnagramHelper: true
-            });
+            return (
+                this.clueInFocus() &&
+                this.setState({
+                    showAnagramHelper: true,
+                })
+            );
         }
 
         this.setState({
-            showAnagramHelper: false
+            showAnagramHelper: false,
         });
     },
 
@@ -255,17 +297,26 @@ var Crossword = React.createClass({
             this.$gridWrapper = $(React.findDOMNode(this.refs.gridWrapper));
         }
 
-        if (detect.isBreakpoint({
-                max: 'tablet'
-            })) {
-            fastdom.read(function() {
-                // Our grid is a square, set the height of the grid wrapper
-                // to the width of the grid wrapper
-                fastdom.write(function() {
-                    this.$gridWrapper.css('height', this.$gridWrapper.offset().width + 'px');
-                }.bind(this));
-                this.gridHeightIsSet = true;
-            }.bind(this));
+        if (
+            detect.isBreakpoint({
+                max: 'tablet',
+            })
+        ) {
+            fastdom.read(
+                function() {
+                    // Our grid is a square, set the height of the grid wrapper
+                    // to the width of the grid wrapper
+                    fastdom.write(
+                        function() {
+                            this.$gridWrapper.css(
+                                'height',
+                                this.$gridWrapper.offset().width + 'px'
+                            );
+                        }.bind(this)
+                    );
+                    this.gridHeightIsSet = true;
+                }.bind(this)
+            );
         } else if (this.gridHeightIsSet) {
             // Remove inline style if tablet and wider
             this.$gridWrapper.attr('style', '');
@@ -274,14 +325,18 @@ var Crossword = React.createClass({
 
     setCellValue: function(x, y, value) {
         this.setState({
-            grid: helpers.mapGrid(this.state.grid, function(cell, gridX, gridY) {
+            grid: helpers.mapGrid(this.state.grid, function(
+                cell,
+                gridX,
+                gridY
+            ) {
                 if (gridX === x && gridY === y) {
                     cell.value = value;
                     cell.isError = false;
                 }
 
                 return cell;
-            })
+            }),
         });
     },
 
@@ -307,9 +362,11 @@ var Crossword = React.createClass({
     },
 
     goToReturnPosition: function() {
-        if (detect.isBreakpoint({
-                max: 'mobile'
-            })) {
+        if (
+            detect.isBreakpoint({
+                max: 'mobile',
+            })
+        ) {
             if (this.returnPosition) {
                 scroller.scrollTo(this.returnPosition, 250, 'easeOutQuad');
             }
@@ -327,7 +384,11 @@ var Crossword = React.createClass({
 
         if (i !== -1) {
             var newClue = entries[i === 0 ? entries.length - 1 : i - 1];
-            this.focusClue(newClue.position.x, newClue.position.y, newClue.direction);
+            this.focusClue(
+                newClue.position.x,
+                newClue.position.y,
+                newClue.direction
+            );
         }
     },
 
@@ -337,7 +398,11 @@ var Crossword = React.createClass({
 
         if (i !== -1) {
             var newClue = entries[i === entries.length - 1 ? 0 : i + 1];
-            this.focusClue(newClue.position.x, newClue.position.y, newClue.direction);
+            this.focusClue(
+                newClue.position.x,
+                newClue.position.y,
+                newClue.direction
+            );
         }
     },
 
@@ -347,7 +412,11 @@ var Crossword = React.createClass({
         var y = cell.y + deltaY;
         var direction = this;
 
-        if (this.state.grid[x] && this.state.grid[x][y] && this.state.grid[x][y].isEditable) {
+        if (
+            this.state.grid[x] &&
+            this.state.grid[x][y] &&
+            this.state.grid[x][y].isEditable
+        ) {
             if (deltaY !== 0) {
                 direction = 'down';
             } else if (deltaX !== 0) {
@@ -366,7 +435,10 @@ var Crossword = React.createClass({
         var clue = this.clueInFocus();
 
         if (helpers.isFirstCellInClue(cell, clue)) {
-            var newClue = helpers.getPreviousClueInGroup(this.props.data.entries, clue);
+            var newClue = helpers.getPreviousClueInGroup(
+                this.props.data.entries,
+                clue
+            );
             if (newClue) {
                 var newCell = helpers.getLastCellInClue(newClue);
                 this.focusClue(newCell.x, newCell.y, newClue.direction);
@@ -385,9 +457,16 @@ var Crossword = React.createClass({
         var clue = this.clueInFocus();
 
         if (helpers.isLastCellInClue(cell, clue)) {
-            var newClue = helpers.getNextClueInGroup(this.props.data.entries, clue);
+            var newClue = helpers.getNextClueInGroup(
+                this.props.data.entries,
+                clue
+            );
             if (newClue) {
-                this.focusClue(newClue.position.x, newClue.position.y, newClue.direction);
+                this.focusClue(
+                    newClue.position.x,
+                    newClue.position.y,
+                    newClue.direction
+                );
             }
         } else {
             if (this.isAcross()) {
@@ -404,12 +483,14 @@ var Crossword = React.createClass({
 
         return {
             x: 100 * x / width,
-            y: 100 * y / height
+            y: 100 * y / height,
         };
     },
 
     focusHiddenInput: function(x, y) {
-        var wrapper = React.findDOMNode(this.refs.hiddenInputComponent.refs.wrapper);
+        var wrapper = React.findDOMNode(
+            this.refs.hiddenInputComponent.refs.wrapper
+        );
         var left = helpers.gridSize(x);
         var top = helpers.gridSize(y);
         var position = this.asPercentage(left, top);
@@ -418,7 +499,9 @@ var Crossword = React.createClass({
         wrapper.style.left = position.x + '%';
         wrapper.style.top = position.y + '%';
 
-        var hiddenInputNode = React.findDOMNode(this.refs.hiddenInputComponent.refs.input);
+        var hiddenInputNode = React.findDOMNode(
+            this.refs.hiddenInputComponent.refs.input
+        );
 
         if (document.activeElement !== hiddenInputNode) {
             hiddenInputNode.focus();
@@ -436,9 +519,9 @@ var Crossword = React.createClass({
             this.setState({
                 cellInFocus: {
                     x: x,
-                    y: y
+                    y: y,
                 },
-                directionOfEntry: direction
+                directionOfEntry: direction,
             });
 
             // Side effect
@@ -452,12 +535,19 @@ var Crossword = React.createClass({
     },
 
     focusCurrentCell: function() {
-        this.focusHiddenInput(this.state.cellInFocus.x, this.state.cellInFocus.y);
+        this.focusHiddenInput(
+            this.state.cellInFocus.x,
+            this.state.cellInFocus.y
+        );
     },
 
     clueInFocus: function() {
         if (this.state.cellInFocus) {
-            var cluesForCell = helpers.cluesFor(this.clueMap, this.state.cellInFocus.x, this.state.cellInFocus.y);
+            var cluesForCell = helpers.cluesFor(
+                this.clueMap,
+                this.state.cellInFocus.x,
+                this.state.cellInFocus.y
+            );
             return cluesForCell[this.state.directionOfEntry];
         } else {
             return null;
@@ -470,21 +560,35 @@ var Crossword = React.createClass({
 
     clueIsInFocusGroup: function(clue) {
         if (this.state.cellInFocus) {
-            var cluesForCell = helpers.cluesFor(this.clueMap, this.state.cellInFocus.x, this.state.cellInFocus.y);
-            return contains(cluesForCell[this.state.directionOfEntry].group, clue.id);
+            var cluesForCell = helpers.cluesFor(
+                this.clueMap,
+                this.state.cellInFocus.x,
+                this.state.cellInFocus.y
+            );
+            return contains(
+                cluesForCell[this.state.directionOfEntry].group,
+                clue.id
+            );
         } else {
             return null;
         }
     },
 
     cluesData: function() {
-        return map(this.props.data.entries, function(entry) {
-            return {
-                entry: entry,
-                hasAnswered: helpers.checkClueHasBeenAnswered(this.state.grid, entry),
-                isSelected: this.clueIsInFocusGroup(entry)
-            };
-        }, this);
+        return map(
+            this.props.data.entries,
+            function(entry) {
+                return {
+                    entry: entry,
+                    hasAnswered: helpers.checkClueHasBeenAnswered(
+                        this.state.grid,
+                        entry
+                    ),
+                    isSelected: this.clueIsInFocusGroup(entry),
+                };
+            },
+            this
+        );
     },
 
     save: function() {
@@ -497,16 +601,20 @@ var Crossword = React.createClass({
         if (entry.solution) {
             this.setState({
                 grid: helpers.mapGrid(this.state.grid, function(cell, x, y) {
-                    if (some(cells, function(c) {
+                    if (
+                        some(cells, function(c) {
                             return c.x === x && c.y === y;
-                        })) {
-                        var n = entry.direction === 'across' ? x - entry.position.x : y - entry.position.y;
+                        })
+                    ) {
+                        var n = entry.direction === 'across'
+                            ? x - entry.position.x
+                            : y - entry.position.y;
 
                         cell.value = entry.solution[n];
                     }
 
                     return cell;
-                })
+                }),
             });
         }
     },
@@ -515,42 +623,67 @@ var Crossword = React.createClass({
         var cells = helpers.cellsForEntry(entry);
 
         if (entry.solution) {
-            var badCells = map(filter(zip(cells, entry.solution), function(cellAndSolution) {
-                var coords = cellAndSolution[0];
-                var cell = this.state.grid[coords.x][coords.y];
-                var solution = cellAndSolution[1];
-                return (/^[A-Z]$/.test(cell.value) && cell.value !== solution);
-            }, this), function(cellAndSolution) {
-                return cellAndSolution[0];
-            });
+            var badCells = map(
+                filter(
+                    zip(cells, entry.solution),
+                    function(cellAndSolution) {
+                        var coords = cellAndSolution[0];
+                        var cell = this.state.grid[coords.x][coords.y];
+                        var solution = cellAndSolution[1];
+                        return (
+                            /^[A-Z]$/.test(cell.value) &&
+                            cell.value !== solution
+                        );
+                    },
+                    this
+                ),
+                function(cellAndSolution) {
+                    return cellAndSolution[0];
+                }
+            );
 
             this.setState({
-                grid: helpers.mapGrid(this.state.grid, function(cell, gridX, gridY) {
-                    if (some(badCells, function(bad) {
+                grid: helpers.mapGrid(this.state.grid, function(
+                    cell,
+                    gridX,
+                    gridY
+                ) {
+                    if (
+                        some(badCells, function(bad) {
                             return bad.x === gridX && bad.y === gridY;
-                        })) {
+                        })
+                    ) {
                         cell.isError = true;
                         cell.value = '';
                     }
 
                     return cell;
-                })
+                }),
             });
 
-            setTimeout(function() {
-                this.setState({
-                    grid: helpers.mapGrid(this.state.grid, function(cell, gridX, gridY) {
-                        if (some(badCells, function(bad) {
-                                return bad.x === gridX && bad.y === gridY;
-                            })) {
-                            cell.isError = false;
-                            cell.value = '';
-                        }
+            setTimeout(
+                function() {
+                    this.setState({
+                        grid: helpers.mapGrid(this.state.grid, function(
+                            cell,
+                            gridX,
+                            gridY
+                        ) {
+                            if (
+                                some(badCells, function(bad) {
+                                    return bad.x === gridX && bad.y === gridY;
+                                })
+                            ) {
+                                cell.isError = false;
+                                cell.value = '';
+                            }
 
-                        return cell;
-                    })
-                });
-            }.bind(this), 150);
+                            return cell;
+                        }),
+                    });
+                }.bind(this),
+                150
+            );
         }
     },
 
@@ -573,85 +706,107 @@ var Crossword = React.createClass({
     render: function() {
         var focussed = this.clueInFocus();
         var isHighlighted = function isHighlighted(x, y) {
-            return focussed ? focussed.group.some(function(id) {
-                var entry = find(this.props.data.entries, {
-                    id: id
-                });
-                return helpers.entryHasCell(entry, x, y);
-            }.bind(this)) : false;
+            return focussed
+                ? focussed.group.some(
+                      function(id) {
+                          var entry = find(this.props.data.entries, {
+                              id: id,
+                          });
+                          return helpers.entryHasCell(entry, x, y);
+                      }.bind(this)
+                  )
+                : false;
         }.bind(this);
 
-        var anagramHelper = this.state.showAnagramHelper && React.createElement(AnagramHelper.AnagramHelper, {
-            focussedEntry: focussed,
-            entries: this.props.data.entries,
-            grid: this.state.grid,
-            close: this.onToggleAnagramHelper
-        });
+        var anagramHelper =
+            this.state.showAnagramHelper &&
+            React.createElement(AnagramHelper.AnagramHelper, {
+                focussedEntry: focussed,
+                entries: this.props.data.entries,
+                grid: this.state.grid,
+                close: this.onToggleAnagramHelper,
+            });
 
         return React.createElement(
-            'div', {
-                className: 'crossword__container crossword__container--' + this.props.data.crosswordType + ' crossword__container--react',
-                'data-link-name': 'Crosswords'
+            'div',
+            {
+                className:
+                    'crossword__container crossword__container--' +
+                        this.props.data.crosswordType +
+                        ' crossword__container--react',
+                'data-link-name': 'Crosswords',
             },
             React.createElement(
-                'div', {
+                'div',
+                {
                     className: 'crossword__container__game',
-                    ref: 'game'
+                    ref: 'game',
                 },
                 React.createElement(
-                    'div', {
+                    'div',
+                    {
                         className: 'crossword__sticky-clue-wrapper',
-                        ref: 'stickyClueWrapper'
+                        ref: 'stickyClueWrapper',
                     },
                     React.createElement(
-                        'div', {
+                        'div',
+                        {
                             className: classNames({
                                 'crossword__sticky-clue': true,
-                                'is-hidden': !focussed
+                                'is-hidden': !focussed,
                             }),
-                            ref: 'stickyClue'
+                            ref: 'stickyClue',
                         },
-                        focussed && React.createElement(
-                            'div', {
-                                className: 'crossword__sticky-clue__inner'
-                            },
+                        focussed &&
                             React.createElement(
-                                'div', {
-                                    className: 'crossword__sticky-clue__inner__inner'
+                                'div',
+                                {
+                                    className: 'crossword__sticky-clue__inner',
                                 },
                                 React.createElement(
-                                    'strong',
-                                    null,
-                                    focussed.number,
-                                    ' ',
+                                    'div',
+                                    {
+                                        className:
+                                            'crossword__sticky-clue__inner__inner',
+                                    },
                                     React.createElement(
-                                        'span', {
-                                            className: 'crossword__sticky-clue__direction'
-                                        },
-                                        focussed.direction
-                                    )
-                                ),
-                                ' ',
-                                focussed.clue
+                                        'strong',
+                                        null,
+                                        focussed.number,
+                                        ' ',
+                                        React.createElement(
+                                            'span',
+                                            {
+                                                className:
+                                                    'crossword__sticky-clue__direction',
+                                            },
+                                            focussed.direction
+                                        )
+                                    ),
+                                    ' ',
+                                    focussed.clue
+                                )
                             )
-                        )
                     )
                 ),
                 React.createElement(
-                    'div', {
+                    'div',
+                    {
                         className: 'crossword__container__grid-wrapper',
-                        ref: 'gridWrapper'
+                        ref: 'gridWrapper',
                     },
                     React.createElement(Grid, {
                         rows: this.rows,
                         columns: this.columns,
                         cells: this.state.grid,
-                        separators: helpers.buildSeparatorMap(this.props.data.entries),
+                        separators: helpers.buildSeparatorMap(
+                            this.props.data.entries
+                        ),
                         setCellValue: this.setCellValue,
                         onSelect: this.onSelect,
                         isHighlighted: isHighlighted,
                         focussedCell: this.state.cellInFocus,
-                        ref: 'grid'
+                        ref: 'grid',
                     }),
                     React.createElement(HiddenInput, {
                         onChange: this.insertCharacter,
@@ -660,7 +815,7 @@ var Crossword = React.createClass({
                         onKeyDown: this.onKeyDown,
                         onBlur: this.goToReturnPosition,
                         value: this.hiddenInputValue(),
-                        ref: 'hiddenInputComponent'
+                        ref: 'hiddenInputComponent',
                     }),
                     anagramHelper
                 )
@@ -674,15 +829,15 @@ var Crossword = React.createClass({
                 onCheckAll: this.onCheckAll,
                 onClearAll: this.onClearAll,
                 onClearSingle: this.onClearSingle,
-                onToggleAnagramHelper: this.onToggleAnagramHelper
+                onToggleAnagramHelper: this.onToggleAnagramHelper,
             }),
             React.createElement(Clues, {
                 clues: this.cluesData(),
                 focussed: focussed,
-                setReturnPosition: this.setReturnPosition
+                setReturnPosition: this.setReturnPosition,
             })
         );
-    }
+    },
 });
 
 export default Crossword;

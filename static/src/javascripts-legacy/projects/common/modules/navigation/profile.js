@@ -10,11 +10,21 @@ import assign from 'lodash/objects/assign';
  */
 function Profile(options) {
     this.opts = assign(this.opts, options);
-    this.dom.container = document.body.querySelector('.' + Profile.CONFIG.classes.container);
-    this.dom.content = this.dom.container.querySelector('.' + Profile.CONFIG.classes.content);
-    this.dom.popup = document.body.querySelector('.' + Profile.CONFIG.classes.popup);
-    this.dom.register = document.body.querySelector('.' + Profile.CONFIG.classes.register);
-    this.dom.commentActivity = document.body.querySelector('.' + Profile.CONFIG.classes.commentActivity);
+    this.dom.container = document.body.querySelector(
+        '.' + Profile.CONFIG.classes.container
+    );
+    this.dom.content = this.dom.container.querySelector(
+        '.' + Profile.CONFIG.classes.content
+    );
+    this.dom.popup = document.body.querySelector(
+        '.' + Profile.CONFIG.classes.popup
+    );
+    this.dom.register = document.body.querySelector(
+        '.' + Profile.CONFIG.classes.register
+    );
+    this.dom.commentActivity = document.body.querySelector(
+        '.' + Profile.CONFIG.classes.commentActivity
+    );
 }
 
 /** @type {Object.<string.*>} */
@@ -26,13 +36,13 @@ Profile.CONFIG = {
         popup: 'js-profile-popup',
         register: 'js-profile-register',
         commentActivity: 'js-comment-activity',
-        action: 'brand-bar__item--action'
-    }
+        action: 'brand-bar__item--action',
+    },
 };
 
 /** @type {Object.<string.*>} */
 Profile.prototype.opts = {
-    url: 'https://profile.theguardian.com'
+    url: 'https://profile.theguardian.com',
 };
 
 /** @enum {Element} */

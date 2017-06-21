@@ -7,7 +7,7 @@ function onLoad() {
     var pvar = {
         cid: 'au-guardian',
         content: '0',
-        server: 'secure-gl'
+        server: 'secure-gl',
     };
     // nol_t is a global function set by the imrworldwide library
     /*eslint-disable no-undef*/
@@ -18,5 +18,5 @@ function onLoad() {
 export default {
     shouldRun: config.switches.imrWorldwide,
     url: imrWorldwideUrl,
-    onLoad: onLoad
+    onLoad: onLoad,
 };

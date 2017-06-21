@@ -9,7 +9,11 @@ function getEndpoint(mediaType) {
     if (isInSeries) {
         return '/video/in-series/' + config.page.seriesId + '.json';
     } else {
-        return '/' + (config.page.isPodcast ? 'podcast' : mediaType) + '/most-viewed.json';
+        return (
+            '/' +
+            (config.page.isPodcast ? 'podcast' : mediaType) +
+            '/most-viewed.json'
+        );
     }
 }
 
@@ -46,5 +50,5 @@ function init(el, mediaType) {
 }
 
 export default {
-    init: init
+    init: init,
 };

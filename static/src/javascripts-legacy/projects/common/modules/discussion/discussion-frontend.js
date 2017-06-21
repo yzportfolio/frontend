@@ -8,9 +8,13 @@ import loadScript from 'lib/load-script';
 function load(loader, opts) {
     function onDiscussionFrontendLoad(emitter) {
         emitter.on('error', function(feature, error) {
-            reportError(error, {
-                feature: 'discussion-' + feature
-            }, false);
+            reportError(
+                error,
+                {
+                    feature: 'discussion-' + feature,
+                },
+                false
+            );
         });
         emitter.once('comment-count', function(value) {
             if (value === 0) {
@@ -19,7 +23,9 @@ function load(loader, opts) {
                 // By the time discussion frontent loads, the number of comments
                 // might have changed. If there are other comment counts element
                 // in the page refresh their value.
-                var otherValues = document.getElementsByClassName('js_commentcount_actualvalue');
+                var otherValues = document.getElementsByClassName(
+                    'js_commentcount_actualvalue'
+                );
                 for (var i = 0, len = otherValues.length; i < len; i += 1) {
                     updateCommentCount(otherValues[i], value);
                 }
@@ -36,14 +42,12 @@ function load(loader, opts) {
 
     function error(error) {
         reportError(error, {
-            feature: 'discussion'
+            feature: 'discussion',
         });
     }
 
     function init(frontend) {
-        frontend(opts)
-            .then(onDiscussionFrontendLoad)
-            .catch(error);
+        frontend(opts).then(onDiscussionFrontendLoad).catch(error);
     }
 
     // - Inject the net module to work around the lack of a global fetch
@@ -55,7 +59,8 @@ function load(loader, opts) {
     //   modify discussion-frontend to remove `fetch` polyfill and pass, if needed,
     //   opts.net = { json: fetchJson }
 
-    return loadScript.loadScript(config.page.discussionFrontendUrl)
+    return loadScript
+        .loadScript(config.page.discussionFrontendUrl)
         .then(function() {
             init(window.guardian.app.discussion);
         })
@@ -63,5 +68,5 @@ function load(loader, opts) {
 }
 
 export default {
-    load: load
+    load: load,
 };

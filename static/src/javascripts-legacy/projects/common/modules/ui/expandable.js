@@ -13,12 +13,11 @@ import bonzo from 'bonzo';
         buttonAfterEl : {Element} Element to add the button after (defaults to last child of dom)
 */
 var Expandable = function(options) {
-
     var opts = options || {},
         dom = $(opts.dom), // root element of the trailblock
-        expanded = (opts.expanded === false) ? false : true, // true = open, false = closed
+        expanded = opts.expanded === false ? false : true, // true = open, false = closed
         cta = document.createElement('button'),
-        showCount = (opts.showCount === false) ? false : true,
+        showCount = opts.showCount === false ? false : true,
         renderState = function() {
             if (expanded) {
                 dom.removeClass('shut');
@@ -34,16 +33,18 @@ var Expandable = function(options) {
             if (showCount) {
                 text += getCount() + ' ';
             }
-            text += (expanded) ? 'fewer' : 'more';
+            text += expanded ? 'fewer' : 'more';
             cta.innerHTML = text;
-            cta.setAttribute('data-link-name', 'Show ' + ((expanded) ? 'more' : 'fewer'));
+            cta.setAttribute(
+                'data-link-name',
+                'Show ' + (expanded ? 'more' : 'fewer')
+            );
             cta.setAttribute('data-is-ajax', '1');
         },
         // Model
         model = {
-
             toggleExpanded: function() {
-                expanded = (expanded) ? false : true;
+                expanded = expanded ? false : true;
                 renderState();
                 updateCallToAction();
             },
@@ -51,12 +52,11 @@ var Expandable = function(options) {
             getCount: getCount,
 
             isOpen: function() {
-                return (dom.hasClass('shut')) ? false : true;
-            }
+                return dom.hasClass('shut') ? false : true;
+            },
         },
         // View
         view = {
-
             updateCallToAction: updateCallToAction,
 
             renderState: renderState,
@@ -81,13 +81,16 @@ var Expandable = function(options) {
                         cta.scrollIntoView();
                     }, 550);
                 }
-            }
+            },
         };
 
     return {
         init: function() {
-
-            if (dom.hasClass('expandable-initialised') || !dom.html() || model.getCount() < 3) {
+            if (
+                dom.hasClass('expandable-initialised') ||
+                !dom.html() ||
+                model.getCount() < 3
+            ) {
                 return false;
             }
             dom.addClass('expandable-initialised');
@@ -95,7 +98,7 @@ var Expandable = function(options) {
             view.renderCallToAction();
             view.renderState();
         },
-        toggle: model.toggleExpanded
+        toggle: model.toggleExpanded,
     };
 };
 

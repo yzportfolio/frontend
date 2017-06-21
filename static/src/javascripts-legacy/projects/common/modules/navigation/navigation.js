@@ -15,7 +15,7 @@ var Navigation = {
             // crashes mobile safari < 6, so we add it here after detection
             fastdom.write(function() {
                 $('.navigation__scroll').css({
-                    '-webkit-overflow-scrolling': 'touch'
+                    '-webkit-overflow-scrolling': 'touch',
                 });
             });
         }
@@ -23,7 +23,9 @@ var Navigation = {
 
     jsEnableFooterNav: function() {
         fastdom.write(function() {
-            $('.navigation-container--default').removeClass('navigation-container--default').addClass('navigation-container--collapsed');
+            $('.navigation-container--default')
+                .removeClass('navigation-container--default')
+                .addClass('navigation-container--collapsed');
         });
     },
 
@@ -32,26 +34,39 @@ var Navigation = {
             placeholder = $('.js-mega-nav-placeholder');
 
         fastdom.write(function() {
-            $('.global-navigation', megaNavCopy).addClass('global-navigation--top');
+            $('.global-navigation', megaNavCopy).addClass(
+                'global-navigation--top'
+            );
             placeholder.append(megaNavCopy);
         });
     },
 
     replaceAllSectionsLink: function() {
-        $('.js-navigation-header .js-navigation-toggle').attr('href', '#nav-allsections');
+        $('.js-navigation-header .js-navigation-toggle').attr(
+            'href',
+            '#nav-allsections'
+        );
     },
 
     enableMegaNavToggle: function() {
         bean.on(document, 'click', '.js-navigation-toggle', function(e) {
-            var target = $('.' + e.currentTarget.getAttribute('data-target-nav'));
+            var target = $(
+                '.' + e.currentTarget.getAttribute('data-target-nav')
+            );
 
             e.preventDefault();
             fastdom.write(function() {
-                target.toggleClass('navigation-container--expanded navigation-container--collapsed');
-                mediator.emit(target.hasClass('navigation-container--expanded') ? 'modules:nav:open' : 'modules:nav:close');
+                target.toggleClass(
+                    'navigation-container--expanded navigation-container--collapsed'
+                );
+                mediator.emit(
+                    target.hasClass('navigation-container--expanded')
+                        ? 'modules:nav:open'
+                        : 'modules:nav:close'
+                );
             });
         });
-    }
+    },
 };
 
 export default Navigation;

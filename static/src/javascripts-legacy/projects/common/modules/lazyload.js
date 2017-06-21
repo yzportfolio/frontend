@@ -19,20 +19,23 @@ function lazyload(url, options) {
         force             - boolean, default false. Reload an already-populated container
     */
 
-    options = merge({
-        beforeInsert: identity,
-        force: false,
-        finally: identity,
-        catch: identity,
-    }, options);
+    options = merge(
+        {
+            beforeInsert: identity,
+            force: false,
+            finally: identity,
+            catch: identity,
+        },
+        options
+    );
 
     if (url && options.container) {
         var $container = bonzo(options.container);
 
         if (options.force || !$container.hasClass('lazyloaded')) {
             return fetchJSON(url, {
-                    mode: 'cors',
-                })
+                mode: 'cors',
+            })
                 .then(function(resp) {
                     return fastdom.write(function() {
                         $container

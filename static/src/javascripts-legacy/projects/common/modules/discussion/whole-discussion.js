@@ -1,7 +1,7 @@
 import bonzo from 'bonzo';
 import $ from 'lib/$';
 import fetchJson from 'lib/fetch-json';
-import {constructQuery} from 'lib/url';
+import { constructQuery } from 'lib/url';
 import range from 'lodash/arrays/range';
 // This size effectively determines how many calls this module needs to make.
 // Number of ajax calls = number of comments / comments per page
@@ -11,9 +11,7 @@ var commentsPerPage = 50,
 
 // A basic Promise queue based on: http://talks.joneisen.me/presentation-javascript-concurrency-patterns/refactoru-9-23-2014.slide#25
 function runConcurrently(workFunction, items) {
-
     return new Promise(function(resolve) {
-
         var queue = items;
         var workers = 0;
 
@@ -49,7 +47,7 @@ function WholeDiscussion(options) {
         orderBy: options.orderBy,
         displayThreaded: options.displayThreaded,
         maxResponses: options.maxResponses,
-        commentsClosed: options.commentsClosed
+        commentsClosed: options.commentsClosed,
     };
 }
 
@@ -59,7 +57,10 @@ WholeDiscussion.prototype.firstPageLoaded = function(resp) {
 
     // Keep a copy of the comments thread and discussion container so it can be easily reduced later.
     this.discussionContainer = bonzo.create(resp.commentsHtml);
-    this.commentsThread = $('.d-thread--comments', this.discussionContainer).empty();
+    this.commentsThread = $(
+        '.d-thread--comments',
+        this.discussionContainer
+    ).empty();
     this.postedCommentHtml = resp.postedCommentHtml;
     this.lastPage = resp.lastPage;
 
@@ -74,43 +75,52 @@ WholeDiscussion.prototype.firstPageLoaded = function(resp) {
 
 // Caches a bonzo object/array of comments, so that they can be re-assembled when the load is complete.
 WholeDiscussion.prototype.storeCommentPage = function(response, page) {
-    var container = $('.d-thread--comments', bonzo.create(response.commentsHtml)),
+    var container = $(
+        '.d-thread--comments',
+        bonzo.create(response.commentsHtml)
+    ),
         comments = $('.d-comment--top-level', container);
     if (this.params.orderBy === 'newest') {
-
-        comments = comments.map(function(comment) {
-            return comment;
-        }).reverse();
+        comments = comments
+            .map(function(comment) {
+                return comment;
+            })
+            .reverse();
     }
     this.discussion[page] = comments;
 };
 
 WholeDiscussion.prototype.loadPage = function(pageNumber) {
-
     // Always load in oldest order, to ensure pages are consistent whilst new comments are posted.
     var queryParams = {
         orderBy: 'oldest',
         page: pageNumber,
         pageSize: commentsPerPage,
         displayThreaded: this.params.displayThreaded,
-        commentsClosed: this.params.commentsClosed
+        commentsClosed: this.params.commentsClosed,
     };
 
     if (this.params.maxResponses) {
         queryParams.maxResponses = this.params.maxResponses;
     }
 
-    var url = '/discussion/' + this.discussionId + '.json?' + constructQuery(queryParams);
+    var url =
+        '/discussion/' +
+        this.discussionId +
+        '.json?' +
+        constructQuery(queryParams);
 
     return fetchJson(url, {
-        mode: 'cors'
+        mode: 'cors',
     });
 };
 
 WholeDiscussion.prototype.loadPageAndStore = function(pageNumber) {
-    return this.loadPage(pageNumber).then(function(response) {
-        this.storeCommentPage(response, pageNumber);
-    }.bind(this));
+    return this.loadPage(pageNumber).then(
+        function(response) {
+            this.storeCommentPage(response, pageNumber);
+        }.bind(this)
+    );
 };
 
 WholeDiscussion.prototype.loadRemainingPages = function(pages) {
@@ -118,7 +128,6 @@ WholeDiscussion.prototype.loadRemainingPages = function(pages) {
 };
 
 WholeDiscussion.prototype.makeDiscussionResponseObject = function() {
-
     if (this.params.orderBy === 'newest') {
         this.discussion.reverse();
     }
@@ -132,12 +141,11 @@ WholeDiscussion.prototype.makeDiscussionResponseObject = function() {
         paginationHtml: '',
         postedCommentHtml: this.postedCommentHtml,
         commentsHtml: this.discussionContainer.html(),
-        lastPage: this.lastPage
+        lastPage: this.lastPage,
     };
 };
 
 WholeDiscussion.prototype.loadAllComments = function() {
-
     // Always load the first page, to retrieve the number of comments in the discussion.
     return this.loadPage(1)
         .then(this.firstPageLoaded.bind(this))

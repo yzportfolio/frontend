@@ -1,21 +1,28 @@
-import {addEventListener} from 'lib/events';
+import { addEventListener } from 'lib/events';
 import config from 'lib/config';
 import detect from 'lib/detect';
 import fastdom from 'lib/fastdom-promise';
 import trackAdRender from 'commercial/modules/dfp/track-ad-render';
 import { commercialFeatures } from 'commercial/modules/commercial-features';
 import getAdvertById from 'commercial/modules/dfp/get-advert-by-id';
-import {register, unregister} from 'commercial/modules/messenger';
+import { register, unregister } from 'commercial/modules/messenger';
 
 var topSlotId = 'dfp-ad--top-above-nav';
 var updateQueued = false;
-var win, header, headerHeight, topSlot, topSlotHeight, topSlotStyles, stickyBanner, scrollY;
+var win,
+    header,
+    headerHeight,
+    topSlot,
+    topSlotHeight,
+    topSlotStyles,
+    stickyBanner,
+    scrollY;
 
 export default {
     init: init,
     update: update,
     resize: resizeStickyBanner,
-    onScroll: onScroll
+    onScroll: onScroll,
 };
 
 function init(_window) {
@@ -25,18 +32,23 @@ function init(_window) {
 
     win = _window || window;
     topSlot = document.getElementById(topSlotId);
-    if (topSlot && detect.isBreakpoint({
-            min: 'desktop'
-        })) {
+    if (
+        topSlot &&
+        detect.isBreakpoint({
+            min: 'desktop',
+        })
+    ) {
         header = document.getElementById('header');
         stickyBanner = topSlot.parentNode;
 
         // First, let's assign some default values so that everything
         // is in good order before we start animating changes in height
-        return initState()
-            // Second, start listening for height and scroll changes
-            .then(setupListeners)
-            .then(onFirstRender);
+        return (
+            initState()
+                // Second, start listening for height and scroll changes
+                .then(setupListeners)
+                .then(onFirstRender)
+        );
     } else {
         topSlot = null;
         return Promise.resolve();
@@ -44,15 +56,13 @@ function init(_window) {
 }
 
 function initState() {
-    return fastdom.read(function() {
+    return fastdom
+        .read(function() {
             headerHeight = header.offsetHeight;
             return topSlot.offsetHeight;
         })
         .then(function(currentHeight) {
-            return Promise.all([
-                resizeStickyBanner(currentHeight),
-                onScroll()
-            ]);
+            return Promise.all([resizeStickyBanner(currentHeight), onScroll()]);
         });
 }
 
@@ -64,36 +74,42 @@ function setupListeners() {
     register('resize', onResize);
     if (!config.page.hasSuperStickyBanner) {
         addEventListener(win, 'scroll', onScroll, {
-            passive: true
+            passive: true,
         });
     }
 }
 
 function onFirstRender() {
-    trackAdRender(topSlotId)
-        .then(function(isRendered) {
-            if (isRendered) {
-                var advert = getAdvertById.getAdvertById(topSlotId);
-                if (advert &&
-                    advert.size &&
-                    // skip for Fabric creatives
-                    advert.size[0] !== 88 &&
-                    // skip for native ads
-                    advert.size[1] > 0
-                ) {
-                    fastdom.read(function() {
-                            var styles = window.getComputedStyle(topSlot);
-                            return parseInt(styles.paddingTop) + parseInt(styles.paddingBottom) + advert.size[1];
-                        })
-                        .then(resizeStickyBanner);
-                } else {
-                    fastdom.read(function() {
-                            return topSlot.offsetHeight;
-                        })
-                        .then(resizeStickyBanner);
-                }
+    trackAdRender(topSlotId).then(function(isRendered) {
+        if (isRendered) {
+            var advert = getAdvertById.getAdvertById(topSlotId);
+            if (
+                advert &&
+                advert.size &&
+                // skip for Fabric creatives
+                advert.size[0] !== 88 &&
+                // skip for native ads
+                advert.size[1] > 0
+            ) {
+                fastdom
+                    .read(function() {
+                        var styles = window.getComputedStyle(topSlot);
+                        return (
+                            parseInt(styles.paddingTop) +
+                            parseInt(styles.paddingBottom) +
+                            advert.size[1]
+                        );
+                    })
+                    .then(resizeStickyBanner);
+            } else {
+                fastdom
+                    .read(function() {
+                        return topSlot.offsetHeight;
+                    })
+                    .then(resizeStickyBanner);
             }
-        });
+        }
+    });
 }
 
 function onResize(specs, _, iframe) {
@@ -104,9 +120,14 @@ function onResize(specs, _, iframe) {
 }
 
 function update(newHeight) {
-    return fastdom.read(function() {
+    return fastdom
+        .read(function() {
             topSlotStyles || (topSlotStyles = win.getComputedStyle(topSlot));
-            return newHeight + parseInt(topSlotStyles.paddingTop) + parseInt(topSlotStyles.paddingBottom);
+            return (
+                newHeight +
+                parseInt(topSlotStyles.paddingTop) +
+                parseInt(topSlotStyles.paddingBottom)
+            );
         })
         .then(resizeStickyBanner);
 }
@@ -115,14 +136,14 @@ function onScroll() {
     scrollY = win.pageYOffset;
     if (!updateQueued) {
         updateQueued = true;
-        return fastdom.write(function() {
+        return fastdom
+            .write(function() {
                 updateQueued = false;
                 if (headerHeight < scrollY) {
                     stickyBanner.style.position = 'absolute';
                     stickyBanner.style.top = headerHeight + 'px';
                 } else {
-                    stickyBanner.style.position =
-                        stickyBanner.style.top = null;
+                    stickyBanner.style.position = stickyBanner.style.top = null;
                 }
             })
             .then(setupAnimation);
@@ -153,8 +174,8 @@ function resizeStickyBanner(newHeight) {
     if (topSlotHeight !== newHeight) {
         return fastdom.write(function() {
             stickyBanner.classList.add('sticky-top-banner-ad');
-            stickyBanner.style.height =
-                header.style.marginTop = newHeight + 'px';
+            stickyBanner.style.height = header.style.marginTop =
+                newHeight + 'px';
 
             if (topSlotHeight !== undefined && headerHeight <= scrollY) {
                 win.scrollBy(0, newHeight - topSlotHeight);

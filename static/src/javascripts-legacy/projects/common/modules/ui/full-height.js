@@ -7,26 +7,30 @@ import detect from 'lib/detect';
 // http://code.google.com/p/chromium/issues/detail?id=428132
 
 var renderBlock = function(state) {
-    return fastdomPromise.write(function() {
-        state.$el.css('height', '');
-    }).then(function() {
-        if (state.isMobile) {
-            return fastdomPromise.read(function() {
-                return state.$el.height();
-            }).then(function(height) {
-                return fastdomPromise.write(function() {
-                    state.$el.css('height', height);
-                });
-            });
-        }
-    });
+    return fastdomPromise
+        .write(function() {
+            state.$el.css('height', '');
+        })
+        .then(function() {
+            if (state.isMobile) {
+                return fastdomPromise
+                    .read(function() {
+                        return state.$el.height();
+                    })
+                    .then(function(height) {
+                        return fastdomPromise.write(function() {
+                            state.$el.css('height', height);
+                        });
+                    });
+            }
+        });
 };
 
 var render = function(state) {
     state.elements.each(function(element) {
         renderBlock({
             $el: $(element),
-            isMobile: state.isMobile
+            isMobile: state.isMobile,
         });
     });
 };
@@ -36,7 +40,7 @@ var getState = function() {
         var elements = $('.js-is-fixed-height');
         return {
             elements: elements,
-            isMobile: detect.getBreakpoint() === 'mobile'
+            isMobile: detect.getBreakpoint() === 'mobile',
         };
     });
 };
@@ -51,7 +55,6 @@ var init = function() {
     onViewportChange();
 };
 
-
 export default {
-    init: init
+    init: init,
 };

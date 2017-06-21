@@ -17,7 +17,7 @@ var INSERT_EPIC_AFTER_CLASS = 'js-insert-epic-after';
 function setupViewTracking(el, test) {
     // top offset of 18 ensures view only counts when half of element is on screen
     var elementInView = ElementInView(el, window, {
-        top: 18
+        top: 18,
     });
 
     elementInView.on('firstview', function() {
@@ -49,9 +49,11 @@ export default contributionsUtilities.makeABTest({
     expiry: '2018-04-01',
 
     author: 'Joseph Smith',
-    description: 'This places the epic underneath liveblog blocks which the author has specified in Composer should have an epic against them',
+    description:
+        'This places the epic underneath liveblog blocks which the author has specified in Composer should have an epic against them',
     successMeasure: 'Member acquisition and contributions',
-    idealOutcome: 'Our wonderful readers will support The Guardian in this time of need!',
+    idealOutcome:
+        'Our wonderful readers will support The Guardian in this time of need!',
 
     audienceCriteria: 'All',
     audience: 1,
@@ -63,34 +65,36 @@ export default contributionsUtilities.makeABTest({
         return page.contentType === 'LiveBlog';
     },
 
-    variants: [{
-        id: 'control',
-        isUnlimited: true,
+    variants: [
+        {
+            id: 'control',
+            isUnlimited: true,
 
-        insertAtSelector: '.js-insert-epic-after',
-        insertAfter: true,
-        insertMultiple: true,
-        successOnView: true,
+            insertAtSelector: '.js-insert-epic-after',
+            insertAfter: true,
+            insertMultiple: true,
+            successOnView: true,
 
-        template: function(variant) {
-            return template(liveblogEpicTemplate, {
-                copy: acquisitionsCopy.control,
-                membershipUrl: variant.options.membershipURL,
-                contributionUrl: variant.options.contributeURL,
-                componentName: variant.options.componentName
-            });
-        },
-
-        test: function(renderFn, variant, test) {
-            var epicHtml = variant.options.template(variant);
-            addEpicToBlocks(epicHtml, test);
-
-            if (!isAutoUpdateHandlerBound) {
-                mediator.on('modules:autoupdate:updates', function() {
-                    addEpicToBlocks(epicHtml, test);
+            template: function(variant) {
+                return template(liveblogEpicTemplate, {
+                    copy: acquisitionsCopy.control,
+                    membershipUrl: variant.options.membershipURL,
+                    contributionUrl: variant.options.contributeURL,
+                    componentName: variant.options.componentName,
                 });
-                isAutoUpdateHandlerBound = true;
-            }
-        }
-    }]
+            },
+
+            test: function(renderFn, variant, test) {
+                var epicHtml = variant.options.template(variant);
+                addEpicToBlocks(epicHtml, test);
+
+                if (!isAutoUpdateHandlerBound) {
+                    mediator.on('modules:autoupdate:updates', function() {
+                        addEpicToBlocks(epicHtml, test);
+                    });
+                    isAutoUpdateHandlerBound = true;
+                }
+            },
+        },
+    ],
 });
