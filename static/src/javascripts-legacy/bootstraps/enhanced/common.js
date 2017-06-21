@@ -26,7 +26,7 @@ import Search from 'common/modules/navigation/search';
 import membership from 'common/modules/navigation/membership';
 import history from 'common/modules/onward/history';
 import techFeedback from 'common/modules/onward/tech-feedback';
-import accessibilityPrefs from 'common/modules/ui/accessibility-prefs';
+import {initAccessibilityPreferences} from 'common/modules/ui/accessibility-prefs';
 import Clickstream from 'common/modules/ui/clickstream';
 import Dropdowns from 'common/modules/ui/dropdowns';
 import fauxBlockLink from 'common/modules/ui/faux-block-link';
@@ -288,7 +288,7 @@ export default {
             ['c-public-api', modules.initPublicApi],
             ['c-tech-feedback', techFeedback],
             ['c-media-listeners', mediaListener],
-            ['c-accessibility-prefs', accessibilityPrefs.initAccessibilityPreferences],
+            ['c-accessibility-prefs', initAccessibilityPreferences],
             ['c-pinterest', modules.initPinterest],
             ['c-hidden-share-toggle', hiddenShareToggle],
             ['c-show-membership-engagement-banner', modules.membershipEngagementBanner],
