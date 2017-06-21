@@ -16,7 +16,7 @@ import remarketing from 'commercial/modules/third-party-tags/remarketing';
 import simpleReach from 'commercial/modules/third-party-tags/simple-reach';
 import tourismAustralia from 'commercial/modules/third-party-tags/tourism-australia';
 import krux from 'commercial/modules/third-party-tags/krux';
-import outbrain from 'commercial/modules/third-party-tags/outbrain';
+import {init as initOutbrain} from 'commercial/modules/third-party-tags/outbrain';
 import plista from 'commercial/modules/third-party-tags/plista';
 import PaidContentVsOutbrain2 from 'common/modules/experiments/tests/paid-content-vs-outbrain';
 import externalContentContainerStr from 'raw-loader!common/views/commercial/external-content.html';
@@ -49,7 +49,7 @@ function loadExternalContentWidget() {
     if (shouldServePlista) {
         renderWidget('plista', plista.default.init);
     } else {
-        renderWidget('outbrain', outbrain.init);
+        renderWidget('outbrain', initOutbrain);
     }
 }
 
