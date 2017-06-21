@@ -1,6 +1,6 @@
 import $ from 'lib/$';
 import detect from 'lib/detect';
-import ab from 'common/modules/experiments/utils';
+import {getParticipations} from 'common/modules/experiments/utils';
 import map from 'lodash/collections/map';
 import keys from 'lodash/objects/keys';
 import {getCookie} from 'lib/cookies';
@@ -16,7 +16,7 @@ function getExtraDataInformation() {
         devicePixelRatio: window.devicePixelRatio,
         gu_u: getCookie('GU_U'),
         payingMember: getCookie('gu_paying_member'),
-        abTests: summariseAbTests(ab.getParticipations())
+        abTests: summariseAbTests(getParticipations())
     };
 }
 

@@ -1,5 +1,5 @@
 import some from 'lodash/collections/some';
-import abUtils from 'common/modules/experiments/utils';
+import {isInVariant} from 'common/modules/experiments/utils';
 import {abTestClashData} from 'common/modules/experiments/acquisition-test-selector';
 
 var emailTests = [];
@@ -9,7 +9,7 @@ var clashingTests = contributionsTests.concat(emailTests);
 function userIsInAClashingAbTest(tests) {
     tests = tests || clashingTests;
 
-    return _testABClash(abUtils.isInVariant, tests);
+    return _testABClash(isInVariant, tests);
 }
 
 function _testABClash(f, clashingTests) {
