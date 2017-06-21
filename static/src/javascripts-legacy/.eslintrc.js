@@ -1,13 +1,17 @@
 module.exports = {
     env: {
         browser: true,
-        amd: true,
         jasmine: true,
-        commonjs: true
+        commonjs: true,
+        es6: true
     },
     extends: 'eslint:recommended',
     parserOptions: {
-        ecmaVersion: 5,
+        sourceType: 'module',
+        ecmaVersion: 6,
+        ecmaFeatures: {
+            jsx: true,
+        },
     },
     plugins: [
         'guardian-frontend',
