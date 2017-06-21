@@ -9,7 +9,7 @@ import { shouldHideFlashingElements } from 'common/modules/accessibility/helpers
 import twitter from 'common/modules/article/twitter';
 import OpenCta from 'common/modules/open/cta';
 import lastModified from 'common/modules/ui/last-modified';
-import rhc from 'common/modules/ui/rhc';
+import { addComponent } from 'common/modules/ui/rhc';
 import selectionSharing from 'common/modules/ui/selection-sharing';
 
 function initOpenCta() {
@@ -21,7 +21,7 @@ function initOpenCta() {
         $.create('<div class="open-cta"></div>').each(function(el) {
             openCta.fetch(el);
             if (!config.page.isLiveBlog && !config.page.isMinuteArticle) {
-                rhc.addComponent(el);
+                addComponent(el);
             }
         });
     }
