@@ -5,7 +5,7 @@ import Message from 'common/modules/ui/message';
 import messageTemplate from 'raw-loader!common/views/membership-message.html';
 import {commercialFeatures} from 'commercial/modules/commercial-features';
 import mediator from 'lib/mediator';
-import testCanRunChecks from 'common/modules/experiments/test-can-run-checks';
+import {testCanBeRun} from 'common/modules/experiments/test-can-run-checks';
 import MembershipEngagementBannerTests from 'common/modules/experiments/tests/membership-engagement-banner-tests';
 import assign from 'lodash/objects/assign';
 import find from 'lodash/collections/find';
@@ -30,7 +30,7 @@ function getUserTest() {
         .concat(epicEngagementBannerTests);
 
     return find(engagementBannerTests, function(test) {
-        return testCanRunChecks.testCanBeRun(test) && segmentUtil.isInTest(test)
+        return testCanBeRun(test) && segmentUtil.isInTest(test)
     });
 }
 

@@ -5,7 +5,7 @@ import $ from 'lib/$';
 import config from 'lib/config';
 import fastdom from 'lib/fastdom-promise';
 import template from 'lodash/utilities/template';
-import testCanRunChecks from 'common/modules/experiments/test-can-run-checks';
+import {testCanBeRun} from 'common/modules/experiments/test-can-run-checks';
 import {getTestVariantId} from 'common/modules/experiments/utils';
 import {commercialFeatures} from 'commercial/modules/commercial-features';
 import audienceScienceGateway from 'commercial/modules/third-party-tags/audience-science-gateway';
@@ -70,7 +70,7 @@ function init() {
 }
 
 function isLuckyBastard() {
-    return testCanRunChecks.testCanBeRun(PaidContentVsOutbrain2) &&
+    return testCanBeRun(PaidContentVsOutbrain2) &&
         getTestVariantId(PaidContentVsOutbrain2.id) === 'paid-content';
 }
 
