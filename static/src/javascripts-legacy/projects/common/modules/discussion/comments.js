@@ -1,48 +1,25 @@
-define([
-    'bean',
-    'bonzo',
-    'qwery',
-    'lib/$',
-    'lib/config',
-    'lib/fetch-json',
-    'lib/mediator',
-    'lib/report-error',
-    'lib/scroller',
-    'lib/url',
-    'common/modules/component',
-    'common/modules/discussion/api',
-    'common/modules/discussion/comment-box',
-    'common/modules/discussion/whole-discussion',
-    'common/modules/ui/relativedates',
-    'common/modules/user-prefs',
-    'common/views/svgs'
-], function(
-    bean,
-    bonzo,
-    qwery,
-    $,
-    config,
-    fetchJson,
-    mediator,
-    reportError,
-    scroller,
-    urlUtil,
-    Component,
-    DiscussionApi,
-    CommentBox,
-    WholeDiscussion,
-    relativedates,
-    userPrefs,
-    svgs
-) {
-'use strict';
+import bean from 'bean';
+import bonzo from 'bonzo';
+import qwery from 'qwery';
+import $ from 'lib/$';
+import config from 'lib/config';
+import fetchJson from 'lib/fetch-json';
+import mediator from 'lib/mediator';
+import reportError from 'lib/report-error';
+import urlUtil from 'lib/url';
+import Component from 'common/modules/component';
+import DiscussionApi from 'common/modules/discussion/api';
+import CommentBox from 'common/modules/discussion/comment-box';
+import WholeDiscussion from 'common/modules/discussion/whole-discussion';
+import relativedates from 'common/modules/ui/relativedates';
+import userPrefs from 'common/modules/user-prefs';
+import svgs from 'common/views/svgs';
+
 
 var PREF_RELATIVE_TIMESTAMPS = 'discussion.enableRelativeTimestamps';
-var shouldMakeTimestampsRelative = function () {
+var shouldMakeTimestampsRelative = function() {
     // Default to true
-    return userPrefs.get(PREF_RELATIVE_TIMESTAMPS) !== null
-        ? userPrefs.get(PREF_RELATIVE_TIMESTAMPS)
-        : true;
+    return userPrefs.get(PREF_RELATIVE_TIMESTAMPS) !== null ? userPrefs.get(PREF_RELATIVE_TIMESTAMPS) : true;
 };
 
 var Comments = function(options) {
@@ -92,7 +69,7 @@ Comments.prototype.ready = function() {
 
     if (shouldMakeTimestampsRelative()) {
         window.setInterval(
-            function () {
+            function() {
                 this.relativeDates();
             }.bind(this),
             60000
@@ -115,7 +92,7 @@ Comments.prototype.handlePickClick = function(e) {
         promise = $thisButton[0].getAttribute('data-comment-highlighted') === 'true' ? this.unPickComment.bind(this) : this.pickComment.bind(this);
 
     promise(commentId, $thisButton)
-        .fail(function (resp) {
+        .fail(function(resp) {
             var responseText = resp.response.length > 0 ? JSON.parse(resp.response).message : resp.statusText;
             $(e.target).text(responseText);
         });
@@ -127,7 +104,7 @@ Comments.prototype.pickComment = function(commentId, $thisButton) {
 
     return DiscussionApi
         .pickComment(commentId)
-        .then(function () {
+        .then(function() {
             $(self.getClass('commentPick'), comment).removeClass('u-h');
             $thisButton.text('Unpick');
             comment.setAttribute('data-comment-highlighted', true);
@@ -140,7 +117,7 @@ Comments.prototype.unPickComment = function(commentId, $thisButton) {
 
     return DiscussionApi
         .unPickComment(commentId)
-        .then(function () {
+        .then(function() {
             $(self.getClass('commentPick'), comment).addClass('u-h');
             $thisButton.text('Pick');
             comment.setAttribute('data-comment-highlighted', false);
@@ -175,22 +152,24 @@ Comments.prototype.fetchComments = function(options) {
     }
 
     var promise,
-        ajaxParams = { mode: 'cors' };
+        ajaxParams = {
+            mode: 'cors'
+        };
 
     if (this.isAllPageSizeActive()) {
         promise = new WholeDiscussion({
-            discussionId: this.options.discussionId,
-            orderBy: queryParams.orderBy,
-            displayThreaded: queryParams.displayThreaded,
-            maxResponses: queryParams.maxResponses,
-            commentsClosed: queryParams.commentsClosed
-        })
-        .loadAllComments()
-        .catch(function() {
-            this.wholeDiscussionErrors = true;
-            queryParams.pageSize = 100;
-            return fetchJson(url + '?' + urlUtil.constructQuery(queryParams), ajaxParams);
-        }.bind(this));
+                discussionId: this.options.discussionId,
+                orderBy: queryParams.orderBy,
+                displayThreaded: queryParams.displayThreaded,
+                maxResponses: queryParams.maxResponses,
+                commentsClosed: queryParams.commentsClosed
+            })
+            .loadAllComments()
+            .catch(function() {
+                this.wholeDiscussionErrors = true;
+                queryParams.pageSize = 100;
+                return fetchJson(url + '?' + urlUtil.constructQuery(queryParams), ajaxParams);
+            }.bind(this));
     } else {
         // It is possible that the user has chosen to view all comments,
         // but the WholeDiscussion module has failed. Fall back to 100 comments.
@@ -228,7 +207,9 @@ Comments.prototype.renderComments = function(resp) {
 };
 
 Comments.prototype.showHiddenComments = function(e) {
-    if (e) { e.preventDefault(); }
+    if (e) {
+        e.preventDefault();
+    }
     this.emit('first-load');
     $('.js-discussion-main-comments').css('display', 'block');
     if (shouldMakeTimestampsRelative()) {
@@ -236,7 +217,7 @@ Comments.prototype.showHiddenComments = function(e) {
     }
 };
 
-Comments.prototype.addMoreRepliesButtons = function (comments) {
+Comments.prototype.addMoreRepliesButtons = function(comments) {
 
     comments = comments || this.topLevelComments;
     comments.forEach(function(elem) {
@@ -248,16 +229,16 @@ Comments.prototype.addMoreRepliesButtons = function (comments) {
 
                 $btn = $.create(
                     '<button class="u-button-reset button button--show-more button--small button--tone-news d-show-more-replies__button">' +
-                        svgs.inlineSvg('plus', ['icon']) +
-                        'Show ' + numHiddenReplies + ' more ' + (numHiddenReplies === 1 ? 'reply' : 'replies') +
+                    svgs.inlineSvg('plus', ['icon']) +
+                    'Show ' + numHiddenReplies + ' more ' + (numHiddenReplies === 1 ? 'reply' : 'replies') +
                     '</button>').attr({
-                        'data-link-name': 'Show more replies',
-                        'data-is-ajax': '',
-                        'data-comment-id': elem.getAttribute('data-comment-id')
-                    }).data('source-comment', elem);
+                    'data-link-name': 'Show more replies',
+                    'data-is-ajax': '',
+                    'data-comment-id': elem.getAttribute('data-comment-id')
+                }).data('source-comment', elem);
 
-                $.create('<li class="' + this.getClass('showReplies', true) + '"></li>')
-                       .append($btn).appendTo($('.d-thread--responses', elem));
+            $.create('<li class="' + this.getClass('showReplies', true) + '"></li>')
+                .append($btn).appendTo($('.d-thread--responses', elem));
 
         }
     }.bind(this));
@@ -273,25 +254,25 @@ Comments.prototype.getMoreReplies = function(event) {
     var commentId = event.currentTarget.getAttribute('data-comment-id');
 
     fetchJson('/discussion/comment/' + commentId + '.json?displayThreaded=true', {
-        mode: 'cors'
-    }).then(function (resp) {
-        var comment = bonzo.create(resp.html),
-            replies = qwery(this.getClass('reply'), comment);
+            mode: 'cors'
+        }).then(function(resp) {
+            var comment = bonzo.create(resp.html),
+                replies = qwery(this.getClass('reply'), comment);
 
-        replies = replies.slice(this.options.showRepliesCount);
-        bonzo(qwery('.d-thread--responses', source)).append(replies);
-        bonzo(li).addClass('u-h');
-        this.emit('untruncate-thread');
+            replies = replies.slice(this.options.showRepliesCount);
+            bonzo(qwery('.d-thread--responses', source)).append(replies);
+            bonzo(li).addClass('u-h');
+            this.emit('untruncate-thread');
 
-        if (shouldMakeTimestampsRelative()) {
-            this.relativeDates();
-        }
-    }.bind(this))
-    .catch(function (ex) {
-        reportError(ex, {
-            feature: 'comments-more-replies'
+            if (shouldMakeTimestampsRelative()) {
+                this.relativeDates();
+            }
+        }.bind(this))
+        .catch(function(ex) {
+            reportError(ex, {
+                feature: 'comments-more-replies'
+            });
         });
-    });
 };
 
 Comments.prototype.isReadOnly = function() {
@@ -435,11 +416,11 @@ Comments.prototype.reportComment = function(e) {
             if (category.value !== '0') {
                 DiscussionApi
                     .reportComment(commentId, {
-                    emailAddress: form.elements.email.value,
-                    categoryId: category.value,
-                    reason: comment
-                })
-                .then(self.reportCommentSuccess.bind(self, form), self.reportCommentFailure.bind(self) );
+                        emailAddress: form.elements.email.value,
+                        categoryId: category.value,
+                        reason: comment
+                    })
+                    .then(self.reportCommentSuccess.bind(self, form), self.reportCommentFailure.bind(self));
             }
         });
     }).appendTo(
@@ -462,7 +443,7 @@ Comments.prototype.addUser = function(user) {
 
     // Determine user staff status
     if (this.user && this.user.badge) {
-        this.user.isStaff = this.user.badge.some(function (e) { // Returns true if any element in array satisfies function
+        this.user.isStaff = this.user.badge.some(function(e) { // Returns true if any element in array satisfies function
             return e.name === 'Staff';
         });
     }
@@ -493,16 +474,15 @@ Comments.prototype.relativeDates = function() {
 
 Comments.prototype.isAllPageSizeActive = function() {
     return config.switches.discussionAllPageSize &&
-    this.options.pagesize === 'All' &&
-    !this.wholeDiscussionErrors;
+        this.options.pagesize === 'All' &&
+        !this.wholeDiscussionErrors;
 };
 
 Comments.prototype.shouldShowPageSizeMessage = function() {
     // Similar to above, but tells the loader that the fallback size should be used.
     return config.switches.discussionAllPageSize &&
-    this.options.pagesize === 'All' &&
-    this.wholeDiscussionErrors;
+        this.options.pagesize === 'All' &&
+        this.wholeDiscussionErrors;
 };
 
-return Comments;
-});
+export default Comments;
