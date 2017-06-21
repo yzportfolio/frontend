@@ -1,4 +1,4 @@
-import commercialFeatures from 'commercial/modules/commercial-features';
+import {commercialFeatures} from 'commercial/modules/commercial-features';
 import targetingTool from 'common/modules/commercial/targeting-tool';
 import acquisitionsCopy from 'common/modules/commercial/acquisitions-copy';
 import {control} from 'common/modules/commercial/acquisitions-epic-testimonial-parameters';
@@ -12,7 +12,7 @@ import fastdom from 'lib/fastdom-promise';
 import mediator from 'lib/mediator';
 import geolocation from 'lib/geolocation';
 import {constructQuery} from 'lib/url';
-import noop from 'lib/noop';
+import {noop} from 'lib/noop';
 import {daysSince} from 'lib/time-utils';
 import assign from 'lodash/objects/assign';
 import template from 'lodash/utilities/template';
@@ -79,7 +79,7 @@ function getTestimonialBlock(testimonialParameters, citeImage) {
 }
 
 function defaultCanEpicBeDisplayed(testConfig) {
-    var canReasonablyAskForMoney = testConfig.showToContributorsAndSupporters || commercialFeatures.commercialFeatures.canReasonablyAskForMoney;
+    var canReasonablyAskForMoney = testConfig.showToContributorsAndSupporters || commercialFeatures.canReasonablyAskForMoney;
 
     var worksWellWithPageTemplate = (typeof testConfig.pageCheck === 'function') ? testConfig.pageCheck(config.page) : config.page.contentType === 'Article' && !config.page.isMinuteArticle;
 
@@ -194,8 +194,8 @@ function ContributionsABTestVariant(options, test) {
             return;
         }
 
-        var onInsert = options.onInsert || noop.noop;
-        var onView = options.onView || noop.noop;
+        var onInsert = options.onInsert || noop;
+        var onView = options.onView || noop;
 
         function render(templateFn) {
             return getCopy(options.useTailoredCopyForRegulars).then(function(copy) {

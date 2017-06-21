@@ -1,7 +1,7 @@
 import bean from 'bean';
 import debounce from 'lodash/functions/debounce';
 import assign from 'lodash/objects/assign';
-import noop from 'lib/noop';
+import {noop} from 'lib/noop';
 // Be sure to wrap your event functions with fastdom as this doesn't assume DOM manipulation
 function elementIsInView(el, offsets_) {
     var offsets = assign({}, {
@@ -32,7 +32,7 @@ function ElementInview(element, container, offsets) {
     var hasBeenSeen = false;
 
     var events = {
-        firstview: noop.noop
+        firstview: noop
     };
 
     bean.on(container, 'scroll', debounce(function() {
