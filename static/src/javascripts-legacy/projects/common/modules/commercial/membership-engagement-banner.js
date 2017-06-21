@@ -11,7 +11,7 @@ import assign from 'lodash/objects/assign';
 import find from 'lodash/collections/find';
 import svgs from 'common/views/svgs';
 import segmentUtil from 'common/modules/experiments/segment-util';
-import acquisitionTestSelector from 'common/modules/experiments/acquisition-test-selector';
+import {epicEngagementBannerTests} from 'common/modules/experiments/acquisition-test-selector';
 import membershipEngagementBannerUtils from 'common/modules/commercial/membership-engagement-banner-parameters';
 import membershipEngagementBannerBlock from 'common/modules/commercial/membership-engagement-banner-block';
 import ophan from 'ophan/ng';
@@ -27,7 +27,7 @@ var DO_NOT_RENDER_ENGAGEMENT_BANNER = 'do no render engagement banner';
 
 function getUserTest() {
     var engagementBannerTests = MembershipEngagementBannerTests
-        .concat(acquisitionTestSelector.epicEngagementBannerTests);
+        .concat(epicEngagementBannerTests);
 
     return find(engagementBannerTests, function(test) {
         return testCanRunChecks.testCanBeRun(test) && segmentUtil.isInTest(test)

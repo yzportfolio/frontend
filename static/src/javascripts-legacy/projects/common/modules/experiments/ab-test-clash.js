@@ -1,9 +1,9 @@
 import some from 'lodash/collections/some';
 import abUtils from 'common/modules/experiments/utils';
-import acquisitionTestSelector from 'common/modules/experiments/acquisition-test-selector';
+import {abTestClashData} from 'common/modules/experiments/acquisition-test-selector';
 
 var emailTests = [];
-var contributionsTests = acquisitionTestSelector.abTestClashData;
+var contributionsTests = abTestClashData;
 var clashingTests = contributionsTests.concat(emailTests);
 
 function userIsInAClashingAbTest(tests) {
