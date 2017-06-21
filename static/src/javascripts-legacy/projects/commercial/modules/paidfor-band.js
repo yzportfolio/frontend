@@ -1,22 +1,19 @@
-define([
-    'lib/config',
-    'common/modules/ui/sticky',
-    'commercial/modules/commercial-features'
-], function (config, sticky, commercialFeatures) {
-    function init() {
-        if (!commercialFeatures.commercialFeatures.paidforBand) {
-            return Promise.resolve(false);
-        }
+import sticky from 'common/modules/ui/sticky';
+import commercialFeatures from 'commercial/modules/commercial-features';
 
-        var elem = document.querySelector('.paidfor-band');
-        if (elem) {
-            new sticky.Sticky(elem).init();
-        }
-
-        return Promise.resolve();
+function init() {
+    if (!commercialFeatures.commercialFeatures.paidforBand) {
+        return Promise.resolve(false);
     }
 
-    return {
-        init: init
-    };
-});
+    var elem = document.querySelector('.paidfor-band');
+    if (elem) {
+        new sticky.Sticky(elem).init();
+    }
+
+    return Promise.resolve();
+}
+
+export default {
+    init: init
+};
