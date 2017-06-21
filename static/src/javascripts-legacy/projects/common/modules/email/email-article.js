@@ -12,7 +12,7 @@ import {setEmailShown, getUserEmailSubscriptions, listCanRun} from 'common/modul
 import storage from 'lib/storage';
 import googleAnalytics from 'common/modules/analytics/google';
 import find from 'lodash/collections/find';
-import checkMediator from 'common/modules/check-mediator';
+import {waitForCheck} from 'common/modules/check-mediator';
 
 var insertBottomOfArticle = function($iframeEl) {
         $iframeEl.prependTo('.content-footer');
@@ -230,9 +230,9 @@ var insertBottomOfArticle = function($iframeEl) {
 
 export default {
     init: function() {
-        checkMediator.waitForCheck('emailCanRun').then(function(emailCanRun) {
+        waitForCheck('emailCanRun').then(function(emailCanRun) {
             if (emailCanRun) {
-                checkMediator.waitForCheck('emailCanRunPostCheck').then(function(emailCanRunPostCheck) {
+                waitForCheck('emailCanRunPostCheck').then(function(emailCanRunPostCheck) {
                     if (emailCanRunPostCheck) {
                         getUserEmailSubscriptions().then(function() {
                             addListToPage(find(listConfigs, listCanRun));
