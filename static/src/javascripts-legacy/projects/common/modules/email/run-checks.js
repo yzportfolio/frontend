@@ -138,10 +138,10 @@ function listCanRun(listConfig) {
     }
 }
 
-export default {
-    setEmailShown: setEmailShown,
-    getEmailShown: getEmailShown,
-    allEmailCanRun: allEmailCanRun,
-    getUserEmailSubscriptions: getUserEmailSubscriptions,
-    listCanRun: listCanRun
+export {
+    setEmailShown,
+    getEmailShown,
+    allEmailCanRun,
+    getUserEmailSubscriptions,
+    listCanRun
 };

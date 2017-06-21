@@ -8,7 +8,7 @@ import iframeTemplate from 'raw-loader!common/views/email/iframe.html';
 import template from 'lodash/utilities/template';
 import spaceFiller from 'common/modules/article/space-filler';
 import {logError} from 'lib/robust';
-import emailRunChecks from 'common/modules/email/run-checks';
+import {setEmailShown, getUserEmailSubscriptions, listCanRun} from 'common/modules/email/run-checks';
 import storage from 'lib/storage';
 import googleAnalytics from 'common/modules/analytics/google';
 import find from 'lodash/collections/find';
@@ -204,7 +204,7 @@ var insertBottomOfArticle = function($iframeEl) {
             var iframe = bonzo.create(template(iframeTemplate, listConfig))[0],
                 $iframeEl = $(iframe),
                 onEmailAdded = function() {
-                    emailRunChecks.setEmailShown(listConfig.listName);
+                    setEmailShown(listConfig.listName);
                     storage.session.set('email-sign-up-seen', 'true');
                 }
 
@@ -234,8 +234,8 @@ export default {
             if (emailCanRun) {
                 checkMediator.waitForCheck('emailCanRunPostCheck').then(function(emailCanRunPostCheck) {
                     if (emailCanRunPostCheck) {
-                        emailRunChecks.getUserEmailSubscriptions().then(function() {
-                            addListToPage(find(listConfigs, emailRunChecks.listCanRun));
+                        getUserEmailSubscriptions().then(function() {
+                            addListToPage(find(listConfigs, listCanRun));
                         }).catch(function(error) {
                             logError('c-email', error);
                         });
