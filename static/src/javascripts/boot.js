@@ -48,7 +48,7 @@ const go = () => {
                 raven.context({ tags: { feature: 'commercial' } }, () => {
                     markTime('commercial boot');
                     const commercialBoot = config.switches.commercial
-                        ? require('bootstraps/commercial')
+                        ? require('bootstraps/commercial').default
                         : Promise.resolve;
 
                     commercialBoot().then(() => {
