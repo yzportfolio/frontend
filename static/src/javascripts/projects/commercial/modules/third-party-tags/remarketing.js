@@ -15,4 +15,4 @@ const shouldRun: boolean = config.switches.remarketing;
 
 const url: string = remarketingUrl;
 
-export { shouldRun, url, onLoad };
+export default { shouldRun, url, onLoad };
