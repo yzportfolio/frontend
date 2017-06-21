@@ -34,12 +34,14 @@ module.exports = {
                 }
             ),
 
-            // copy the legacy (untranspiled es5) code to `transpiled`.
+            // copy all non-JS source files from the legacy JS directory
+            // e.g. *.html templates etc
             // once the legacy directory has been converted, this won't be needed.
             cpy(['**/*'], path.resolve(transpiled, 'javascripts'), {
                 cwd: path.resolve(src, 'javascripts-legacy'),
                 parents: true,
                 nodir: true,
+                ignore: '**/*.js',
             }),
 
             // copy all non-JS source files from the JS directory

@@ -77,7 +77,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules|vendor|javascripts-legacy)/,
+                exclude: /(node_modules|vendor)/,
                 loader: 'babel-loader',
             },
             {
