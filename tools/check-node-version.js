@@ -10,10 +10,13 @@ const minVersion = Number(
     fs.readFileSync(path.join(__dirname, '../', '.nvmrc'), 'utf8')
 );
 
-if (currentVersion < minVersion) {
+if (
+    currentVersion < minVersion || // ensure min version
+    Math.floor(currentVersion) !== Math.floor(minVersion) // ensure max version is this major
+) {
     console.log(
         `You are using Node v${currentVersion}.\n` +
-            `Frontend requires Node v${minVersion} or later.\n` +
+            `Frontend requires Node v${minVersion}.\n` +
             "If you're using NVM, you can 'nvm use'..."
     );
     process.exit(1);
