@@ -8,6 +8,8 @@ import org.scala_tools.time.Imports._
 import play.api.libs.json.{JsBoolean, JsString, JsValue, Json}
 import play.api.mvc.RequestHeader
 import views.support.{ImgSrc, Naked}
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 
 /**
  * additional information needed to display something on a facia page from CAPI

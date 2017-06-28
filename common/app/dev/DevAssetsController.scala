@@ -7,9 +7,9 @@ import java.io.File
 
 import model.{Cached, NoCache}
 import model.Cached.WithoutRevalidationResult
-import play.api.{Environment, Mode}
-import play.api.http.HttpEntity
-import play.api.libs.MimeTypes
+import play.api.http.HttpConfiguration.HttpConfigurationProvider
+import play.api.{Configuration, Environment, Mode}
+import play.api.http.{DefaultFileMimeTypes, HttpEntity}
 import play.api.mvc._
 
 class DevAssetsController(val environment: Environment) extends Controller with ExecutionContexts {
@@ -46,9 +46,12 @@ class DevAssetsController(val environment: Environment) extends Controller with 
         throw AssetNotFoundException(path)
       }
 
-    val contentType = MimeTypes.forFileName(path) map { mime =>
+    val httpConfig = new HttpConfigurationProvider(Configuration.load(environment), environment).get
+    val mimeType = new DefaultFileMimeTypes(httpConfig.fileMimeTypes)
+
+    val contentType = mimeType.forFileName(path).map{ mime =>
       // Add charset for text types
-      if (MimeTypes.isText(mime)) s"$mime; charset=utf-8" else mime
+      if (mime.startsWith("text/")) s"$mime; charset=utf-8" else mime
     } getOrElse BINARY
 
       val result = Result(

@@ -13,6 +13,7 @@ import play.api.libs.json.Json._
 import play.api.libs.json._
 import services.S3
 import java.net.{MalformedURLException, URL}
+import play.api.data.JodaForms._
 
 case class TakeoverWithEmptyMPUs(url: String,
                                  editions: Seq[Edition],

@@ -14,6 +14,7 @@ object Dependencies {
   val configurationMagicVersion = "1.2.2"
   val romeVersion = "1.0"
   val jerseyVersion = "1.19"
+  val playJsonVersion = "2.6.0"
 
   val akkaAgent = "com.typesafe.akka" %% "akka-agent" % "2.3.4"
   val akkaContrib = "com.typesafe.akka" %% "akka-contrib" % "2.3.5"
@@ -54,6 +55,8 @@ object Dependencies {
   val nScalaTime = "com.github.nscala-time" %% "nscala-time" % "1.2.0"
   val paClient = "com.gu" %% "pa-client" % "6.0.2"
   val playGoogleAuth = "com.gu" %% "play-googleauth" % "0.6.0"
+  val playJson = "com.typesafe.play" % "play-json" % playJsonVersion
+  val playJsonJoda = "com.typesafe.play" % "play-json-joda" % playJsonVersion
   val quartzScheduler = "org.quartz-scheduler" % "quartz" % "2.2.1"
   val redisClient = "net.debasishg" %% "redisclient" % "3.1"
   val rome = "rome" % "rome" % romeVersion

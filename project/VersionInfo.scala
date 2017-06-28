@@ -41,10 +41,10 @@ object VersionInfo extends Plugin {
         commitHash
       }).getOrElse("DEV")
     }).value,
-    resourceGenerators in Compile <+= (resourceManaged in Compile, branch, buildNumber, vcsNumber, streams) map buildFile
+    resourceGenerators in Compile <+= (resourceManaged in Compile, branch, buildNumber, vcsNumber, streams).map(buildFile)
   )
 
-  def buildFile(outDir: File, branch: String, buildNum: String, vcsNum: String, s: TaskStreams) = {
+  def buildFile(outDir: File, branch: String, buildNum: String, vcsNum: String, s: TaskStreams): Seq[File] = {
     val versionInfo = Map(
       "Revision" -> vcsNum,
       "Branch" -> branch,

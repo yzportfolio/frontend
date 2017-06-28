@@ -11,6 +11,8 @@ import org.joda.time.DateTime
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import quiz.{Image => _, _}
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 
 object ElementsFormat {
 

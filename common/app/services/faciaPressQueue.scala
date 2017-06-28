@@ -2,6 +2,8 @@ package services
 
 import org.joda.time.DateTime
 import play.api.libs.json._
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 
 object PressType {
   implicit val jsonFormat = new Format[PressType] {
@@ -21,11 +23,11 @@ object PressType {
 sealed trait PressType
 
 case object Live extends PressType {
-  override def toString = "Live"
+  override def toString: String = "Live"
 }
 
 case object Draft extends PressType {
-  override def toString = "Draft"
+  override def toString: String = "Draft"
 }
 
 object FrontPath {

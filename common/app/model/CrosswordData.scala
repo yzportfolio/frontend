@@ -6,6 +6,8 @@ import crosswords.CrosswordGridColumnNotation
 import org.joda.time.{DateTimeZone, DateTime}
 import org.joda.time.format.ISODateTimeFormat
 import play.api.libs.json._
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 
 case class CrosswordPosition(x: Int, y: Int)
 
