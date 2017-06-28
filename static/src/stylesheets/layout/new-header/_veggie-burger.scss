@@ -61,16 +61,12 @@
     }
 
     .new-header--slim & {
-        height: $veggie-burger-medium;
-        margin-bottom: -$gs-baseline;
+        right: 0;
         position: relative;
-        right: $gs-gutter / 2;
         top: -$gs-baseline / 2;
+        margin-bottom: -$gs-baseline;
+        height: $veggie-burger-medium;
         width: $veggie-burger-medium;
-
-        @include mq(mobileLandscape) {
-            right: $gs-gutter;
-        }
     }
 }
 
