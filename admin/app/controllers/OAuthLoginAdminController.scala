@@ -9,7 +9,7 @@ import play.api.mvc.{Action, AnyContent, Request}
 
 class OAuthLoginAdminController(val wsClient: WSClient, val cryptoConfig: CryptoConfig)(implicit context: ApplicationContext) extends OAuthLoginController {
 
-  override def login = Action { implicit request =>
+  override def login: Action[AnyContent] = Action { implicit request =>
     val error = request.flash.get("error")
     Ok(views.html.auth.login(error))
   }

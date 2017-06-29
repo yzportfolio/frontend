@@ -4,22 +4,23 @@ import com.gu.googleauth.{GoogleAuth, GoogleAuthConfig, UserIdentity}
 import common.{Crypto, ExecutionContexts, Logging}
 import conf.Configuration
 import org.joda.time.DateTime
-import play.api.libs.crypto.CryptoConfig
+import play.api.Environment
+import play.api.http.HttpConfiguration.HttpConfigurationProvider
 import play.api.libs.json.Json
 import play.api.libs.ws.WSClient
 import play.api.mvc._
+import play.api.{Configuration => Config}
 
 import scala.concurrent.Future
 
 trait OAuthLoginController extends BaseController with ExecutionContexts with implicits.Requests {
 
   implicit def wsClient: WSClient
+  implicit def environment: Environment
   def login: Action[AnyContent]
   def googleAuthConfig(request: Request[AnyContent]): Option[GoogleAuthConfig]
-  def cryptoConfig: CryptoConfig
 
-  val authCookie = new AuthCookie(cryptoConfig)
-
+  val authCookie = new AuthCookie
   val LOGIN_ORIGIN_KEY = "loginOriginUrl"
   val ANTI_FORGERY_KEY = "antiForgeryToken"
   val forbiddenNoCredentials = Forbidden("Invalid OAuth credentials set")
@@ -92,25 +93,27 @@ trait OAuthLoginController extends BaseController with ExecutionContexts with im
     }.getOrElse(Future.successful(forbiddenNoCredentials))
   }
 
-  def logout = Action { implicit request =>
+  def logout: Action[AnyContent] = Action { implicit request =>
     Redirect("/login").withNewSession
   }
 }
 
-class AuthCookie(cryptoConfig: CryptoConfig) extends Logging {
+class AuthCookie(implicit environment: Environment) extends Logging {
+
+  val httpConfig = new HttpConfigurationProvider(Config.load(environment), environment).get
 
   private val cookieName = "GU_PV_AUTH"
   private val oneDayInSeconds: Int = 86400
 
   def from(id: UserIdentity): Option[Cookie] = {
     val idWith30DayExpiry = id.copy(exp = (System.currentTimeMillis() / 1000) + oneDayInSeconds )
-    Some(Cookie(cookieName,  Crypto.encryptAES(Json.toJson(idWith30DayExpiry).toString, cryptoConfig.secret), Some(oneDayInSeconds)))
+    Some(Cookie(cookieName,  Crypto.encryptAES(Json.toJson(idWith30DayExpiry).toString, httpConfig.secret.secret), Some(oneDayInSeconds)))
   }
 
   def toUserIdentity(request: RequestHeader): Option[UserIdentity] = {
     try {
       request.cookies.get(cookieName).flatMap{ cookie =>
-        UserIdentity.fromJson(Json.parse(Crypto.decryptAES(cookie.value, cryptoConfig.secret)))
+        UserIdentity.fromJson(Json.parse(Crypto.decryptAES(cookie.value, httpConfig.secret.secret)))
       }
     } catch { case e: Exception =>
       log.error("Could not parse Auth Cookie", e)

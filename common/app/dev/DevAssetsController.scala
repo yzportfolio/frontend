@@ -12,7 +12,7 @@ import play.api.{Configuration, Environment, Mode}
 import play.api.http.{DefaultFileMimeTypes, HttpEntity}
 import play.api.mvc._
 
-class DevAssetsController(val environment: Environment) extends Controller with ExecutionContexts {
+class DevAssetsController(val environment: Environment, components: ControllerComponents) extends AbstractController(components) with ExecutionContexts {
 
   // This allows:
   //  - unbuilt javascript to be loaded from src or public folders.

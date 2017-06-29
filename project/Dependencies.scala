@@ -55,8 +55,8 @@ object Dependencies {
   val nScalaTime = "com.github.nscala-time" %% "nscala-time" % "1.2.0"
   val paClient = "com.gu" %% "pa-client" % "6.0.2"
   val playGoogleAuth = "com.gu" %% "play-googleauth" % "0.6.0"
-  val playJson = "com.typesafe.play" % "play-json" % playJsonVersion
-  val playJsonJoda = "com.typesafe.play" % "play-json-joda" % playJsonVersion
+  val playJson = "com.typesafe.play" %% "play-json" % playJsonVersion
+  val playJsonJoda = "com.typesafe.play" %% "play-json-joda" % playJsonVersion
   val quartzScheduler = "org.quartz-scheduler" % "quartz" % "2.2.1"
   val redisClient = "net.debasishg" %% "redisclient" % "3.1"
   val rome = "rome" % "rome" % romeVersion
