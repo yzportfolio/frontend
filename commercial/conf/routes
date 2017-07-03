@@ -2,6 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+
+GET /audit/json/*sectionId commercial.controllers.Auditor.auditAsJson(sectionId)
+GET /audit/csv/*sectionId commercial.controllers.Auditor.auditAsCsv(sectionId)
+
+
+
 # For dev machines
 GET         /assets/*path                                                   dev.DevAssetsController.at(path)
 GET         /commercial/test-page                                           commercial.controllers.CreativeTestPage.allComponents(k: List[String])
