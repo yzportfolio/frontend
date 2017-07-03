@@ -309,6 +309,10 @@ class GuardianConfiguration extends Logging {
     lazy val accountDeletionApiRoot = configuration.getStringProperty("id.accountDeletion.apiRoot").getOrElse("")
   }
 
+  object contributions {
+    lazy val url: String = configuration.getStringProperty("contributions.url").getOrElse("https://contribute.theguardian.com")
+  }
+
   object images {
     lazy val path = configuration.getMandatoryStringProperty("images.path")
     val fallbackLogo = Static("images/fallback-logo.png")

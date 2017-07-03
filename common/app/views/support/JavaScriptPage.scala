@@ -65,7 +65,8 @@ object JavaScriptPage {
       ("membershipAccess", JsString(membershipAccess)),
       ("idWebAppUrl", JsString(Configuration.id.oauthUrl)),
       ("cardStyle", JsString(cardStyle)),
-      ("discussionFrontendUrl", JsString(DiscussionAsset("discussion-frontend.preact.iife")))
+      ("discussionFrontendUrl", JsString(DiscussionAsset("discussion-frontend.preact.iife"))),
+      ("contributionsUrl", JsString(Configuration.contributions.url))
     )
   }
 }
