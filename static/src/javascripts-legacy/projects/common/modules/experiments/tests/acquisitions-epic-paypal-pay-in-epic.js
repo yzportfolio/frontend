@@ -113,6 +113,8 @@ define([
         return {
             id: 'control',
 
+            isUnlimited: true,
+
             template: function (variant) {
                 return template(paypalPayInEpicControlTemplate, {
                     contributionUrl: variant.options.contributeURL + '&disableStripe=true'
@@ -125,7 +127,7 @@ define([
         id: 'AcquisitionsEpicPaypalPayInEpic',
         campaignId: 'epic_pay_in_epic',
 
-        start: '2017-06-19',
+        start: '2017-07-04',
         expiry: '2018-08-01',
 
         author: 'Guy Dawson & Sam Desborough',
