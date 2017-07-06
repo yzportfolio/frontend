@@ -22,7 +22,7 @@ import { upgradePictures, listen } from 'common/modules/ui/images';
 import { local as storage } from 'lib/storage';
 import fetchJSON from 'lib/fetch-json';
 import mediator from 'lib/mediator';
-import checkMediator from 'common/modules/check-mediator';
+import { initCheckMediator } from 'common/modules/check-mediator';
 import { addEventListener } from 'lib/events';
 import identity from 'common/modules/identity/api';
 import { removeCookie, addCookie } from 'lib/cookies';
@@ -30,7 +30,7 @@ import { getUrlVars } from 'lib/url';
 import { catchErrorsWithContext } from 'lib/robust';
 import { markTime } from 'lib/user-timing';
 import config from 'lib/config';
-import { newHeaderNavigationInit } from 'common/modules/navigation/newHeaderNavigation';
+import { newHeaderInit } from 'common/modules/navigation/new-header';
 import { trackPerformance } from 'common/modules/analytics/google';
 import debounce from 'lodash/functions/debounce';
 import ophan from 'ophan/ng';
@@ -177,6 +177,14 @@ const bootStandard = (): void => {
     // Set adtest query if url param declares it
     setAdTestCookie();
 
+    // Remove the old ad-free cookie - we can delete this line in a few days
+    removeCookie('GU_AFU');
+
+    // If we turn off the ad-free trial, immediately remove the cookie
+    if (!config.switches.adFreeSubscriptionTrial) {
+        removeCookie('GU_AF1');
+    }
+
     // Images
     upgradePictures();
     listen();
@@ -197,7 +205,7 @@ const bootStandard = (): void => {
     }
 
     // initilaise the email/outbrain check mediator
-    checkMediator.init();
+    initCheckMediator();
 
     ophan.setEventEmitter(mediator);
 
@@ -214,7 +222,7 @@ const bootStandard = (): void => {
 
     identity.init();
 
-    newHeaderNavigationInit();
+    newHeaderInit();
 
     markTime('standard end');
 

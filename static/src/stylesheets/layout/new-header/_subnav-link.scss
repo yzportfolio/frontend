@@ -3,12 +3,17 @@
     color: currentColor;
     display: inline-block;
     font-size: 16px;
-    font-size: 5.1vw;
+    font-size: 4.9vw;
     line-height: 1.3em;
 
     @include mq(mobileLandscape) {
         font-size: 19px;
         max-height: $gs-baseline * 4.8;
+    }
+
+    @include mq(desktop) {
+        // to make sure that the words are not visible on subnav desktop if they fall to the second line
+        margin-bottom: $gs-baseline;
     }
 
     &:hover,

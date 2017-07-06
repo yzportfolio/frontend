@@ -13,13 +13,13 @@ import { commercialFeatures } from 'commercial/modules/commercial-features';
 import Component from 'common/modules/component';
 import events from 'common/modules/video/events';
 import videoMetadata from 'common/modules/video/metadata';
-import fullscreener from 'common/modules/media/videojs-plugins/fullscreener';
-import skipAd from 'common/modules/media/videojs-plugins/skip-ad';
-import videoContainer from 'common/modules/video/video-container';
+import { fullscreener } from 'common/modules/media/videojs-plugins/fullscreener';
+import { skipAd } from 'common/modules/media/videojs-plugins/skip-ad';
+import { videoContainerInit } from 'common/modules/video/video-container';
 import onwardContainer from 'common/modules/video/onward-container';
-import moreInSeriesContainer from 'common/modules/video/more-in-series-container';
+import { moreInSeriesContainerInit } from 'common/modules/video/more-in-series-container';
 import videojsOptions from 'common/modules/video/videojs-options';
-import videojs from 'bootstraps/enhanced/media/video-player';
+import { videojs } from 'bootstraps/enhanced/media/video-player';
 import loadingTmpl from 'raw-loader!common/views/ui/loading.html';
 import { isAdFreeUser } from 'commercial/modules/user-features';
 import { loadScript } from 'lib/load-script';
@@ -139,9 +139,9 @@ const enhanceVideo = (
                 embed: {
                     embeddable:
                         !config.page.isFront &&
-                            config.switches.externalVideoEmbeds &&
-                            (config.page.contentType === 'Video' ||
-                                $el.attr('data-embeddable') === 'true'),
+                        config.switches.externalVideoEmbeds &&
+                        (config.page.contentType === 'Video' ||
+                            $el.attr('data-embeddable') === 'true'),
                     location: `${config.page
                         .externalEmbedHost}/embed/video/${embedPath ||
                         config.page.pageId}`,
@@ -162,7 +162,7 @@ const enhanceVideo = (
                     type: 'Video Expired',
                     message:
                         'This video has been removed. This could be because it launched early, ' +
-                            'our rights have expired, there was a legal issue, or for another reason.',
+                        'our rights have expired, there was a legal issue, or for another reason.',
                 });
                 player.bigPlayButton.dispose();
                 player.errorDisplay.open();
@@ -185,7 +185,7 @@ const enhanceVideo = (
                 } else {
                     blockVideoAds =
                         videoInfo.shouldHideAdverts ||
-                        (config.switches.adFreeMembershipTrial &&
+                        (config.switches.adFreeSubscriptionTrial &&
                             isAdFreeUser());
 
                     withPreroll = shouldPreroll && !blockVideoAds;
@@ -362,7 +362,7 @@ const initMoreInSection = (): void => {
     }
 
     const el = $('.js-more-in-section')[0];
-    moreInSeriesContainer.init(
+    moreInSeriesContainerInit(
         el,
         getMediaType(),
         config.page.section,
@@ -404,7 +404,7 @@ const initWithRaven = (withPreroll: boolean = false): void => {
 const initFacia = (): void => {
     if (config.page.isFront) {
         $('.js-video-playlist').each(el => {
-            videoContainer.init(el);
+            videoContainerInit(el);
         });
     }
 };

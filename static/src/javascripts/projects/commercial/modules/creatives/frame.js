@@ -1,7 +1,7 @@
 // @flow
 import fastdom from 'lib/fastdom-promise';
 import template from 'lodash/utilities/template';
-import Toggles from 'common/modules/ui/toggles';
+import { Toggles } from 'common/modules/ui/toggles';
 import { addClassesAndTitle } from 'common/views/svg';
 import { addTrackingPixel } from 'commercial/modules/creatives/add-tracking-pixel';
 import addViewabilityTracker from 'commercial/modules/creatives/add-viewability-tracker';
@@ -23,9 +23,8 @@ class Frame {
         this.params.externalLinkIcon = addClassesAndTitle(externalLink.markup, [
             'frame__external-link-icon',
         ]);
-        this.params.target = this.params.newWindow === 'yes'
-            ? '_blank'
-            : '_self';
+        this.params.target =
+            this.params.newWindow === 'yes' ? '_blank' : '_self';
         this.params.id = `frame-${Math.floor(Math.random() * 10000).toString(
             16
         )}`;
@@ -74,7 +73,8 @@ class Frame {
                     this.params.viewabilityTracker
                 );
             }
-            new Toggles(this.adSlot).init();
+            const toggles = new Toggles(this.adSlot);
+            toggles.init();
             return true;
         });
     }
