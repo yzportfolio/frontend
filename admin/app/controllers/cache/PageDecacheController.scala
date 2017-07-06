@@ -59,7 +59,9 @@ class PageDecacheController(wsClient: WSClient)(implicit context: ApplicationCon
   }
 
   private def getRouterUrl(url: String): Option[String] =
-    LoadBalancer("frontend-router")
+    LoadBalancer
+      .all
+      .find(_.name.contains("router"))
       .flatMap(_.url)
       .map { router =>
         val path = new URL(url).getPath
