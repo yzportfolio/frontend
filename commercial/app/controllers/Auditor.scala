@@ -23,7 +23,7 @@ class Auditor(capi: ContentApiClient) extends Controller {
     val asJson: JsValue = Json.obj(
       "tagCount" -> tags.size,
       //        "contentCount"  -> items.size,
-      "sponsoredTags" -> tagsToJson(sponsoredTags),
+      "sponsoredTags" -> sponsoredTagsToJson(sponsoredTags),
       "tags"          -> tagsToJson(tags)
       //        "content"       -> itemsToJson(items)
     )
@@ -41,6 +41,13 @@ class Auditor(capi: ContentApiClient) extends Controller {
     def tagsToCsv(fieldName: String, tags: Seq[Tag]): String = toCsv(fieldName, tags.map(_.id).sorted)
     def itemsToCsv(items: Seq[Content]): String              = toCsv("content", items.map(_.id).sorted)
 
+    def sponsoredTagsToJson(tags: Seq[Tag]): JsValue =
+      JsArray(tags.sortBy(_.id).map { tag =>
+        Json.obj(
+          "id"      -> tag.id,
+          "sponsor" -> tag.activeSponsorships.map(_.headOption map (_.sponsorName))
+        )
+      })
     def tagsToJson(tags: Seq[Tag]): JsValue       = JsArray(tags.map(_.id).sorted.map(JsString(_)))
     def itemsToJson(items: Seq[Content]): JsValue = JsArray(items.map(_.id).sorted.map(JsString(_)))
   }
