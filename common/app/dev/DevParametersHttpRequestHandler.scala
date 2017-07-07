@@ -64,8 +64,13 @@ class DevParametersHttpRequestHandler(
     "dll" // Disable lazy loading of ads
   )
 
+  val journalismParams = Seq(
+    "path", // pass on the page id from the app down to the embedded atom
+    "platform" // pass on the platform id to identify which app the request is coming from
+  )
+
   val playBugs = Seq("") // (Play 2.5 bug?) request.queryString is returning an empty string when empty
-  val allowedParams = CanonicalLink.significantParams ++ commercialParams ++ insignificantParams ++ playBugs
+  val allowedParams = CanonicalLink.significantParams ++ commercialParams ++ journalismParams ++ insignificantParams ++ playBugs
 
   override def routeRequest(request: RequestHeader): Option[Handler] = {
 

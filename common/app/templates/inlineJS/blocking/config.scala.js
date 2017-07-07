@@ -33,6 +33,8 @@ window.guardian = {
 if (window.esi && window.esi.viewId) {
     window.guardian.config.ophan = {
         pageViewId: window.esi.viewId
+        @request.getQueryString("path").map { p => , url: window.guardian.config.page.ajaxUrl + '/@p' }.getOrElse("")
+        @request.getQueryString("platform").map { p => , platform: '@p' }.getOrElse("")
     };
 } else {
     window.guardian.config.ophan = {
@@ -42,6 +44,8 @@ if (window.esi && window.esi.viewId) {
         pageViewId: new Date().getTime().toString(36) + 'xxxxxxxxxxxx'.replace(/x/g, function () {
             return Math.floor(Math.random() * 36).toString(36);
         })
+        @request.getQueryString("path").map { p => , url: window.guardian.config.page.ajaxUrl + '/@p' }.getOrElse("")
+        @request.getQueryString("platform").map { p => , platform: '@p' }.getOrElse("")
     };
 }
 
